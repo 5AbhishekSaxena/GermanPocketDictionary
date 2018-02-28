@@ -87,7 +87,8 @@ public class NumberFragment extends Fragment implements LoaderManager.LoaderCall
             loadingIndicator.setVisibility(View.GONE);
 
             TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
-            loadingIndicator.setVisibility(View.GONE);
+            loadingTextView.setVisibility(View.GONE);
+
             // Update empty state with no connection error message
             mEmptyStateTextView.setText(R.string.no_internet_connection);
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();

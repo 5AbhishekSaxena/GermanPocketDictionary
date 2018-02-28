@@ -86,6 +86,9 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
             View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
             loadingIndicator.setVisibility(View.GONE);
 
+            TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
+            loadingTextView.setVisibility(View.GONE);
+
             // Update empty state with no connection error message
             mEmptyStateTextView.setText(R.string.no_internet_connection);
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
