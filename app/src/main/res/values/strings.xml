@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">German</string>
 
+    <!-- Title of all the Tabs/Categories -->
+    <string name="category_all_words">All Words</string>
     <string name="category_nouns">Nouns</string>
     <string name="category_numbers">Numbers</string>
+    <string name="category_colors">Colors</string>
 
     <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
     <string name="no_words">No words found.</string>
 
     <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
     <string name="no_internet_connection">No internet connection.</string>
+
+    <string name="loading_text">Loading\.\.\.</string>
 
 </resources>

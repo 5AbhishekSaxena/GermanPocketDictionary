@@ -1,8 +1,11 @@
-package com.example.android.german;
+package com.example.android.german.Loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+
+import com.example.android.german.QueryUtils.QueryUtils;
+import com.example.android.german.Data.Word;
 
 import java.util.List;
 

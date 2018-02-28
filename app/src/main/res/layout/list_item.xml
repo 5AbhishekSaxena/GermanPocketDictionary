@@ -4,18 +4,17 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/category_height"
+    android:background="@color/tan_background"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/german_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/category_item_height"
+        style="@style/ListPrimaryItemStyle"
         tools:text="Uhr" />
 
     <TextView
         android:id="@+id/english_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/category_item_height"
+        style="@style/ListSecondaryItemStyle"
         tools:text="Clock" />
 
 </LinearLayout>

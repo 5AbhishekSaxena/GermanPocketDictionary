@@ -1,4 +1,4 @@
-package com.example.android.german;
+package com.example.android.german.Data;
 
 import java.io.Serializable;
 
@@ -13,6 +13,7 @@ public class Word implements Serializable {
     private int mGender;
     private String mGermanPlural;
     private String mCategory;
+    private int mNumber;
 
 
     final private int GENDER_NULL = 0;
@@ -20,37 +21,19 @@ public class Word implements Serializable {
     final private int GENDER_FEMALE = 2;
     final private int GENDER_NEUTRAL = 3;
 
-    public Word(String germanTranslation, String englishTranslation, int gender) {
-        mGermanTranslation = germanTranslation;
-        mEnglishTranslation = englishTranslation;
-        mGender = gender;
-    }
 
-
-    public Word(String germanTranslation, String englishTranslation, String germanPlural) {
-        mGermanTranslation = germanTranslation;
-        mEnglishTranslation = englishTranslation;
-        mGermanPlural = germanPlural;
-    }
-
-
-     public Word(String germanTranslation, String englishTranslation) {
-        mGermanTranslation = germanTranslation;
-        mEnglishTranslation = englishTranslation;
-        mGender = GENDER_NULL;
-    }
-
-    public Word(String germanTranslation, String englishTranslation, String germanPlural, String category) {
+    public Word(String germanTranslation, String englishTranslation, String germanPlural, String category, String number) {
         mGermanTranslation = germanTranslation;
         mEnglishTranslation = englishTranslation;
         mGermanPlural = germanPlural;
         mCategory = category;
+        mNumber = Integer.valueOf(number);
         for (int i = 0; i < category.length(); i++) {
-            if (mCategory.contains("2"))
+            if (mCategory.contains("1a"))
                 mGender = GENDER_MALE;
-            else if (mCategory.contains("3"))
+            else if (mCategory.contains("1b"))
                 mGender = GENDER_FEMALE;
-            else if (mCategory.contains("4"))
+            else if (mCategory.contains("1c"))
                 mGender = GENDER_NEUTRAL;
             else
                 mGender = GENDER_NULL;
@@ -59,6 +42,10 @@ public class Word implements Serializable {
 
     public String getmGermanTranslation() {
         return updateGender(mGender) + mGermanTranslation;
+    }
+
+    public String getmGermanTranslationWithoutArticle(){
+        return mGermanTranslation.toLowerCase();
     }
 
     public String getmEnglishTranslation() {
@@ -93,5 +80,8 @@ public class Word implements Serializable {
                 "mGermanTranslation: " + mGermanTranslation + '\'' +
                 "mGermanPlural: " + mGermanPlural +
                 "}";
+    }
+    public int getmNumber(){
+        return mNumber;
     }
 }

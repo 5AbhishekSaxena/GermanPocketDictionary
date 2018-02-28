@@ -1,4 +1,4 @@
-package com.example.android.german;
+package com.example.android.german.Fragments;
 
 
 import android.content.Context;
@@ -16,7 +16,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.german.Loader.GermanLoader;
+import com.example.android.german.R;
+import com.example.android.german.Data.Word;
+import com.example.android.german.Adapter.WordAdapter;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -36,6 +43,8 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private WordAdapter mAdapter;
 
+    private View rootView;
+
     /**
      * TextView that is displayed when the list is empty
      */
@@ -43,11 +52,11 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.word_list, container, false);
+        rootView = inflater.inflate(R.layout.word_list, container, false);
         // Find a reference to the {@link ListView} in the layout
-        ListView wordListView =  rootView.findViewById(R.id.list);
+        ListView wordListView = rootView.findViewById(R.id.list);
 
-        mEmptyStateTextView =  rootView.findViewById(R.id.empty_view);
+        mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
         wordListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
@@ -63,7 +72,7 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
 
@@ -96,8 +105,11 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(Loader<List<Word>> loader, List<Word> words) {
 
         // Hide loading indicator because the data has been loaded
-        View loadingIndicator = getActivity().findViewById(R.id.loading_indicator);
+        View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
+
+        TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
+        loadingTextView.setVisibility(View.GONE);
 
         mAdapter.clear();
 
@@ -109,17 +121,26 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
                 Word word = words.get(i);
                 Log.v(LOG_TAG, "Current Word Category: " + word.getmCategory());
                 if (word.getmCategory() != null) {
-                     if (word.getmCategory().contains("1"))
-                            wordsList.add(word);
-                        Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
-                    }
+                    if (word.getmCategory().contains("1"))
+                        wordsList.add(word);
+                    Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
+                }
             }
             //words.add(new Word("Uhr", "Clock", 2));
             //words.add(new Word("Bleistift","Pencil", 1 ));
+
+            //sort the wordsList
+            Collections.sort(wordsList, new Comparator<Word>() {
+                @Override
+                public int compare(Word o1, Word o2) {
+                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
+                }
+            });
+
             mAdapter.addAll(wordsList);
 
             Log.v(LOG_TAG, "OnFinishedLoad status : " + words.size());
-        }else{
+        } else {
             // Set empty state text to display "No earthquakes found."
             mEmptyStateTextView.setText(R.string.no_words);
             Toast.makeText(getActivity(), R.string.no_words, Toast.LENGTH_SHORT).show();
@@ -131,4 +152,5 @@ public class NounsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoaderReset(Loader<List<Word>> loader) {
         mAdapter.clear();
     }
+
 }

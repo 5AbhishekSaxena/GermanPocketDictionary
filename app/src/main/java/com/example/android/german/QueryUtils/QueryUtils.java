@@ -1,7 +1,9 @@
-package com.example.android.german;
+package com.example.android.german.QueryUtils;
 
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.example.android.german.Data.Word;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +55,7 @@ public final class QueryUtils {
                 JSONObject contentGerman = currentGerman.getJSONObject("content");
                  String contentGermanData = contentGerman.getString("$t");
 
-                Log.v(LOG_TAG, "content: " + contentGermanData);
+                //Log.v(LOG_TAG, "content: " + contentGermanData);
 
                 //String[] strArray = contentGermanData.split(",");
 
@@ -63,11 +65,11 @@ public final class QueryUtils {
 
                 JSONObject englishTranslation = currentGerman.getJSONObject("gsx$englishtranslation");
                 String englishTranslationValue = String.valueOf(englishTranslation.getString("$t"));
-                Log.v(LOG_TAG, "English Translation Via JSON parsing : " + englishTranslationValue);
+                //Log.v(LOG_TAG, "English Translation Via JSON parsing : " + englishTranslationValue);
 
                 JSONObject germanPlural = currentGerman.getJSONObject("gsx$plural");
                 String germanPluralValue = germanPlural.getString("$t");
-                Log.v(LOG_TAG, "Plural value via JSON parsing : " + germanPluralValue);
+                //Log.v(LOG_TAG, "Plural value via JSON parsing : " + germanPluralValue);
                 /*
                 JSONObject categoryNoun = currentGerman.getJSONObject("gsx$noun");
                 String categoryNounValue = categoryNoun.getString("$t");
@@ -94,11 +96,14 @@ public final class QueryUtils {
                 String categoryPhrasesValue = categoryPhrases.getString("$t");
                 */
 
+                JSONObject number = currentGerman.getJSONObject("gsx$numbervalue");
+                String numberValue = number.getString("$t");
+
                 JSONObject category = currentGerman.getJSONObject("gsx$category");
                 String categoryValue = category.getString("$t");
-                Log.v(LOG_TAG, "categoryVia JSON parsing : " + categoryValue);
+                //Log.v(LOG_TAG, "categoryVia JSON parsing : " + categoryValue);
 
-                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,categoryValue);
+                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,categoryValue, numberValue);
 
                 words.add(word);
             }

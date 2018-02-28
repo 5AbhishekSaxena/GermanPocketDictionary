@@ -1,4 +1,4 @@
-package com.example.android.german;
+package com.example.android.german.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.android.german.R;
+import com.example.android.german.Data.Word;
 
 import java.util.List;
 
