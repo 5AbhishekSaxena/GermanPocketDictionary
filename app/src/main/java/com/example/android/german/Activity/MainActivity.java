@@ -23,6 +23,8 @@ import com.example.android.german.Loader.GermanLoader;
 import com.example.android.german.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
@@ -125,6 +127,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
                 }
             }
+
+            //sort the AllWOrdsList
+            Collections.sort(allWordList, new Comparator<Word>() {
+                @Override
+                public int compare(Word o1, Word o2) {
+                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
+                }
+            });
+
+            //sort the wordsList
+            Collections.sort(nounList, new Comparator<Word>() {
+                @Override
+                public int compare(Word o1, Word o2) {
+                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
+                }
+            });
+            //Sort ArrayList
+            Collections.sort(numberList, (s1, s2) ->
+                    Integer.compare(s1.getmNumber(), s2.getmNumber()));
+
 
             // Find the view pager that will allow the user to swipe between fragments
             ViewPager viewPager = findViewById(R.id.viewpager);
