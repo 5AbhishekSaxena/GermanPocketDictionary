@@ -1,20 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/category_height"
-    android:background="@color/tan_background"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/german_text_view"
-        style="@style/ListPrimaryItemStyle"
-        tools:text="Uhr" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:text="German"/>
 
     <TextView
         android:id="@+id/english_text_view"
-        style="@style/ListSecondaryItemStyle"
-        tools:text="Clock" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="English"
+        android:textColor="@android:color/black"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/expandable_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/plural_text_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Plural: "/>
+
+        <TextView
+            android:id="@+id/plural_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+            android:layout_toEndOf="@id/plural_text_label"
+            android:text="Shubham"/>
+
+        <TextView
+            android:id="@+id/opposite_text_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Opposite: "
+            android:layout_toStartOf="@+id/opposite_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/opposite_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+            android:layout_alignParentEnd="true"
+            android:text="Abhishek"/>
+    </RelativeLayout>
 </LinearLayout>

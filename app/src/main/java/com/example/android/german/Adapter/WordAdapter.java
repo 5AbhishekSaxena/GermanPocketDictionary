@@ -1,14 +1,15 @@
 package com.example.android.german.Adapter;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.android.german.R;
 import com.example.android.german.Data.Word;
+import com.example.android.german.Fragments.WordsFragment;
+import com.example.android.german.R;
 
 import java.util.List;
 
@@ -18,19 +19,23 @@ import java.util.List;
 
 public class WordAdapter extends ArrayAdapter<Word> {
 
-    public WordAdapter(Activity context, List<Word> words){
+    private WordsFragment fragment;
+    private int fragmentType;
 
-        super(context,0, words);
+    public WordAdapter(Fragment context, List<Word> words, int fragmentType) {
+        super(context.getActivity(), 0, words);
+        fragment = (WordsFragment) context;
+        this.fragmentType = fragmentType;
     }
 
     @Override
-    public View getView(int position,  View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-    View listItemView = convertView;
+        View listItemView = convertView;
 
-        if(listItemView==null){
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list_item,parent,false);
+                    R.layout.list_item, parent, false);
 
         }
 
@@ -50,6 +55,14 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         //Get the English Translation from the Word Class and update the list_item
         englishTextView.setText(currentWord.getmEnglishTranslation());
+
+        View view = listItemView.findViewById(R.id.expandable_view);
+        if (fragmentType == WordsFragment.NOUNS) {
+            if (fragment.selectedNoun == position)
+                view.setVisibility(View.VISIBLE);
+            else
+                view.setVisibility(View.GONE);
+        }
         return listItemView;
     }
 }

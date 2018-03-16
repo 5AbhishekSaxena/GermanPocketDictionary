@@ -15,4 +15,12 @@
 
     <string name="loading_text">Loading\.\.\.</string>
 
+    <string name="rate_this_app">Rate This App</string>
+    <string name="send_feedback">Send Feedback</string>
+
+    <string name="menu_night_mode">Night mode</string>
+    <string name="menu_night_mode_system">Follow system</string>
+    <string name="menu_night_mode_day">Day (always)</string>
+    <string name="menu_night_mode_night">Night (always)</string>
+    <string name="menu_night_mode_auto">Auto</string>
 </resources>

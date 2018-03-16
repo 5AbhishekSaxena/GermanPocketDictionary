@@ -5,10 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.german.Fragments.ColorsFragment;
-import com.example.android.german.Fragments.NounsFragment;
-import com.example.android.german.Fragments.NumberFragment;
-import com.example.android.german.Fragments.AllWordsFragment;
+import com.example.android.german.Fragments.WordsFragment;
 import com.example.android.german.R;
 
 /**
@@ -32,13 +29,13 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-            return new AllWordsFragment();
+            return WordsFragment.newInstance(WordsFragment.ALL_WORDS);
         else if (position == 1)
-            return new NounsFragment();
+            return WordsFragment.newInstance(WordsFragment.NOUNS);
         if (position == 2)
-            return new NumberFragment();
+            return WordsFragment.newInstance(WordsFragment.NUMBERS);
         else
-            return new ColorsFragment();
+            return WordsFragment.newInstance(WordsFragment.COLORS);
     }
 
     @Override

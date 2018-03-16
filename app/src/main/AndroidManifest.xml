@@ -19,13 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.NounsActivity"
-            android:label="@string/category_nouns"
-            android:parentActivityName=".Activity.MainActivity"/>
-
-        <activity android:name=".Activity.NumbersActivity"
-            android:label="@string/category_numbers"
-            android:parentActivityName=".Activity.MainActivity"/>
 
     </application>
 

@@ -1,39 +1,28 @@
 package com.example.android.german.Fragments;
 
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
+import android.transition.ChangeBounds;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.android.german.Loader.GermanLoader;
-import com.example.android.german.R;
-import com.example.android.german.Data.Word;
+import com.example.android.german.Activity.MainActivity;
 import com.example.android.german.Adapter.WordAdapter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.example.android.german.R;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.
  */
 
-public class ColorsFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Word>> {
+public class WordsFragment extends Fragment{
 
-    final static String LOG_TAG = NounsFragment.class.getName();
+    final static String LOG_TAG = WordsFragment.class.getName();
 
     //private static final String GERMAN_EXCELSHEET_URL =
     //      "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
@@ -41,6 +30,13 @@ public class ColorsFragment extends Fragment
     private static final String GERMAN_EXCELSHEET_URL =
             "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
     private static final int GERMAN_LOADER_ID = 1;
+
+    public static final int ALL_WORDS = 1;
+    public static final int NOUNS = 2;
+    public static final int NUMBERS = 3;
+    public static final int COLORS = 4;
+
+    public int selectedNoun;
 
     private WordAdapter mAdapter;
 
@@ -50,6 +46,16 @@ public class ColorsFragment extends Fragment
      * TextView that is displayed when the list is empty
      */
     private TextView mEmptyStateTextView;
+    private MainActivity activityReference;
+    private int fragmentType;
+
+    public static WordsFragment newInstance(int type) {
+        WordsFragment fragment = new WordsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("fragmentType", type);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,15 +65,60 @@ public class ColorsFragment extends Fragment
 
         mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
         wordListView.setEmptyView(mEmptyStateTextView);
+        activityReference = ((MainActivity) getActivity());
 
         // Create a new adapter that takes an empty list of earthquakes as input
-        mAdapter = new WordAdapter(getActivity(), new ArrayList<Word>());
+        if(getArguments() != null) {
+            fragmentType = getArguments().getInt("fragmentType");
+            switch (fragmentType) {
+                case ALL_WORDS:
+                    mAdapter = new WordAdapter(this, activityReference.getAllWordList(), ALL_WORDS);
+                    break;
+
+                case NOUNS:
+                    mAdapter = new WordAdapter(this, activityReference.getNounList(), NOUNS);
+                    selectedNoun = -1;
+                    wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                            TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
+                            if(selectedNoun != position) {
+                                view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                                selectedNoun = position;
+                            } else {
+                                view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                                selectedNoun = -1;
+                            }
+
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    break;
+
+                case NUMBERS:
+                    mAdapter = new WordAdapter(this, activityReference.getNumberList(), NUMBERS);
+                    break;
+
+                case COLORS:
+                    mAdapter = new WordAdapter(this, activityReference.getColorList(), COLORS);
+                    break;
+            }
+        }
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         wordListView.setAdapter(mAdapter);
 
-        // Get a reference to the ConnectivityManager to check state of network connectivity
+
+
+        View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
+        TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
+        loadingTextView.setVisibility(View.GONE);
+
+        /*// Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -94,13 +145,13 @@ public class ColorsFragment extends Fragment
             mEmptyStateTextView.setText(R.string.no_internet_connection);
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
 
-        }
+        }*/
         return rootView;
 
     }
 
 
-    @Override
+    /*@Override
     public Loader<List<Word>> onCreateLoader(int id, Bundle args) {
         return new GermanLoader(getActivity(), GERMAN_EXCELSHEET_URL);
     }
@@ -125,7 +176,7 @@ public class ColorsFragment extends Fragment
                 Word word = words.get(i);
                 Log.v(LOG_TAG, "Current Word Category: " + word.getmCategory());
                 if (word.getmCategory() != null) {
-                    if (word.getmCategory().contains("3"))
+                    if (word.getmCategory().contains("1"))
                         wordsList.add(word);
                     Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
                 }
@@ -156,5 +207,5 @@ public class ColorsFragment extends Fragment
     public void onLoaderReset(Loader<List<Word>> loader) {
         mAdapter.clear();
     }
-
+*/
 }
