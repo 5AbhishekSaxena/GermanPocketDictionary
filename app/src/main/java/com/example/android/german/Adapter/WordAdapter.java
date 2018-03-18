@@ -56,11 +56,37 @@ public class WordAdapter extends ArrayAdapter<Word> {
         //Get the English Translation from the Word Class and update the list_item
         englishTextView.setText(currentWord.getmEnglishTranslation());
 
+        if (currentWord.hasPlural()) {
+            TextView pluralTextView = listItemView.findViewById(R.id.plural_text);
+            pluralTextView.setText(currentWord.getmGermanPlural());
+        }
+
+        if (currentWord.hasOpposite()) {
+            TextView oppositetextView = listItemView.findViewById(R.id.opposite_text);
+            TextView oppositeLabelTextView = listItemView.findViewById(R.id.opposite_text_label);
+
+            oppositetextView.setText(currentWord.getmGermanOpposite());
+            oppositetextView.setVisibility(View.VISIBLE);
+            oppositeLabelTextView.setVisibility(View.VISIBLE);
+
+        }
+
         View view = listItemView.findViewById(R.id.expandable_view);
         if (fragmentType == WordsFragment.NOUNS) {
             if (fragment.selectedNoun == position)
                 view.setVisibility(View.VISIBLE);
             else
+                view.setVisibility(View.GONE);
+        }
+
+        if (fragmentType == WordsFragment.VERBS) {
+            if (fragment.selectedVerb == position) {
+                view.setVisibility(View.VISIBLE);
+                TextView rootWordLabelTextView = view.findViewById(R.id.plural_text_label);
+                rootWordLabelTextView.setText(R.string.root_word_label);
+                TextView rootWord = view.findViewById(R.id.plural_text);
+                rootWord.setText(currentWord.getmVerbRootWord());
+            } else
                 view.setVisibility(View.GONE);
         }
         return listItemView;

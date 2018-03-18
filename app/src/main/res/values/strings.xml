@@ -6,6 +6,7 @@
     <string name="category_nouns">Nouns</string>
     <string name="category_numbers">Numbers</string>
     <string name="category_colors">Colors</string>
+    <string name="category_verbs">Verbs</string>
 
     <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
     <string name="no_words">No words found.</string>
@@ -14,6 +15,12 @@
     <string name="no_internet_connection">No internet connection.</string>
 
     <string name="loading_text">Loading\.\.\.</string>
+
+    <string name="root_word_label">Root Word:\u0020</string>
+
+    <string name="plural_word_label">Plural:\u0020 </string>
+
+    <string name="opposite_word_label">Opposite:\u0020 </string>
 
     <string name="rate_this_app">Rate This App</string>
     <string name="send_feedback">Send Feedback</string>

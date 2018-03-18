@@ -8,12 +8,14 @@ import java.io.Serializable;
 
 public class Word implements Serializable {
 
+    private String mGermanOpposite;
     private String mGermanTranslation;
     private String mEnglishTranslation;
     private int mGender;
     private String mGermanPlural;
     private String mCategory;
     private int mNumber;
+    private String mVerbRootWord;
 
 
     final private int GENDER_NULL = 0;
@@ -22,12 +24,17 @@ public class Word implements Serializable {
     final private int GENDER_NEUTRAL = 3;
 
 
-    public Word(String germanTranslation, String englishTranslation, String germanPlural, String category, String number) {
+    public Word(String germanTranslation, String englishTranslation, String germanPlural,
+                String category, String number, String verbRootWord) {
+
         mGermanTranslation = germanTranslation;
         mEnglishTranslation = englishTranslation;
         mGermanPlural = germanPlural;
         mCategory = category;
         mNumber = Integer.valueOf(number);
+        mGermanOpposite = null;
+        mVerbRootWord = verbRootWord;
+
         for (int i = 0; i < category.length(); i++) {
             if (mCategory.contains("1a"))
                 mGender = GENDER_MALE;
@@ -56,6 +63,10 @@ public class Word implements Serializable {
         return mGermanPlural;
     }
 
+    public String getmVerbRootWord() {
+        return mVerbRootWord;
+    }
+
     private String updateGender(int gender) {
         switch (gender) {
             case GENDER_NEUTRAL:
@@ -73,6 +84,23 @@ public class Word implements Serializable {
         return mCategory;
     }
 
+
+    public int getmNumber(){
+        return mNumber;
+    }
+
+    public String getmGermanOpposite(){
+        return mGermanOpposite;
+    }
+
+    public  boolean hasPlural(){
+        return mGermanPlural != null;
+    }
+
+    public boolean hasOpposite(){
+        return mGermanOpposite != null;
+    }
+
     @Override
     public String toString() {
         return "Word(" +
@@ -80,8 +108,5 @@ public class Word implements Serializable {
                 "mGermanTranslation: " + mGermanTranslation + '\'' +
                 "mGermanPlural: " + mGermanPlural +
                 "}";
-    }
-    public int getmNumber(){
-        return mNumber;
     }
 }

@@ -103,7 +103,10 @@ public final class QueryUtils {
                 String categoryValue = category.getString("$t");
                 //Log.v(LOG_TAG, "categoryVia JSON parsing : " + categoryValue);
 
-                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,categoryValue, numberValue);
+                JSONObject verbRootWord = currentGerman.getJSONObject("gsx$verbrootword");
+                String verbRootWordValue = verbRootWord.getString("$t");
+
+                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,categoryValue, numberValue, verbRootWordValue);
 
                 words.add(word);
             }

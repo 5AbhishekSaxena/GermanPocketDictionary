@@ -33,10 +33,12 @@ public class WordsFragment extends Fragment{
 
     public static final int ALL_WORDS = 1;
     public static final int NOUNS = 2;
-    public static final int NUMBERS = 3;
-    public static final int COLORS = 4;
+    public static final int VERBS = 3;
+    public static final int NUMBERS = 4;
+    public static final int COLORS = 5;
 
     public int selectedNoun;
+    public int selectedVerb;
 
     private WordAdapter mAdapter;
 
@@ -50,11 +52,11 @@ public class WordsFragment extends Fragment{
     private int fragmentType;
 
     public static WordsFragment newInstance(int type) {
-        WordsFragment fragment = new WordsFragment();
+        WordsFragment wordFragment = new WordsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("fragmentType", type);
-        fragment.setArguments(bundle);
-        return fragment;
+        wordFragment.setArguments(bundle);
+        return wordFragment;
     }
 
     @Override
@@ -67,7 +69,7 @@ public class WordsFragment extends Fragment{
         wordListView.setEmptyView(mEmptyStateTextView);
         activityReference = ((MainActivity) getActivity());
 
-        // Create a new adapter that takes an empty list of earthquakes as input
+        // Create a new adapter that takes an empty list of words as input
         if(getArguments() != null) {
             fragmentType = getArguments().getInt("fragmentType");
             switch (fragmentType) {
@@ -95,6 +97,27 @@ public class WordsFragment extends Fragment{
                         }
                     });
                     break;
+
+                case VERBS:
+                        mAdapter = new WordAdapter(this,activityReference.getVerbList(),VERBS);
+                        selectedVerb = -1;
+                        wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                                TransitionManager.beginDelayedTransition(mainView,new ChangeBounds());
+                                if (selectedVerb != position){
+                                    view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                                    selectedVerb = position;
+                                } else {
+                                    view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                                    selectedVerb = -1;
+                                }
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        break;
 
                 case NUMBERS:
                     mAdapter = new WordAdapter(this, activityReference.getNumberList(), NUMBERS);

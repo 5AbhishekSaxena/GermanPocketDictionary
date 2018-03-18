@@ -24,12 +24,11 @@ import com.example.android.german.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
 
-    public List<Word> allWordList, nounList, numberList, colorList;
+    public List<Word> allWordList, nounList, verbList, numberList, colorList;
     final static String LOG_TAG = MainActivity.class.getName();
 
     //private static final String GERMAN_EXCELSHEET_URL =
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String GERMAN_EXCELSHEET_URL =
             "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
+
     private static final int GERMAN_LOADER_ID = 1;
 
     /**
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         numberList = new ArrayList<>();
         colorList = new ArrayList<>();
         allWordList = new ArrayList<>();
+        verbList = new ArrayList<>();
 
         mProgressBar = findViewById(R.id.loading_indicator);
         loadingTextView = findViewById(R.id.loading_text_view);
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             numberList.clear();
             colorList.clear();
             allWordList.clear();
+            verbList.clear();
             allWordList.addAll(words);
 
             for (int i = 0; i < words.size(); i++) {
@@ -124,29 +126,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     if (word.getmCategory().contains("3"))
                         colorList.add(word);
 
+                    if (word.getmCategory().contains("7"))
+                        verbList.add(word);
+
                     Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
                 }
             }
 
             //sort the AllWOrdsList
-            Collections.sort(allWordList, new Comparator<Word>() {
-                @Override
-                public int compare(Word o1, Word o2) {
-                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
-                }
-            });
+            Collections.sort(allWordList,(s1,s2) ->
+                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             //sort the wordsList
-            Collections.sort(nounList, new Comparator<Word>() {
-                @Override
-                public int compare(Word o1, Word o2) {
-                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
-                }
-            });
+            Collections.sort(nounList, (s1,s2) ->
+                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+
+
             //Sort ArrayList
             Collections.sort(numberList, (s1, s2) ->
                     Integer.compare(s1.getmNumber(), s2.getmNumber()));
 
+            Collections.sort(verbList, (s1, s2) ->
+                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             // Find the view pager that will allow the user to swipe between fragments
             ViewPager viewPager = findViewById(R.id.viewpager);
@@ -190,6 +191,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return colorList;
     }
 
+    public List<Word> getVerbList(){
+        return verbList;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -203,11 +208,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
             case R.id.rate_this_app:
                 /*TODO:Make PlayStore intent*/
-                Toast.makeText(this, "Opening PlayStore", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Opening PlayStore - Pending", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.send_feedback:
                 /*TODO: Make Contact us Intent send a mail - background or gmail intent*/
-                Toast.makeText(this, "Contact Us Intent", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Contact Us Intent - Pending", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

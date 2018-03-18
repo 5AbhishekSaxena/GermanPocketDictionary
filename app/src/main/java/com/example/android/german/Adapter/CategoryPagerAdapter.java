@@ -32,15 +32,17 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
             return WordsFragment.newInstance(WordsFragment.ALL_WORDS);
         else if (position == 1)
             return WordsFragment.newInstance(WordsFragment.NOUNS);
-        if (position == 2)
-            return WordsFragment.newInstance(WordsFragment.NUMBERS);
+        else if (position == 2)
+            return WordsFragment.newInstance(WordsFragment.VERBS);
+        else if (position == 3 )
+                return WordsFragment.newInstance(WordsFragment.NUMBERS);
         else
             return WordsFragment.newInstance(WordsFragment.COLORS);
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -50,7 +52,9 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
             return mContext.getString(R.string.category_all_words);
         else if (position == 1)
             return mContext.getString(R.string.category_nouns);
-         else if (position == 2)
+        else if (position == 2)
+            return mContext.getString(R.string.category_verbs);
+         else if (position == 3)
             return mContext.getString(R.string.category_numbers);
          else
              return mContext.getString(R.string.category_colors);

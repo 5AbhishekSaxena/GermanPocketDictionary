@@ -42,7 +42,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:text="Plural: "/>
+            android:text="@string/plural_word_label"/>
 
         <TextView
             android:id="@+id/plural_text"
@@ -51,25 +51,27 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:layout_toEndOf="@id/plural_text_label"
-            android:text="Shubham"/>
+            tools:text="Shubham"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/opposite_text_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Opposite: "
+            android:text="@string/opposite_word_label"
             android:layout_toStartOf="@+id/opposite_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:textStyle="bold"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/opposite_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:layout_alignParentEnd="true"
-            android:text="Abhishek"/>
+            tools:text="Abhishek"/>
     </RelativeLayout>
 </LinearLayout>
