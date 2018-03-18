@@ -20,7 +20,7 @@ import com.example.android.german.R;
  * Created by Abhishek Saxena on 12/15/2017.
  */
 
-public class WordsFragment extends Fragment{
+public class WordsFragment extends Fragment {
 
     final static String LOG_TAG = WordsFragment.class.getName();
 
@@ -36,6 +36,7 @@ public class WordsFragment extends Fragment{
     public static final int VERBS = 3;
     public static final int NUMBERS = 4;
     public static final int COLORS = 5;
+    public static final int QUESTIONS = 6;
 
     public int selectedNoun;
     public int selectedVerb;
@@ -70,7 +71,7 @@ public class WordsFragment extends Fragment{
         activityReference = ((MainActivity) getActivity());
 
         // Create a new adapter that takes an empty list of words as input
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             fragmentType = getArguments().getInt("fragmentType");
             switch (fragmentType) {
                 case ALL_WORDS:
@@ -85,7 +86,7 @@ public class WordsFragment extends Fragment{
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
                             TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
-                            if(selectedNoun != position) {
+                            if (selectedNoun != position) {
                                 view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
                                 selectedNoun = position;
                             } else {
@@ -99,25 +100,25 @@ public class WordsFragment extends Fragment{
                     break;
 
                 case VERBS:
-                        mAdapter = new WordAdapter(this,activityReference.getVerbList(),VERBS);
-                        selectedVerb = -1;
-                        wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                ViewGroup mainView = rootView.findViewById(R.id.main_view);
-                                TransitionManager.beginDelayedTransition(mainView,new ChangeBounds());
-                                if (selectedVerb != position){
-                                    view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
-                                    selectedVerb = position;
-                                } else {
-                                    view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
-                                    selectedVerb = -1;
-                                }
-
-                                mAdapter.notifyDataSetChanged();
+                    mAdapter = new WordAdapter(this, activityReference.getVerbList(), VERBS);
+                    selectedVerb = -1;
+                    wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                            TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
+                            if (selectedVerb != position) {
+                                view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                                selectedVerb = position;
+                            } else {
+                                view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                                selectedVerb = -1;
                             }
-                        });
-                        break;
+
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    break;
 
                 case NUMBERS:
                     mAdapter = new WordAdapter(this, activityReference.getNumberList(), NUMBERS);
@@ -126,13 +127,16 @@ public class WordsFragment extends Fragment{
                 case COLORS:
                     mAdapter = new WordAdapter(this, activityReference.getColorList(), COLORS);
                     break;
+
+                case QUESTIONS:
+                    mAdapter = new WordAdapter(this, activityReference.getQuestionList(), QUESTIONS);
+
             }
         }
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         wordListView.setAdapter(mAdapter);
-
 
 
         View loadingIndicator = rootView.findViewById(R.id.loading_indicator);

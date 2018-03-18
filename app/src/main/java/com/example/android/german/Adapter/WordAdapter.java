@@ -20,12 +20,12 @@ import java.util.List;
 public class WordAdapter extends ArrayAdapter<Word> {
 
     private WordsFragment fragment;
-    private int fragmentType;
+    private int mFragmentType;
 
     public WordAdapter(Fragment context, List<Word> words, int fragmentType) {
         super(context.getActivity(), 0, words);
         fragment = (WordsFragment) context;
-        this.fragmentType = fragmentType;
+        mFragmentType = fragmentType;
     }
 
     @Override
@@ -72,14 +72,14 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }
 
         View view = listItemView.findViewById(R.id.expandable_view);
-        if (fragmentType == WordsFragment.NOUNS) {
+        if (mFragmentType == WordsFragment.NOUNS) {
             if (fragment.selectedNoun == position)
                 view.setVisibility(View.VISIBLE);
             else
                 view.setVisibility(View.GONE);
         }
 
-        if (fragmentType == WordsFragment.VERBS) {
+        if (mFragmentType == WordsFragment.VERBS) {
             if (fragment.selectedVerb == position) {
                 view.setVisibility(View.VISIBLE);
                 TextView rootWordLabelTextView = view.findViewById(R.id.plural_text_label);

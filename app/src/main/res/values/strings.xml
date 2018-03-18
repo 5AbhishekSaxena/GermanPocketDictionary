@@ -7,6 +7,8 @@
     <string name="category_numbers">Numbers</string>
     <string name="category_colors">Colors</string>
     <string name="category_verbs">Verbs</string>
+    <string name="category_questions">Questions</string>
+
 
     <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
     <string name="no_words">No words found.</string>

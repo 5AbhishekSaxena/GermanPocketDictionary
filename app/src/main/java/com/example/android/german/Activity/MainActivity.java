@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
 
-    public List<Word> allWordList, nounList, verbList, numberList, colorList;
+    public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList;
     final static String LOG_TAG = MainActivity.class.getName();
 
     //private static final String GERMAN_EXCELSHEET_URL =
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         colorList = new ArrayList<>();
         allWordList = new ArrayList<>();
         verbList = new ArrayList<>();
+        questionList = new ArrayList<>();
 
         mProgressBar = findViewById(R.id.loading_indicator);
         loadingTextView = findViewById(R.id.loading_text_view);
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             colorList.clear();
             allWordList.clear();
             verbList.clear();
+            questionList.clear();
             allWordList.addAll(words);
 
             for (int i = 0; i < words.size(); i++) {
@@ -129,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     if (word.getmCategory().contains("7"))
                         verbList.add(word);
 
+                    if (word.getmCategory().contains("8"))
+                        questionList.add(word);
+
                     Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
                 }
             }
@@ -141,12 +146,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Collections.sort(nounList, (s1,s2) ->
                 s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
-
-            //Sort ArrayList
+            //Sort numberList
             Collections.sort(numberList, (s1, s2) ->
                     Integer.compare(s1.getmNumber(), s2.getmNumber()));
 
+            //Sort verbList
             Collections.sort(verbList, (s1, s2) ->
+                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+
+            //Sort questionList
+            Collections.sort(questionList, (s1,s2) ->
                 s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             // Find the view pager that will allow the user to swipe between fragments
@@ -193,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public List<Word> getVerbList(){
         return verbList;
+    }
+
+    public List<Word> getQuestionList() {
+        return questionList;
     }
 
     @Override
