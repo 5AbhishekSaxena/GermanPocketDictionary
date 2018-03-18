@@ -51,8 +51,12 @@ public class Word implements Serializable {
         return updateGender(mGender) + mGermanTranslation;
     }
 
-    public String getmGermanTranslationWithoutArticle(){
-        return mGermanTranslation.toLowerCase();
+    public String getmGermanTranslationWithoutArticle() {
+        return mGermanTranslation.toLowerCase()
+                .replace("ü", "u")
+                .replace("ö", "o")
+                .replace("ä", "a")
+                .replace("ß", "s");
     }
 
     public String getmEnglishTranslation() {
@@ -85,19 +89,19 @@ public class Word implements Serializable {
     }
 
 
-    public int getmNumber(){
+    public int getmNumber() {
         return mNumber;
     }
 
-    public String getmGermanOpposite(){
+    public String getmGermanOpposite() {
         return mGermanOpposite;
     }
 
-    public  boolean hasPlural(){
+    public boolean hasPlural() {
         return mGermanPlural != null;
     }
 
-    public boolean hasOpposite(){
+    public boolean hasOpposite() {
         return mGermanOpposite != null;
     }
 
