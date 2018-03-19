@@ -1,5 +1,6 @@
 package com.example.android.german.Adapter;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,9 @@ public class WordAdapter extends ArrayAdapter<Word> {
         super(context.getActivity(), 0, words);
         fragment = (WordsFragment) context;
         mFragmentType = fragmentType;
+    }
+    public WordAdapter(Activity context, List<Word> words) {
+        super(context, 0, words);
     }
 
     @Override

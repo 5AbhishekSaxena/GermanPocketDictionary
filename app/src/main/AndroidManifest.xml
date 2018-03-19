@@ -18,8 +18,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
         </activity>
 
+        <activity android:name=".Activity.SearchResultActivity"
+            android:label="">
+        </activity>
     </application>
 
 </manifest>

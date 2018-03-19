@@ -1,6 +1,7 @@
 package com.example.android.german.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,18 +27,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
 
     public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList;
+
+
     final static String LOG_TAG = MainActivity.class.getName();
 
-    //private static final String GERMAN_EXCELSHEET_URL =
-    //      "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
-
     private static final String GERMAN_EXCELSHEET_URL =
-            "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
+    "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
+
+    //private static final String GERMAN_EXCELSHEET_URL =
+      //      "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
 
     private static final int GERMAN_LOADER_ID = 1;
+
 
     /**
      * TextView that is displayed when the list is empty
@@ -51,13 +56,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
 
+
         nounList = new ArrayList<>();
         numberList = new ArrayList<>();
         colorList = new ArrayList<>();
         allWordList = new ArrayList<>();
         verbList = new ArrayList<>();
         questionList = new ArrayList<>();
-
         mProgressBar = findViewById(R.id.loading_indicator);
         loadingTextView = findViewById(R.id.loading_text_view);
 
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             NumberFragment numberFragment = (NumberFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);;
             if(numberFragment != null)
                 numberFragment.updateList(words);*/
+
             nounList.clear();
             numberList.clear();
             colorList.clear();
@@ -139,12 +145,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             //sort the AllWOrdsList
-            Collections.sort(allWordList,(s1,s2) ->
-                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+            Collections.sort(allWordList, (s1, s2) ->
+                    s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             //sort the wordsList
-            Collections.sort(nounList, (s1,s2) ->
-                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+            Collections.sort(nounList, (s1, s2) ->
+                    s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             //Sort numberList
             Collections.sort(numberList, (s1, s2) ->
@@ -152,11 +158,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             //Sort verbList
             Collections.sort(verbList, (s1, s2) ->
-                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+                    s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             //Sort questionList
-            Collections.sort(questionList, (s1,s2) ->
-                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+            Collections.sort(questionList, (s1, s2) ->
+                    s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             // Find the view pager that will allow the user to swipe between fragments
             ViewPager viewPager = findViewById(R.id.viewpager);
@@ -200,13 +206,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return colorList;
     }
 
-    public List<Word> getVerbList(){
+    public List<Word> getVerbList() {
         return verbList;
     }
 
     public List<Word> getQuestionList() {
         return questionList;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,6 +226,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         switch (item.getItemId()) {
             case android.R.id.home:
                 return true;
+
+            case R.id.search_menu:
+                Intent searchActivityIntent = new Intent(this, SearchResultActivity.class);
+                //Bundle arrayListBundle = new Bundle();
+                //arrayListBundle.putSerializable("AllWordArrayList",(Serializable) allWordList);
+                searchActivityIntent.putExtra("AllWordArrayList", (ArrayList<Word>) allWordList);
+                startActivity(searchActivityIntent);
+                break;
+
             case R.id.rate_this_app:
                 /*TODO:Make PlayStore intent*/
                 Toast.makeText(this, "Opening PlayStore - Pending", Toast.LENGTH_SHORT).show();
@@ -229,6 +245,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }
