@@ -236,12 +236,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 break;
 
             case R.id.rate_this_app:
-                /*TODO:Make PlayStore intent*/
+                //TODO:Make PlayStore intent
                 Toast.makeText(this, "Opening PlayStore - Pending", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.send_feedback:
-                /*TODO: Make Contact us Intent send a mail - background or gmail intent*/
-                Toast.makeText(this, "Contact Us Intent - Pending", Toast.LENGTH_SHORT).show();
+                //TODO: Make Contact us Intent send a mail - background or gmail intent
+                Intent feedbackActivityIntent = new Intent(this,FeedBackActivity.class);
+                startActivity(feedbackActivityIntent);
         }
         return super.onOptionsItemSelected(item);
     }

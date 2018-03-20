@@ -10,26 +10,38 @@
     <string name="category_questions">Questions</string>
 
 
-    <!-- Text to display in the list when there are no earthquakes [CHAR LIMIT=NONE] -->
+    <!-- Text to display in the list when there are no words [CHAR LIMIT=NONE] -->
     <string name="no_words">No words found.</string>
 
     <!-- Error message when there is no internet connectivity [CHAR LIMIT=NONE] -->
     <string name="no_internet_connection">No internet connection.</string>
 
+    <!-- text to display loading on going process -->
     <string name="loading_text">Loading\.\.\.</string>
 
+    <!-- Text to display additional information of a word -->
     <string name="root_word_label">Root Word:\u0020</string>
-
     <string name="plural_word_label">Plural:\u0020 </string>
-
     <string name="opposite_word_label">Opposite:\u0020 </string>
 
+    <!--Menu Items labels -->
     <string name="rate_this_app">Rate This App</string>
     <string name="send_feedback">Send Feedback</string>
 
-    <string name="menu_night_mode">Night mode</string>
-    <string name="menu_night_mode_system">Follow system</string>
-    <string name="menu_night_mode_day">Day (always)</string>
-    <string name="menu_night_mode_night">Night (always)</string>
-    <string name="menu_night_mode_auto">Auto</string>
+    <!-- Feedback Activity Texts Labels -->
+    <string name="feedback_name_label">Name:\u0020</string>
+    <string name="feedback_email_label">Email:\u0020</string>
+    <string name="feedback_feedback_label">Feedback:\u0020</string>
+    <string name="feedback_additional_information_label">Additional Information:\u0020</string>
+
+    <!-- Hints for the Feedback Activity -->
+    <string name="hint_user_name">User Name</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="hint_feedback">Enter Feedback</string>
+    <string name="hint_additional_information">(Optional)</string>
+
+    <!-- Feedback Menu Item -->
+    <string name="action_save">Save</string>
+
+
 </resources>
