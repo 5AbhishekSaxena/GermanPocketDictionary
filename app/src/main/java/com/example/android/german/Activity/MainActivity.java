@@ -240,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Toast.makeText(this, "Opening PlayStore - Pending", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.send_feedback:
-                //TODO: Make Contact us Intent send a mail - background or gmail intent
                 Intent feedbackActivityIntent = new Intent(this,FeedBackActivity.class);
                 startActivity(feedbackActivityIntent);
         }
