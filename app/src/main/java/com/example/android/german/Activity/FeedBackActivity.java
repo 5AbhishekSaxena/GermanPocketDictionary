@@ -29,6 +29,9 @@ public class FeedBackActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            case R.id.home:
+                return true;
+
             case R.id.action_save:
                 saveFeedback();
                 finish();
@@ -43,22 +46,25 @@ public class FeedBackActivity extends AppCompatActivity {
         EditText feedbackEditTextView = findViewById(R.id.edit_feedback_feedback);
         EditText additionalInformationEditTextView = findViewById(R.id.edit_feedback_additional_information);
 
-        String userName = nameEditTextView.getText().toString().trim();
+        String userName = "Anonymous";
+
+        if (!nameEditTextView.getText().toString().isEmpty())
+            userName = nameEditTextView.getText().toString().trim();
+
         String feedback = feedbackEditTextView.getText().toString().trim();
-        String additionalInformation = "";
-        additionalInformation += additionalInformationEditTextView.getText().toString().trim();
+        String additionalInformation;
+        additionalInformation = additionalInformationEditTextView.getText().toString().trim();
 
         String feedbackSummary = "Feedback:\n" + feedback;
 
-        if(!additionalInformation.equals(""))
+        if (additionalInformation.length() != 0)
             additionalInformation += "\n\nAdditional Information:\n" + additionalInformation;
 
-        feedbackSummary +=additionalInformation;
+        feedbackSummary += additionalInformation;
         sendmail(userName, feedbackSummary);
     }
 
     public void sendmail(String userName, String feedback) {
-        //Log.v("MainActivity","mail func worked");
         String adresses = "test@gmail.com";
         String[] mail = new String[]{adresses};
         String subject = "Feedback - " + userName;
@@ -72,3 +78,4 @@ public class FeedBackActivity extends AppCompatActivity {
         }
     }
 }
+

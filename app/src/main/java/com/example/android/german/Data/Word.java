@@ -29,11 +29,18 @@ public class Word implements Serializable {
 
         mGermanTranslation = germanTranslation;
         mEnglishTranslation = englishTranslation;
-        mGermanPlural = germanPlural;
+        if(germanPlural.equals("0"))
+            mGermanPlural = "No Plural";
+        else
+            mGermanPlural = germanPlural;
+
         mCategory = category;
         mNumber = Integer.valueOf(number);
         mGermanOpposite = null;
-        mVerbRootWord = verbRootWord;
+        if (verbRootWord.equals("-1"))
+            mVerbRootWord = "No Root Word";
+        else
+            mVerbRootWord = verbRootWord;
 
         for (int i = 0; i < category.length(); i++) {
             if (mCategory.contains("1a"))

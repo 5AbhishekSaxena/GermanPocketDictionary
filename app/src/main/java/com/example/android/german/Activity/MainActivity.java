@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView loadingTextView;
     private ProgressBar mProgressBar;
 
+    private boolean MENU_ITEM_HIDE = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             tabLayout.setupWithViewPager(viewPager);
             viewPager.setCurrentItem(1);
 
+            MENU_ITEM_HIDE = false;
+            invalidateOptionsMenu();
+
             Log.v(LOG_TAG, "OnFinishedLoad status : " + words.size());
         } else {
             loadingTextView.setText(R.string.no_words);
@@ -218,6 +223,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_menu);
+        MenuItem rateThisAppItem = menu.findItem(R.id.rate_this_app);
+        rateThisAppItem.setVisible(false);
+        if(MENU_ITEM_HIDE)
+            searchItem.setVisible(false);   //hide it
+        else
+            searchItem.setVisible(true);
+
         return true;
     }
 

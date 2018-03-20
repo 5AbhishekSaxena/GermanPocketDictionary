@@ -85,18 +85,18 @@ public class WordsFragment extends Fragment {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
-                            TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
-                            if (selectedNoun != position) {
-                                view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
-                                selectedNoun = position;
-                            } else {
-                                view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
-                                selectedNoun = -1;
-                            }
-
+                                TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
+                                if (selectedNoun != position) {
+                                    view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                                    selectedNoun = position;
+                                } else {
+                                    view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                                    selectedNoun = -1;
+                                }
                             mAdapter.notifyDataSetChanged();
                         }
                     });
+
                     break;
 
                 case VERBS:

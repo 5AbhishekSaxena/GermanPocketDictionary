@@ -26,7 +26,12 @@
         <activity
             android:name=".Activity.SearchResultActivity"
             android:label=""></activity>
-        <activity android:name=".Activity.FeedBackActivity"></activity>
+        <activity android:name=".Activity.FeedBackActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.german.Activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
