@@ -65,7 +65,7 @@ public class FeedBackActivity extends AppCompatActivity {
     }
 
     public void sendmail(String userName, String feedback) {
-        String adresses = "test@gmail.com";
+        String adresses = "feedback.germanapp@gmail.com";
         String[] mail = new String[]{adresses};
         String subject = "Feedback - " + userName;
         Intent intent = new Intent(Intent.ACTION_SENDTO);
