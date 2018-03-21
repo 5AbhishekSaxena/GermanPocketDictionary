@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
@@ -9,69 +8,85 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/german_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:text="German"/>
-
-    <TextView
-        android:id="@+id/english_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="English"
-        android:textColor="@android:color/black"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
-
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/expandable_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/plural_text_label"
+            android:id="@+id/german_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:text="German"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:text="@string/plural_word_label"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/plural_text"
+            android:id="@+id/english_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="English"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:layout_toEndOf="@id/plural_text_label"
-            tools:text="Shubham"/>
+            android:textColor="@android:color/black" />
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/opposite_text_label"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/expandable_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/opposite_word_label"
-            android:layout_toStartOf="@+id/opposite_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/opposite_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black"
-            android:layout_alignParentEnd="true"
-            tools:text="Abhishek"/>
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/plural_text_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="@string/plural_word_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/plural_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/plural_text_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                tools:text="Shubham" />
+
+            <TextView
+                android:id="@+id/opposite_text_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/opposite_text"
+                android:text="@string/opposite_word_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/opposite_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                tools:text="Abhishek" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_keyboard_arrow_down_black_18dp"/>
+</RelativeLayout>

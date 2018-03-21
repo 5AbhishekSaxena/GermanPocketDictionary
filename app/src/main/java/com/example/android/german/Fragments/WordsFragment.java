@@ -3,12 +3,14 @@ package com.example.android.german.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -85,18 +87,22 @@ public class WordsFragment extends Fragment {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                            ImageView arrowImageView = view.findViewById(R.id.arrow);
                                 TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
                                 if (selectedNoun != position) {
                                     view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+
+                                    arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                                    //arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
                                     selectedNoun = position;
                                 } else {
+                                    arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
                                     view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
                                     selectedNoun = -1;
                                 }
                             mAdapter.notifyDataSetChanged();
                         }
                     });
-
                     break;
 
                 case VERBS:

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.german.Data.Word;
@@ -28,6 +29,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
         fragment = (WordsFragment) context;
         mFragmentType = fragmentType;
     }
+
     public WordAdapter(Activity context, List<Word> words) {
         super(context, 0, words);
     }
@@ -76,22 +78,32 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }
 
         View view = listItemView.findViewById(R.id.expandable_view);
+        ImageView arrowImageView = listItemView.findViewById(R.id.arrow);
+
         if (mFragmentType == WordsFragment.NOUNS) {
-            if (fragment.selectedNoun == position)
+            arrowImageView.setVisibility(View.VISIBLE);
+            if (fragment.selectedNoun == position) {
                 view.setVisibility(View.VISIBLE);
-            else
+                arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
+            } else {
                 view.setVisibility(View.GONE);
+                arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
+            }
         }
 
         if (mFragmentType == WordsFragment.VERBS) {
+            arrowImageView.setVisibility(View.VISIBLE);
             if (fragment.selectedVerb == position) {
+                arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
                 view.setVisibility(View.VISIBLE);
                 TextView rootWordLabelTextView = view.findViewById(R.id.plural_text_label);
                 rootWordLabelTextView.setText(R.string.root_word_label);
                 TextView rootWord = view.findViewById(R.id.plural_text);
                 rootWord.setText(currentWord.getmVerbRootWord());
-            } else
+            } else {
                 view.setVisibility(View.GONE);
+                arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
+            }
         }
         return listItemView;
     }

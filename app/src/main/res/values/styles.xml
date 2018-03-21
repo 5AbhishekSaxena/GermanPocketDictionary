@@ -20,7 +20,7 @@
 
     <style name="CategoryStyleTab" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">#A8A19E</item>
+        <item name="android:textColor">#EDE7F6</item>
         <item name="textAllCaps">true</item>
     </style>
 
