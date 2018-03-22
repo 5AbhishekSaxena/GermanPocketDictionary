@@ -29,18 +29,8 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        /*Give Focus to SearchView*/
-        ActionBar actionBar = getSupportActionBar();
-        SearchView searchView = new SearchView(this);
-        actionBar.setCustomView(searchView);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        searchView.setFocusable(true);
-        searchView.setIconified(false);
-        searchView.requestFocusFromTouch();
-
-
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         listView = findViewById(R.id.list);
 
@@ -67,7 +57,13 @@ public class SearchResultActivity extends AppCompatActivity {
         searchView = (SearchView) item.getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search German or English Word");
-        searchView.setMaxWidth(Integer.MAX_VALUE);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT);
+        searchView.setLayoutParams(params);
+        searchView.setFocusable(true);
+        searchView.setIconified(false);
+        searchView.requestFocusFromTouch();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -97,10 +93,10 @@ public class SearchResultActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return true;
-    }
+    }*/
 }

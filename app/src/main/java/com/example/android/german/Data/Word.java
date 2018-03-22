@@ -115,9 +115,9 @@ public class Word implements Serializable {
     @Override
     public String toString() {
         return "Word(" +
-                "mEnglishTranslation: " + mEnglishTranslation + '\'' +
                 "mGermanTranslation: " + mGermanTranslation + '\'' +
-                "mGermanPlural: " + mGermanPlural +
+                "mEnglishTranslation: " + mEnglishTranslation + '\'' +
+                "mGermanPlural: " + mGermanPlural + '\'' +
                 "}";
     }
 }

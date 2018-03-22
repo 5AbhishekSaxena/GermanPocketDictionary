@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">German</string>
+    <string name="app_name">German Pocket Dictionary </string>
 
     <!-- Title of all the Tabs/Categories -->
     <string name="category_all_words">All Words</string>
@@ -26,7 +26,7 @@
 
     <!--Menu Items labels -->
     <string name="rate_this_app">Rate This App</string>
-    <string name="send_feedback">Send Feedback</string>
+    <string name="send_feedback">Feedback</string>
 
     <!-- Feedback Activity Texts Labels -->
     <string name="feedback_name_label">Name:\u0020</string>

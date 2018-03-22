@@ -7,10 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.android.german.R;
 
 public class FeedBackActivity extends AppCompatActivity {
+
+    private boolean FEEDBACK_FEILD_EMPTY = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,7 @@ public class FeedBackActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.feedback_menu, menu);
+
         return true;
     }
 
@@ -33,8 +37,12 @@ public class FeedBackActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_save:
-                saveFeedback();
-                finish();
+                if (FEEDBACK_FEILD_EMPTY == false) {
+                    saveFeedback();
+                    finish();
+                } else{
+                    Toast.makeText(this, "Feedback Feild cannot be empty", Toast.LENGTH_SHORT).show();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -51,7 +59,15 @@ public class FeedBackActivity extends AppCompatActivity {
         if (!nameEditTextView.getText().toString().isEmpty())
             userName = nameEditTextView.getText().toString().trim();
 
-        String feedback = feedbackEditTextView.getText().toString().trim();
+        String feedback = "";
+
+        if(!feedbackEditTextView.getText().toString().trim().equals("")) {
+            feedback = feedbackEditTextView.getText().toString().trim();
+            FEEDBACK_FEILD_EMPTY = false;
+        }
+        else
+            FEEDBACK_FEILD_EMPTY = true;
+
         String additionalInformation;
         additionalInformation = additionalInformationEditTextView.getText().toString().trim();
 
@@ -65,7 +81,7 @@ public class FeedBackActivity extends AppCompatActivity {
     }
 
     public void sendmail(String userName, String feedback) {
-        String adresses = "feedback.germanapp@gmail.com";
+        String adresses = "5abhisheksaxena@gmail.com";
         String[] mail = new String[]{adresses};
         String subject = "Feedback - " + userName;
         Intent intent = new Intent(Intent.ACTION_SENDTO);
