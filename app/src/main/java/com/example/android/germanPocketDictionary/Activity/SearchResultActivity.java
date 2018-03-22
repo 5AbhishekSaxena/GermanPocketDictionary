@@ -1,4 +1,4 @@
-package com.example.android.german.Activity;
+package com.example.android.germanPocketDictionary.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -10,9 +10,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.example.android.german.Adapter.WordAdapter;
-import com.example.android.german.Data.Word;
-import com.example.android.german.R;
+import com.example.android.germanPocketDictionary.Adapter.WordAdapter;
+import com.example.android.germanPocketDictionary.Data.Word;
+import com.example.android.germanPocketDictionary.R;
 
 import java.util.ArrayList;
 import java.util.List;

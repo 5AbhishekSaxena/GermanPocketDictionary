@@ -1,9 +1,9 @@
-package com.example.android.german.QueryUtils;
+package com.example.android.germanPocketDictionary.QueryUtils;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.german.Data.Word;
+import com.example.android.germanPocketDictionary.Data.Word;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,7 +112,7 @@ public final class QueryUtils {
             }
 
         }catch (JSONException e){
-            Log.e(LOG_TAG, "Problem parsing the german sheets JSON results", e);
+            Log.e(LOG_TAG, "Problem parsing the germanPocketDictionary sheets JSON results", e);
         }
 
         return words;

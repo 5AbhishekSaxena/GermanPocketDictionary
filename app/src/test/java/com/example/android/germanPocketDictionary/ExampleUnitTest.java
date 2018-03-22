@@ -1,4 +1,4 @@
-package com.example.android.german;
+package com.example.android.germanPocketDictionary;
 
 import org.junit.Test;
 

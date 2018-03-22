@@ -1,4 +1,4 @@
-package com.example.android.german.Data;
+package com.example.android.germanPocketDictionary.Data;
 
 import java.io.Serializable;
 

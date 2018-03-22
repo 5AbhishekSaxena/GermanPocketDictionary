@@ -1,4 +1,4 @@
-package com.example.android.german.Activity;
+package com.example.android.germanPocketDictionary.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.android.german.R;
+import com.example.android.germanPocketDictionary.R;
 
 public class FeedBackActivity extends AppCompatActivity {
 

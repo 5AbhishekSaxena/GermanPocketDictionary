@@ -1,11 +1,11 @@
-package com.example.android.german.Loader;
+package com.example.android.germanPocketDictionary.Loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.example.android.german.QueryUtils.QueryUtils;
-import com.example.android.german.Data.Word;
+import com.example.android.germanPocketDictionary.QueryUtils.QueryUtils;
+import com.example.android.germanPocketDictionary.Data.Word;
 
 import java.util.List;
 

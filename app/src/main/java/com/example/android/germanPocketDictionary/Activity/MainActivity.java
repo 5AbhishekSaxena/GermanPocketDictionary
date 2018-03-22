@@ -1,4 +1,4 @@
-package com.example.android.german.Activity;
+package com.example.android.germanPocketDictionary.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,10 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.german.Adapter.CategoryPagerAdapter;
-import com.example.android.german.Data.Word;
-import com.example.android.german.Loader.GermanLoader;
-import com.example.android.german.R;
+import com.example.android.germanPocketDictionary.Adapter.CategoryPagerAdapter;
+import com.example.android.germanPocketDictionary.Data.Word;
+import com.example.android.germanPocketDictionary.Loader.GermanLoader;
+import com.example.android.germanPocketDictionary.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

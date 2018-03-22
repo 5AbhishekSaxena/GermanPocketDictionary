@@ -1,4 +1,4 @@
-package com.example.android.german.Adapter;
+package com.example.android.germanPocketDictionary.Adapter;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.german.Data.Word;
-import com.example.android.german.Fragments.WordsFragment;
-import com.example.android.german.R;
+import com.example.android.germanPocketDictionary.Data.Word;
+import com.example.android.germanPocketDictionary.Fragments.WordsFragment;
+import com.example.android.germanPocketDictionary.R;
 
 import java.util.List;
 
