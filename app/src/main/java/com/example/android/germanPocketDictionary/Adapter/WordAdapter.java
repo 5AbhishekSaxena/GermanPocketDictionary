@@ -47,9 +47,6 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         Word currentWord = getItem(position);
 
-
-        //Log.v("WordAdapter", "Current Word: " + getItem(position));
-
         //Locate the TextView in the list_item
         TextView germanTextView = listItemView.findViewById(R.id.german_text_view);
 
@@ -68,11 +65,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
         }
 
         if (currentWord.hasOpposite()) {
-            TextView oppositetextView = listItemView.findViewById(R.id.opposite_text);
+            TextView oppositeTextView = listItemView.findViewById(R.id.opposite_text);
             TextView oppositeLabelTextView = listItemView.findViewById(R.id.opposite_text_label);
 
-            oppositetextView.setText(currentWord.getmGermanOpposite());
-            oppositetextView.setVisibility(View.VISIBLE);
+            oppositeTextView.setText(currentWord.getmGermanOpposite());
+            oppositeTextView.setVisibility(View.VISIBLE);
             oppositeLabelTextView.setVisibility(View.VISIBLE);
 
         }

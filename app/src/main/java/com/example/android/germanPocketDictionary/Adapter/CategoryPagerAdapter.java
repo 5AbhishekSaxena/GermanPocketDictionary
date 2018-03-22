@@ -25,7 +25,6 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
-    // private String tabTitles[] = new String[] {"Numbers","Family", "Colors","Phrases"};
     @Override
     public Fragment getItem(int position) {
         if (position == 0)

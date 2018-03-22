@@ -1,7 +1,6 @@
 package com.example.android.germanPocketDictionary.Activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,9 +56,6 @@ public class SearchResultActivity extends AppCompatActivity {
         searchView = (SearchView) item.getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search German or English Word");
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT);
-        searchView.setLayoutParams(params);
         searchView.setFocusable(true);
         searchView.setIconified(false);
         searchView.requestFocusFromTouch();
@@ -93,10 +89,4 @@ public class SearchResultActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-/*
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }*/
 }

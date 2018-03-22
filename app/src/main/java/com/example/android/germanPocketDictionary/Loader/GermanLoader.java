@@ -2,10 +2,9 @@ package com.example.android.germanPocketDictionary.Loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
-import com.example.android.germanPocketDictionary.QueryUtils.QueryUtils;
 import com.example.android.germanPocketDictionary.Data.Word;
+import com.example.android.germanPocketDictionary.QueryUtils.QueryUtils;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class GermanLoader extends AsyncTaskLoader<List<Word>> {
 
     @Override
     protected void onStartLoading() {
-        Log.v(LOG_TAG, "onStartLoading");
         forceLoad();
     }
 
@@ -35,7 +33,6 @@ public class GermanLoader extends AsyncTaskLoader<List<Word>> {
     public List<Word> loadInBackground() {
         if (mUrl == null)
             return null;
-        Log.v(LOG_TAG, "loadInBackground");
         List<Word> words = QueryUtils.fetchGermanData(mUrl);
         return words;
     }

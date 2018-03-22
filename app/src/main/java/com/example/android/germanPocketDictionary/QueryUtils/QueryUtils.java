@@ -37,13 +37,10 @@ public final class QueryUtils {
     public static List<Word> extractFeatureFromJson(String germanJson) {
 
         if (TextUtils.isEmpty(germanJson)) {
-            //Log.v(LOG_TAG, "JSON NOT received");
             return null;
         }
 
         List<Word> words = new ArrayList<>();
-
-        //Log.v(LOG_TAG, "JSON received successfully");
         try{
             JSONObject baseJsonResponse = new JSONObject(germanJson);
              JSONObject germanFeed = baseJsonResponse.getJSONObject("feed");
@@ -55,53 +52,20 @@ public final class QueryUtils {
                 JSONObject contentGerman = currentGerman.getJSONObject("content");
                  String contentGermanData = contentGerman.getString("$t");
 
-                //Log.v(LOG_TAG, "content: " + contentGermanData);
-
-                //String[] strArray = contentGermanData.split(",");
-
                 JSONObject germanTranslation = currentGerman.getJSONObject("gsx$germantranslation");
                 String germanTranslationValue = String.valueOf(germanTranslation.getString("$t"));
-                Log.v(LOG_TAG, "GermanTranslation Via JSON parsing : " + germanTranslationValue);
 
                 JSONObject englishTranslation = currentGerman.getJSONObject("gsx$englishtranslation");
                 String englishTranslationValue = String.valueOf(englishTranslation.getString("$t"));
-                //Log.v(LOG_TAG, "English Translation Via JSON parsing : " + englishTranslationValue);
 
                 JSONObject germanPlural = currentGerman.getJSONObject("gsx$plural");
                 String germanPluralValue = germanPlural.getString("$t");
-                //Log.v(LOG_TAG, "Plural value via JSON parsing : " + germanPluralValue);
-                /*
-                JSONObject categoryNoun = currentGerman.getJSONObject("gsx$noun");
-                String categoryNounValue = categoryNoun.getString("$t");
-
-                JSONObject categoryMasculine = currentGerman.getJSONObject("gsx$masculine");
-                String categoryMasclineeValue = categoryMasculine.getString("$t");
-
-                JSONObject categoryFeminine = currentGerman.getJSONObject("gsx$feminine");
-                String categoryFeminineValue = categoryFeminine.getString("$t");
-
-                JSONObject categoryNeutral = currentGerman.getJSONObject("gsx$neutral");
-                String categoryNeutralValue = categoryNeutral.getString("$t");
-
-                JSONObject categoryColour = currentGerman.getJSONObject("gsx$colour");
-                String categoryColourValue = categoryColour.getString("$t");
-
-                JSONObject categoryNumber = currentGerman.getJSONObject("gsx$number");
-                String categoryNumberValue = categoryNumber.getString("$t");
-
-                JSONObject categoryFamilyMember = currentGerman.getJSONObject("gsx$familymember");
-                String categoryFamilyMemberValue = categoryFamilyMember.getString("$t");
-
-                JSONObject categoryPhrases = currentGerman.getJSONObject("gsx$phrases");
-                String categoryPhrasesValue = categoryPhrases.getString("$t");
-                */
 
                 JSONObject number = currentGerman.getJSONObject("gsx$numbervalue");
                 String numberValue = number.getString("$t");
 
                 JSONObject category = currentGerman.getJSONObject("gsx$category");
                 String categoryValue = category.getString("$t");
-                //Log.v(LOG_TAG, "categoryVia JSON parsing : " + categoryValue);
 
                 JSONObject verbRootWord = currentGerman.getJSONObject("gsx$verbrootword");
                 String verbRootWordValue = verbRootWord.getString("$t");

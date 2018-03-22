@@ -26,13 +26,6 @@ public class WordsFragment extends Fragment {
 
     final static String LOG_TAG = WordsFragment.class.getName();
 
-    //private static final String GERMAN_EXCELSHEET_URL =
-    //      "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
-
-    private static final String GERMAN_EXCELSHEET_URL =
-            "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
-    private static final int GERMAN_LOADER_ID = 1;
-
     public static final int ALL_WORDS = 1;
     public static final int NOUNS = 2;
     public static final int VERBS = 3;
@@ -88,18 +81,17 @@ public class WordsFragment extends Fragment {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
                             ImageView arrowImageView = view.findViewById(R.id.arrow);
-                                TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
-                                if (selectedNoun != position) {
-                                    view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                            TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
+                            if (selectedNoun != position) {
+                                view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
 
-                                    arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
-                                    //arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
-                                    selectedNoun = position;
-                                } else {
-                                    arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
-                                    view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
-                                    selectedNoun = -1;
-                                }
+                                arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                                selectedNoun = position;
+                            } else {
+                                arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                                view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                                selectedNoun = -1;
+                            }
                             mAdapter.notifyDataSetChanged();
                         }
                     });
@@ -151,94 +143,7 @@ public class WordsFragment extends Fragment {
         TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
         loadingTextView.setVisibility(View.GONE);
 
-        /*// Get a reference to the ConnectivityManager to check state of network connectivity
-        ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Get details on the currently active default data network
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-        // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getLoaderManager();
-
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(GERMAN_LOADER_ID, null, this);
-        } else {
-            // Otherwise, display error
-            // First, hide loading indicator so error message will be visible
-            View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
-            loadingIndicator.setVisibility(View.GONE);
-
-            TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
-            loadingTextView.setVisibility(View.GONE);
-
-            // Update empty state with no connection error message
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
-            Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-
-        }*/
         return rootView;
 
     }
-
-
-    /*@Override
-    public Loader<List<Word>> onCreateLoader(int id, Bundle args) {
-        return new GermanLoader(getActivity(), GERMAN_EXCELSHEET_URL);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Word>> loader, List<Word> words) {
-
-        // Hide loading indicator because the data has been loaded
-        View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
-        loadingIndicator.setVisibility(View.GONE);
-
-        TextView loadingTextView = rootView.findViewById(R.id.loading_text_view);
-        loadingTextView.setVisibility(View.GONE);
-
-        mAdapter.clear();
-
-        if (words != null && !words.isEmpty()) {
-
-            List<Word> wordsList = new ArrayList<>();
-
-            for (int i = 0; i < words.size(); i++) {
-                Word word = words.get(i);
-                Log.v(LOG_TAG, "Current Word Category: " + word.getmCategory());
-                if (word.getmCategory() != null) {
-                    if (word.getmCategory().contains("1"))
-                        wordsList.add(word);
-                    Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
-                }
-            }
-            //words.add(new Word("Uhr", "Clock", 2));
-            //words.add(new Word("Bleistift","Pencil", 1 ));
-
-            //sort the wordsList
-            Collections.sort(wordsList, new Comparator<Word>() {
-                @Override
-                public int compare(Word o1, Word o2) {
-                    return o1.getmGermanTranslationWithoutArticle().compareTo(o2.getmGermanTranslationWithoutArticle());
-                }
-            });
-
-            mAdapter.addAll(wordsList);
-
-            Log.v(LOG_TAG, "OnFinishedLoad status : " + words.size());
-        } else {
-            // Set empty state text to display "No earthquakes found."
-            mEmptyStateTextView.setText(R.string.no_words);
-            Toast.makeText(getActivity(), R.string.no_words, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<List<Word>> loader) {
-        mAdapter.clear();
-    }
-*/
 }

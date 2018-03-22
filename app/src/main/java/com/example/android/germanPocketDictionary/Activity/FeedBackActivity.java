@@ -13,7 +13,7 @@ import com.example.android.germanPocketDictionary.R;
 
 public class FeedBackActivity extends AppCompatActivity {
 
-    private boolean FEEDBACK_FEILD_EMPTY = true;
+    private boolean FEEDBACK_FIELD_EMPTY = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +37,11 @@ public class FeedBackActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_save:
-                if (FEEDBACK_FEILD_EMPTY == false) {
+                if (FEEDBACK_FIELD_EMPTY == false) {
                     saveFeedback();
                     finish();
                 } else{
-                    Toast.makeText(this, "Feedback Feild cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Feedback Field cannot be empty", Toast.LENGTH_SHORT).show();
                 }
                 return true;
         }
@@ -63,10 +63,10 @@ public class FeedBackActivity extends AppCompatActivity {
 
         if(!feedbackEditTextView.getText().toString().trim().equals("")) {
             feedback = feedbackEditTextView.getText().toString().trim();
-            FEEDBACK_FEILD_EMPTY = false;
+            FEEDBACK_FIELD_EMPTY = false;
         }
         else
-            FEEDBACK_FEILD_EMPTY = true;
+            FEEDBACK_FIELD_EMPTY = true;
 
         String additionalInformation;
         additionalInformation = additionalInformationEditTextView.getText().toString().trim();
@@ -81,8 +81,8 @@ public class FeedBackActivity extends AppCompatActivity {
     }
 
     public void sendmail(String userName, String feedback) {
-        String adresses = "5abhisheksaxena@gmail.com";
-        String[] mail = new String[]{adresses};
+        String addresses = "5abhisheksaxena@gmail.com";
+        String[] mail = new String[]{addresses};
         String subject = "Feedback - " + userName;
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this

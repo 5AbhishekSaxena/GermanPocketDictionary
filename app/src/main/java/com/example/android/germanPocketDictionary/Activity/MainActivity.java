@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.germanPocketDictionary.Adapter.CategoryPagerAdapter;
 import com.example.android.germanPocketDictionary.Data.Word;
@@ -37,9 +36,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String GERMAN_EXCELSHEET_URL =
     "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
-
-    //private static final String GERMAN_EXCELSHEET_URL =
-      //      "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
 
     private static final int GERMAN_LOADER_ID = 1;
 
@@ -82,13 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(GERMAN_LOADER_ID, null, MainActivity.this);
         } else {
-            // Otherwise, display error
-            // First, hide loading indicator so error message will be visible
-            //View loadingIndicator = findViewById(R.id.loading_indicator);
-            //loadingIndicator.setVisibility(View.GONE);
 
-            // Update empty state with no connection error message
-            //mEmptyStateTextView.setText(R.string.no_internet_connection);
             mProgressBar.setVisibility(View.GONE);
             loadingTextView.setText(R.string.no_internet_connection);
         }
@@ -106,14 +96,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if (words != null && !words.isEmpty()) {
             loadingTextView.setVisibility(View.GONE);
-           /* //WordsFragment nounsFragment = (WordsFragment) getSupportFragmentManager().findFragmentByTag("nouns_fragment_tag");
-            WordsFragment nounsFragment = (WordsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 0);
-            if(nounsFragment != null)
-                nounsFragment.updateList(words);
-
-            NumberFragment numberFragment = (NumberFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);;
-            if(numberFragment != null)
-                numberFragment.updateList(words);*/
 
             nounList.clear();
             numberList.clear();
@@ -123,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             questionList.clear();
             allWordList.addAll(words);
 
+            Log.v(LOG_TAG, "OnFinish allWordList Size: " + allWordList.size());
             for (int i = 0; i < words.size(); i++) {
                 Word word = words.get(i);
-                Log.v(LOG_TAG, "Current Word Category: " + word.getmCategory());
                 if (word.getmCategory() != null) {
                     if (word.getmCategory().contains("1"))
                         nounList.add(word);
@@ -141,12 +123,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     if (word.getmCategory().contains("8"))
                         questionList.add(word);
-
-                    Log.v(LOG_TAG, "Item Added: " + word.getmEnglishTranslation());
                 }
             }
 
-            //sort the AllWOrdsList
+            //sort the AllWordsList
             Collections.sort(allWordList, (s1, s2) ->
                     s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
@@ -182,11 +162,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             MENU_ITEM_HIDE = false;
             invalidateOptionsMenu();
-
-            Log.v(LOG_TAG, "OnFinishedLoad status : " + words.size());
         } else {
             loadingTextView.setText(R.string.no_words);
-            //Toast.makeText(this, R.string.no_words, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -243,16 +220,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             case R.id.search_menu:
                 Intent searchActivityIntent = new Intent(this, SearchResultActivity.class);
-                //Bundle arrayListBundle = new Bundle();
-                //arrayListBundle.putSerializable("AllWordArrayList",(Serializable) allWordList);
                 searchActivityIntent.putExtra("AllWordArrayList", (ArrayList<Word>) allWordList);
                 startActivity(searchActivityIntent);
                 break;
 
-            case R.id.rate_this_app:
-                //TODO:Make PlayStore intent
-                Toast.makeText(this, "Opening PlayStore - Pending", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.send_feedback:
                 Intent feedbackActivityIntent = new Intent(this,FeedBackActivity.class);
                 startActivity(feedbackActivityIntent);
