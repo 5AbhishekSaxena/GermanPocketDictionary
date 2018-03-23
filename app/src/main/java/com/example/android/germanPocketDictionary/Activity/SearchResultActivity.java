@@ -22,6 +22,8 @@ public class SearchResultActivity extends AppCompatActivity {
     WordAdapter mAdapter;
     ListView listView;
     SearchView searchView;
+    static boolean EMPTY = true;
+    public static boolean searchState = EMPTY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,8 @@ public class SearchResultActivity extends AppCompatActivity {
         allWordsList = new ArrayList<>();
         allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra("AllWordArrayList");
 
-        mAdapter = new WordAdapter(this, allWordsList);
+        mAdapter = new WordAdapter(this, allWordsList, searchState);
         listView.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -53,26 +54,38 @@ public class SearchResultActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
         MenuItem item = menu.findItem(R.id.search_menu);
+
         searchView = (SearchView) item.getActionView();
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint("Search German or English Word");
         searchView.setFocusable(true);
-        searchView.setIconified(false);
         searchView.requestFocusFromTouch();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() == 0)
+                    searchState = EMPTY;
+                else
+                    searchState = !EMPTY;
+
+                mAdapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAdapter.getFilter().filter(newText);
+                if (newText.length() == 0)
+                    searchState = EMPTY;
+                else {
+                    searchState = !EMPTY;
+                    mAdapter.getFilter().filter(newText);
+                }
+
+                mAdapter.notifyDataSetChanged();
                 return false;
             }
         });
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -89,4 +102,10 @@ public class SearchResultActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public List<Word> getAllWordsList() {
+        return allWordsList;
+    }
+
 }

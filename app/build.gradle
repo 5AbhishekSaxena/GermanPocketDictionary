@@ -9,8 +9,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //Defining Log debugging
+        buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
+        buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
     }
     buildTypes {
+
+        debug {
+            testCoverageEnabled = "true"
+            buildConfigField "boolean", "LOG_DEBUG_MODE", "true"
+            buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "true"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -33,6 +44,4 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:support-v4:26.1.0'
-    compile 'org.apache.httpcomponents:httpcore:4.4.1'
-    //compile 'org.apache.httpcomponents:httpclient:4.5'
 }

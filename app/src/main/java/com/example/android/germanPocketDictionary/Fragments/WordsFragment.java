@@ -24,8 +24,6 @@ import com.example.android.germanPocketDictionary.R;
 
 public class WordsFragment extends Fragment {
 
-    final static String LOG_TAG = WordsFragment.class.getName();
-
     public static final int ALL_WORDS = 1;
     public static final int NOUNS = 2;
     public static final int VERBS = 3;

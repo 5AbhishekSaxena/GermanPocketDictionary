@@ -16,6 +16,9 @@ public class Word implements Serializable {
     private String mCategory;
     private int mNumber;
     private String mVerbRootWord;
+    private String mVerbPartizip;
+    private String mGermanTranslationWithoutArticle;
+
 
 
     final private int GENDER_NULL = 0;
@@ -25,15 +28,15 @@ public class Word implements Serializable {
 
 
     public Word(String germanTranslation, String englishTranslation, String germanPlural,
-                String category, String number, String verbRootWord) {
+                String category, String number, String verbRootWord, String verbPartizip) {
 
-        mGermanTranslation = germanTranslation;
         mEnglishTranslation = englishTranslation;
-        if(germanPlural.equals("0"))
+        if (germanPlural.equals("0"))
             mGermanPlural = "No Plural";
         else
             mGermanPlural = germanPlural;
 
+        mVerbPartizip = verbPartizip;
         mCategory = category;
         mNumber = Integer.valueOf(number);
         mGermanOpposite = null;
@@ -42,28 +45,30 @@ public class Word implements Serializable {
         else
             mVerbRootWord = verbRootWord;
 
-        for (int i = 0; i < category.length(); i++) {
-            if (mCategory.contains("1a"))
-                mGender = GENDER_MALE;
-            else if (mCategory.contains("1b"))
-                mGender = GENDER_FEMALE;
-            else if (mCategory.contains("1c"))
-                mGender = GENDER_NEUTRAL;
-            else
-                mGender = GENDER_NULL;
-        }
-    }
+        if (mCategory.contains("1a"))
+            mGender = GENDER_MALE;
+        else if (mCategory.contains("1b"))
+            mGender = GENDER_FEMALE;
+        else if (mCategory.contains("1c"))
+            mGender = GENDER_NEUTRAL;
+        else
+            mGender = GENDER_NULL;
 
-    public String getmGermanTranslation() {
-        return updateGender(mGender) + mGermanTranslation;
-    }
-
-    public String getmGermanTranslationWithoutArticle() {
-        return mGermanTranslation.toLowerCase()
+        mGermanTranslationWithoutArticle = germanTranslation.toLowerCase()
                 .replace("ü", "u")
                 .replace("ö", "o")
                 .replace("ä", "a")
                 .replace("ß", "s");
+
+        mGermanTranslation = updateGender(mGender) + germanTranslation ;
+    }
+
+    public String getmGermanTranslation() {
+        return /*updateGender(mGender) +*/ mGermanTranslation;
+    }
+
+    public String getmGermanTranslationWithoutArticle() {
+        return mGermanTranslationWithoutArticle;
     }
 
     public String getmEnglishTranslation() {
@@ -95,6 +100,9 @@ public class Word implements Serializable {
         return mCategory;
     }
 
+    public String getmVerbPartizip() {
+        return mVerbPartizip;
+    }
 
     public int getmNumber() {
         return mNumber;
@@ -112,12 +120,18 @@ public class Word implements Serializable {
         return mGermanOpposite != null;
     }
 
-    @Override
+    public boolean hasPartizip() {
+        return !mVerbPartizip.equals("0");
+    }
+
+   @Override
     public String toString() {
         return "Word(" +
                 "mGermanTranslation: " + mGermanTranslation + '\'' +
                 "mEnglishTranslation: " + mEnglishTranslation + '\'' +
                 "mGermanPlural: " + mGermanPlural + '\'' +
+                "mVerbPartizip: " + mVerbPartizip + '\'' +
+                "mVerbRootWord: " + mVerbRootWord + '\'' +
                 "}";
     }
 }

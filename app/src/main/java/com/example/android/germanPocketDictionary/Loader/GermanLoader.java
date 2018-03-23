@@ -14,7 +14,6 @@ import java.util.List;
 
 public class GermanLoader extends AsyncTaskLoader<List<Word>> {
 
-    private static final String LOG_TAG = GermanLoader.class.getName();
 
     private String mUrl;
 

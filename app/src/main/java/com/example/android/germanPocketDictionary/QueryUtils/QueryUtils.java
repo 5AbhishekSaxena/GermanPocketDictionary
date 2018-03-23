@@ -70,7 +70,12 @@ public final class QueryUtils {
                 JSONObject verbRootWord = currentGerman.getJSONObject("gsx$verbrootword");
                 String verbRootWordValue = verbRootWord.getString("$t");
 
-                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,categoryValue, numberValue, verbRootWordValue);
+                JSONObject verbPartizipII = currentGerman.getJSONObject("gsx$partizipii");
+                String verbPartizipIIValue = verbPartizipII.getString("$t");
+
+
+                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,
+                        categoryValue, numberValue, verbRootWordValue,verbPartizipIIValue);
 
                 words.add(word);
             }

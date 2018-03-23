@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList;
 
 
-    final static String LOG_TAG = MainActivity.class.getName();
 
     private static final String GERMAN_EXCELSHEET_URL =
     "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
@@ -105,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             questionList.clear();
             allWordList.addAll(words);
 
-            Log.v(LOG_TAG, "OnFinish allWordList Size: " + allWordList.size());
             for (int i = 0; i < words.size(); i++) {
                 Word word = words.get(i);
                 if (word.getmCategory() != null) {

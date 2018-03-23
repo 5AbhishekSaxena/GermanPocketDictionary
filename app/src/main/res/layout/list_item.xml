@@ -36,7 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <TextView
                 android:id="@+id/plural_text_label"
@@ -65,8 +66,9 @@
                 android:text="@string/opposite_word_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
+                android:visibility="gone"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                 />
 
             <TextView
                 android:id="@+id/opposite_text"
@@ -75,6 +77,7 @@
                 android:layout_alignParentEnd="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
+                android:layout_marginEnd="10dp"
                 android:visibility="gone"
                 tools:text="Abhishek" />
         </RelativeLayout>
