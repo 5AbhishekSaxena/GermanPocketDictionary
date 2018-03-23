@@ -1,10 +1,10 @@
-package com.example.android.germanPocketDictionary.Loader;
+package com.abhishek.germanPocketDictionary.Loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.example.android.germanPocketDictionary.Data.Word;
-import com.example.android.germanPocketDictionary.QueryUtils.QueryUtils;
+import com.abhishek.germanPocketDictionary.Data.Word;
+import com.abhishek.germanPocketDictionary.QueryUtils.QueryUtils;
 
 import java.util.List;
 

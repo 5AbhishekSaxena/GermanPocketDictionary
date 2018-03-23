@@ -1,9 +1,9 @@
-package com.example.android.germanPocketDictionary.QueryUtils;
+package com.abhishek.germanPocketDictionary.QueryUtils;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.germanPocketDictionary.Data.Word;
+import com.abhishek.germanPocketDictionary.Data.Word;
 
 import org.json.JSONArray;
 import org.json.JSONException;

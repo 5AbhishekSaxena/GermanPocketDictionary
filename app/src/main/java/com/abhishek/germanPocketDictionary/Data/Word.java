@@ -1,4 +1,4 @@
-package com.example.android.germanPocketDictionary.Data;
+package com.abhishek.germanPocketDictionary.Data;
 
 import java.io.Serializable;
 
@@ -20,7 +20,6 @@ public class Word implements Serializable {
     private String mGermanTranslationWithoutArticle;
 
 
-
     final private int GENDER_NULL = 0;
     final private int GENDER_MALE = 1;
     final private int GENDER_FEMALE = 2;
@@ -36,7 +35,11 @@ public class Word implements Serializable {
         else
             mGermanPlural = germanPlural;
 
-        mVerbPartizip = verbPartizip;
+        if (!verbPartizip.equals("0"))
+            mVerbPartizip = verbPartizip;
+        else
+            mVerbPartizip = null;
+
         mCategory = category;
         mNumber = Integer.valueOf(number);
         mGermanOpposite = null;
@@ -60,7 +63,7 @@ public class Word implements Serializable {
                 .replace("ä", "a")
                 .replace("ß", "s");
 
-        mGermanTranslation = updateGender(mGender) + germanTranslation ;
+        mGermanTranslation = updateGender(mGender) + germanTranslation;
     }
 
     public String getmGermanTranslation() {
@@ -121,10 +124,10 @@ public class Word implements Serializable {
     }
 
     public boolean hasPartizip() {
-        return !mVerbPartizip.equals("0");
+        return mVerbPartizip != null;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "Word(" +
                 "mGermanTranslation: " + mGermanTranslation + '\'' +

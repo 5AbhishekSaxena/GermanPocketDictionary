@@ -1,4 +1,4 @@
-package com.example.android.germanPocketDictionary.Fragments;
+package com.abhishek.germanPocketDictionary.Fragments;
 
 
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.android.germanPocketDictionary.Activity.MainActivity;
-import com.example.android.germanPocketDictionary.Adapter.WordAdapter;
-import com.example.android.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.Activity.MainActivity;
+import com.abhishek.germanPocketDictionary.Adapter.WordAdapter;
+import com.abhishek.germanPocketDictionary.R;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.

@@ -1,17 +1,19 @@
-package com.example.android.germanPocketDictionary.Activity;
+package com.abhishek.germanPocketDictionary.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.example.android.germanPocketDictionary.Adapter.WordAdapter;
-import com.example.android.germanPocketDictionary.Data.Word;
-import com.example.android.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.Adapter.WordAdapter;
+import com.abhishek.germanPocketDictionary.Data.Word;
+import com.abhishek.germanPocketDictionary.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,24 +66,20 @@ public class SearchResultActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.length() == 0)
-                    searchState = EMPTY;
-                else
-                    searchState = !EMPTY;
-
-                mAdapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() == 0)
-                    searchState = EMPTY;
-                else {
+              if (newText.length() == 0) {
+                  searchState = EMPTY;
+                  View view = findViewById(R.id.search_view);
+                  InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                  inputManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+              }else {
                     searchState = !EMPTY;
-                    mAdapter.getFilter().filter(newText);
                 }
-
+                mAdapter.getFilter().filter(newText);
                 mAdapter.notifyDataSetChanged();
                 return false;
             }

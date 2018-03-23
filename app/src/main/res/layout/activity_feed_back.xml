@@ -64,8 +64,8 @@
                     android:hint="@string/hint_feedback" />
             </LinearLayout>
 
-            </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,6 +95,6 @@
                     android:layout_height="match_parent"
                     android:hint="@string/hint_additional_information" />
             </LinearLayout>
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

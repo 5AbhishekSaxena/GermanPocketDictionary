@@ -1,4 +1,4 @@
-package com.example.android.germanPocketDictionary.Activity;
+package com.abhishek.germanPocketDictionary.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.android.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.R;
+
+
 
 public class FeedBackActivity extends AppCompatActivity {
 
@@ -19,6 +21,7 @@ public class FeedBackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
+
     }
 
     @Override
@@ -37,12 +40,7 @@ public class FeedBackActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_save:
-                if (FEEDBACK_FIELD_EMPTY == false) {
                     saveFeedback();
-                    finish();
-                } else{
-                    Toast.makeText(this, "Feedback Field cannot be empty", Toast.LENGTH_SHORT).show();
-                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -59,14 +57,13 @@ public class FeedBackActivity extends AppCompatActivity {
         if (!nameEditTextView.getText().toString().isEmpty())
             userName = nameEditTextView.getText().toString().trim();
 
-        String feedback = "";
+        String feedback = feedbackEditTextView.getText().toString().trim();
 
-        if(!feedbackEditTextView.getText().toString().trim().equals("")) {
-            feedback = feedbackEditTextView.getText().toString().trim();
-            FEEDBACK_FIELD_EMPTY = false;
-        }
+        //feedback = feedbackEditTextView.getText().toString().trim();
+        if(feedback.length() > 0)
+            setFEEDBACK_FIELD_EMPTY(false);
         else
-            FEEDBACK_FIELD_EMPTY = true;
+            setFEEDBACK_FIELD_EMPTY(true);
 
         String additionalInformation;
         additionalInformation = additionalInformationEditTextView.getText().toString().trim();
@@ -77,7 +74,12 @@ public class FeedBackActivity extends AppCompatActivity {
             additionalInformation += "\n\nAdditional Information:\n" + additionalInformation;
 
         feedbackSummary += additionalInformation;
-        sendmail(userName, feedbackSummary);
+        if (!isFEEDBACK_FIELD_EMPTY()) {
+            sendmail(userName, feedbackSummary);
+            finish();
+        } else{
+            Toast.makeText(this, "Feedback Field cannot be empty.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void sendmail(String userName, String feedback) {
@@ -92,6 +94,14 @@ public class FeedBackActivity extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    public boolean isFEEDBACK_FIELD_EMPTY() {
+        return FEEDBACK_FIELD_EMPTY;
+    }
+
+    public void setFEEDBACK_FIELD_EMPTY(boolean FEEDBACK_FIELD_EMPTY) {
+        this.FEEDBACK_FIELD_EMPTY = FEEDBACK_FIELD_EMPTY;
     }
 }
 

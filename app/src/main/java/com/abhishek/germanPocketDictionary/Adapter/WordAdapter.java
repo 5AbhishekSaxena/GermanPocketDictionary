@@ -1,4 +1,4 @@
-package com.example.android.germanPocketDictionary.Adapter;
+package com.abhishek.germanPocketDictionary.Adapter;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.germanPocketDictionary.Activity.SearchResultActivity;
-import com.example.android.germanPocketDictionary.Data.Word;
-import com.example.android.germanPocketDictionary.Fragments.WordsFragment;
-import com.example.android.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.Activity.SearchResultActivity;
+import com.abhishek.germanPocketDictionary.Data.Word;
+import com.abhishek.germanPocketDictionary.Fragments.WordsFragment;
+import com.abhishek.germanPocketDictionary.R;
 
 import java.util.List;
 
@@ -28,6 +28,8 @@ public class WordAdapter extends ArrayAdapter<Word> {
     private Word currentWord;
     private View listItemView;
     private View expandableView;
+    private TextView partizipLabelTextView;
+    private TextView partizipTextView;
     private boolean EMPTY = true;
     private boolean searchState = EMPTY;
 
@@ -118,8 +120,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 } else if (currentWord.getmCategory().contains("7")) {
                     expandableView.setVisibility(View.VISIBLE);
                     viewRootWord();
-                    if (currentWord.hasPartizip())
-                        viewPartizip();
+                    viewPartizip();
                 }
             }
         }
@@ -142,12 +143,17 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
     private void viewPartizip() {
         if (expandableView != null) {
-            TextView partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
-            partizipLabelTextView.setVisibility(View.VISIBLE);
-            partizipLabelTextView.setText(R.string.partizip_label);
-            TextView partizipTextView = expandableView.findViewById(R.id.opposite_text);
-            partizipTextView.setVisibility(View.VISIBLE);
-            partizipTextView.setText(currentWord.getmVerbPartizip());
+            partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
+            partizipTextView = expandableView.findViewById(R.id.opposite_text);
+            if(currentWord.hasPartizip()) {
+                partizipLabelTextView.setVisibility(View.VISIBLE);
+                partizipLabelTextView.setText(R.string.partizip_label);
+                partizipTextView.setVisibility(View.VISIBLE);
+                partizipTextView.setText(currentWord.getmVerbPartizip());
+            } else {
+                partizipLabelTextView.setVisibility(View.GONE);
+                partizipTextView.setVisibility(View.GONE);
+            }
         }
     }
 

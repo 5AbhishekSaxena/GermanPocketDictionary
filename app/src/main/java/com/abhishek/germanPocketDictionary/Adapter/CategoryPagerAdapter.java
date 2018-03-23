@@ -1,12 +1,12 @@
-package com.example.android.germanPocketDictionary.Adapter;
+package com.abhishek.germanPocketDictionary.Adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.germanPocketDictionary.Fragments.WordsFragment;
-import com.example.android.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.Fragments.WordsFragment;
+import com.abhishek.germanPocketDictionary.R;
 
 /**
  * Created by Abhishek Saxena on 12/10/2017.

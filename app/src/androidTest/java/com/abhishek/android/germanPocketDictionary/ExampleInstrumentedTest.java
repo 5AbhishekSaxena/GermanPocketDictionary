@@ -1,4 +1,4 @@
-package com.example.android.germanPocketDictionary;
+package com.abhishek.android.germanPocketDictionary;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
