@@ -30,6 +30,8 @@ public class WordAdapter extends ArrayAdapter<Word> {
     private View expandableView;
     private TextView partizipLabelTextView;
     private TextView partizipTextView;
+    private TextView helpingVerbTextLabel;
+    private TextView helpingVerbTextView;
     private boolean EMPTY = true;
     private boolean searchState = EMPTY;
 
@@ -145,14 +147,21 @@ public class WordAdapter extends ArrayAdapter<Word> {
         if (expandableView != null) {
             partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
             partizipTextView = expandableView.findViewById(R.id.opposite_text);
+            helpingVerbTextLabel = expandableView.findViewById(R.id.helping_text_label);
+            helpingVerbTextView = expandableView.findViewById(R.id.helping_verb_text);
             if(currentWord.hasPartizip()) {
                 partizipLabelTextView.setVisibility(View.VISIBLE);
                 partizipLabelTextView.setText(R.string.partizip_label);
                 partizipTextView.setVisibility(View.VISIBLE);
                 partizipTextView.setText(currentWord.getmVerbPartizip());
+                helpingVerbTextLabel.setVisibility(View.VISIBLE);
+                helpingVerbTextView.setVisibility(View.VISIBLE);
+                helpingVerbTextView.setText(currentWord.getmHelpingVerb());
             } else {
                 partizipLabelTextView.setVisibility(View.GONE);
                 partizipTextView.setVisibility(View.GONE);
+                helpingVerbTextLabel.setVisibility(View.GONE);
+                helpingVerbTextView.setVisibility(View.GONE);
             }
         }
     }

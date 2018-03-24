@@ -64,6 +64,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_below="@id/plural_text_label"
+                android:layout_marginTop="5dp"
                 android:text="@string/opposite_word_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
@@ -76,7 +77,35 @@
                 android:layout_height="wrap_content"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_below="@id/plural_text_label"
+                android:layout_margin="5dp"
                 android:layout_toEndOf="@id/opposite_text_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                tools:text="Abhishek" />
+
+            <TextView
+                android:id="@+id/helping_text_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/opposite_text_label"
+                android:layout_marginTop="5dp"
+                android:text="@string/helping_verb_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/helping_verb_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/opposite_text_label"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/helping_text_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
                 android:visibility="gone"

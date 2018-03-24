@@ -24,6 +24,8 @@
     <string name="plural_word_label">Plural:\u0020 </string>
     <string name="opposite_word_label">Opposite:\u0020 </string>
     <string name="partizip_label">Partizip II:\u0020 </string>
+    <string name="helping_verb_label">Helping verb:\u0020 </string>
+
 
     <!--Menu Items labels -->
     <string name="rate_this_app">Rate This App</string>

@@ -73,9 +73,12 @@ public final class QueryUtils {
                 JSONObject verbPartizipII = currentGerman.getJSONObject("gsx$partizipii");
                 String verbPartizipIIValue = verbPartizipII.getString("$t");
 
+                JSONObject helpingVerb = currentGerman.getJSONObject("gsx$helpingverb");
+                String helpingVerbValue = helpingVerb.getString("$t");
+
 
                 Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,
-                        categoryValue, numberValue, verbRootWordValue,verbPartizipIIValue);
+                        categoryValue, numberValue, verbRootWordValue,verbPartizipIIValue, helpingVerbValue);
 
                 words.add(word);
             }
