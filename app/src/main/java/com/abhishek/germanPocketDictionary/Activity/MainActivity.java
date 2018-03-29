@@ -1,26 +1,41 @@
 package com.abhishek.germanPocketDictionary.Activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abhishek.germanPocketDictionary.Adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.Data.Word;
 import com.abhishek.germanPocketDictionary.Loader.GermanLoader;
 import com.abhishek.germanPocketDictionary.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,9 +46,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList;
 
 
-
     private static final String GERMAN_EXCELSHEET_URL =
-    "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
+            "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
 
     private static final int GERMAN_LOADER_ID = 1;
 
@@ -46,12 +60,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private boolean MENU_ITEM_HIDE = true;
 
+    final private String LOG_TAG = this.getClass().getName();
+
+    private AlertDialog.Builder builder;
+    private AlertDialog alertDialog;
+    private View alertDialogLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
 
+
+        setupAgreementAlertDialog();
+    }
+
+    private void setupInterface() {
 
         nounList = new ArrayList<>();
         numberList = new ArrayList<>();
@@ -79,8 +104,106 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             mProgressBar.setVisibility(View.GONE);
             loadingTextView.setText(R.string.no_internet_connection);
+
         }
 
+    }
+
+    private void setupAgreementAlertDialog() {
+        String agreement = null;
+        try {
+            agreement = fetchAgreementDetails();
+        } catch (IOException e) {
+            //Log.e(LOG_TAG, "Error reading from terms_of_use_warranties_and_release_agreement text file: " + e);
+        }
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean agreed = sharedPreferences.getBoolean("agreed", false);
+        if (agreement != null) {
+
+            alertDialogLayout = this.getLayoutInflater().inflate(R.layout.agreement_alertbox_layout, null);
+            TextView agreementTextView = alertDialogLayout.findViewById(R.id.agreement_details);
+            agreementTextView.setText(agreement);
+            if (!agreed) {
+                builder = new AlertDialog.Builder(this);
+                final CharSequence[] items = {"I agree to the above Terms and Conditions."};
+                final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+
+                builder.setTitle(R.string.agreement_title)
+                        .setView(alertDialogLayout)
+                        .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("agreed", true);
+                                editor.apply();
+                                setupInterface();
+                            }
+                        })
+                        .setNegativeButton("I Disagree", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this, "Application is Closing", Toast.LENGTH_SHORT).show();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    finishAndRemoveTask();
+                                } else
+                                    finishAffinity();
+
+                                Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("agreed", false);
+                                editor.apply();
+                            }
+                        })
+                        .setCancelable(false);
+
+                alertDialog = builder.create();
+                alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                CheckBox checkBox = alertDialogLayout.findViewById(R.id.agreement_checkbox);
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked)
+                            updateAgreementStatus(true);
+                        else
+                            updateAgreementStatus(false);
+                    }
+                });
+            }else
+                setupInterface();
+        }
+
+
+    }
+
+    private void updateAgreementStatus(Boolean status) {
+
+        if (status) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+        } else
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+    }
+
+    private String fetchAgreementDetails() throws IOException {
+
+        StringBuilder agreement = new StringBuilder();
+        InputStream inputStream = getResources().openRawResource(
+                getResources().getIdentifier("com.abhishek.germanPocketDictionary:raw/terms_of_use_warranties_and_release_agreement", null, null));
+
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                agreement.append("\n");
+                agreement.append(line);
+                line = bufferedReader.readLine();
+            }
+        }
+        //return agreement.toString();
+        return null;
     }
 
     @Override
@@ -199,9 +322,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getMenuInflater().inflate(R.menu.menu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search_menu);
-        MenuItem rateThisAppItem = menu.findItem(R.id.rate_this_app);
-        rateThisAppItem.setVisible(false);
-        if(MENU_ITEM_HIDE)
+        if (MENU_ITEM_HIDE)
             searchItem.setVisible(false);   //hide it
         else
             searchItem.setVisible(true);
@@ -222,8 +343,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 break;
 
             case R.id.send_feedback:
-                Intent feedbackActivityIntent = new Intent(this,FeedBackActivity.class);
+                Intent feedbackActivityIntent = new Intent(this, FeedBackActivity.class);
                 startActivity(feedbackActivityIntent);
+                break;
+
+            case R.id.rate_this_app:
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW);
+                //Try Google play
+                goToMarket.setData(Uri.parse("market://details?id=" + this.getPackageName()));
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                if (goToMarket.resolveActivity(getPackageManager()) != null) {
+                    Toast.makeText(this, "Opening PlayStore", Toast.LENGTH_SHORT).show();
+                    startActivity(goToMarket);
+                }else
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+
         }
         return super.onOptionsItemSelected(item);
     }

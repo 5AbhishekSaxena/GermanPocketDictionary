@@ -34,6 +34,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
     private TextView helpingVerbTextView;
     private boolean EMPTY = true;
     private boolean searchState = EMPTY;
+    private TextView pluralTextView;
+    private TextView oppositeTextView;
+    private TextView oppositeLabelTextView;
+    private TextView rootWordLabelTextView;
+    private TextView rootWord;
 
     public WordAdapter(Fragment context, List<Word> words, int fragmentType) {
         super(context.getActivity(), 0, words);
@@ -73,6 +78,16 @@ public class WordAdapter extends ArrayAdapter<Word> {
         englishTextView.setText(currentWord.getmEnglishTranslation());
 
         expandableView = listItemView.findViewById(R.id.expandable_view);
+        pluralTextView = expandableView.findViewById(R.id.plural_text);
+        rootWordLabelTextView = expandableView.findViewById(R.id.plural_text_label);
+        rootWord = pluralTextView;
+        partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
+        partizipTextView = expandableView.findViewById(R.id.opposite_text);
+        helpingVerbTextLabel = expandableView.findViewById(R.id.helping_text_label);
+        helpingVerbTextView = expandableView.findViewById(R.id.helping_verb_text);
+        oppositeLabelTextView = partizipLabelTextView;
+        oppositeTextView = partizipTextView;
+
         if (!isActivity) {
             if (currentWord.hasPlural()) {
                 viewPlural();
@@ -112,17 +127,22 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         } else {
             expandableView.setVisibility(View.GONE);
-            if (SearchResultActivity.searchState != EMPTY) {
-                if (currentWord.getmCategory().contains("1")) {
-                    expandableView.setVisibility(View.VISIBLE);
-                    if (currentWord.hasPlural())
-                        viewPlural();
-                    if (currentWord.hasOpposite())
-                        viewOpposite();
-                } else if (currentWord.getmCategory().contains("7")) {
-                    expandableView.setVisibility(View.VISIBLE);
-                    viewRootWord();
-                    viewPartizip();
+
+            if (expandableView != null) {
+                if (SearchResultActivity.searchState != EMPTY) {
+                    if (currentWord.getmCategory().contains("1")) {
+                        expandableView.setVisibility(View.VISIBLE);
+
+
+                        if (currentWord.hasPlural())
+                            viewPlural();
+                        if (currentWord.hasOpposite())
+                            viewOpposite();
+                    } else if (currentWord.getmCategory().contains("7")) {
+                        expandableView.setVisibility(View.VISIBLE);
+                        viewRootWord();
+                        viewPartizip();
+                    }
                 }
             }
         }
@@ -130,46 +150,45 @@ public class WordAdapter extends ArrayAdapter<Word> {
     }
 
     private void viewPlural() {
-        TextView pluralTextView = listItemView.findViewById(R.id.plural_text);
         pluralTextView.setText(currentWord.getmGermanPlural());
+
+        partizipLabelTextView.setVisibility(View.GONE);
+        partizipTextView.setVisibility(View.GONE);
+        helpingVerbTextLabel.setVisibility(View.GONE);
+        helpingVerbTextView.setVisibility(View.GONE);
+
+
     }
 
     private void viewRootWord() {
-        if (expandableView != null) {
-            TextView rootWordLabelTextView = expandableView.findViewById(R.id.plural_text_label);
-            rootWordLabelTextView.setText(R.string.root_word_label);
-            TextView rootWord = expandableView.findViewById(R.id.plural_text);
-            rootWord.setText(currentWord.getmVerbRootWord());
-        }
+        rootWordLabelTextView.setText(R.string.root_word_label);
+        rootWord.setText(currentWord.getmVerbRootWord());
+
+        partizipTextView.setVisibility(View.GONE);
+        partizipLabelTextView.setVisibility(View.GONE);
     }
+
 
     private void viewPartizip() {
-        if (expandableView != null) {
-            partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
-            partizipTextView = expandableView.findViewById(R.id.opposite_text);
-            helpingVerbTextLabel = expandableView.findViewById(R.id.helping_text_label);
-            helpingVerbTextView = expandableView.findViewById(R.id.helping_verb_text);
-            if(currentWord.hasPartizip()) {
-                partizipLabelTextView.setVisibility(View.VISIBLE);
-                partizipLabelTextView.setText(R.string.partizip_label);
-                partizipTextView.setVisibility(View.VISIBLE);
-                partizipTextView.setText(currentWord.getmVerbPartizip());
-                helpingVerbTextLabel.setVisibility(View.VISIBLE);
-                helpingVerbTextView.setVisibility(View.VISIBLE);
-                helpingVerbTextView.setText(currentWord.getmHelpingVerb());
-            } else {
-                partizipLabelTextView.setVisibility(View.GONE);
-                partizipTextView.setVisibility(View.GONE);
-                helpingVerbTextLabel.setVisibility(View.GONE);
-                helpingVerbTextView.setVisibility(View.GONE);
-            }
+        if (currentWord.hasPartizip()) {
+            partizipLabelTextView.setVisibility(View.VISIBLE);
+            partizipLabelTextView.setText(R.string.partizip_label);
+            partizipTextView.setVisibility(View.VISIBLE);
+            partizipTextView.setText(currentWord.getmVerbPartizip());
+            helpingVerbTextLabel.setVisibility(View.VISIBLE);
+            helpingVerbTextView.setVisibility(View.VISIBLE);
+            helpingVerbTextView.setText(currentWord.getmHelpingVerb());
+        } else {
+            partizipLabelTextView.setVisibility(View.GONE);
+            partizipTextView.setVisibility(View.GONE);
+            helpingVerbTextLabel.setVisibility(View.GONE);
+            helpingVerbTextView.setVisibility(View.GONE);
         }
     }
 
-    private void viewOpposite() {
-        TextView oppositeTextView = listItemView.findViewById(R.id.opposite_text);
-        TextView oppositeLabelTextView = listItemView.findViewById(R.id.opposite_text_label);
 
+    private void viewOpposite() {
+        oppositeLabelTextView.setText(R.string.opposite_word_label);
         oppositeTextView.setText(currentWord.getmGermanOpposite());
         oppositeTextView.setVisibility(View.VISIBLE);
         oppositeLabelTextView.setVisibility(View.VISIBLE);
