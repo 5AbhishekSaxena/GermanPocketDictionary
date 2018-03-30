@@ -16,6 +16,8 @@
     <!-- Agreement Declaration Text -->
     <string name="declaration">I have read the above Terms and Conditions.</string>
 
+    <!-- Agreement failed to load text -->
+    <string name="agreement_failed_to_load">Agreement failed to load, contact the developer</string>
     <!-- Text to display in the list when there are no words [CHAR LIMIT=NONE] -->
     <string name="no_words">No words found.</string>
 

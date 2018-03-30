@@ -17,6 +17,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getSupportLoaderManager();
+            Log.v(LOG_TAG, "Network req sent!");
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
@@ -126,9 +128,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             agreementTextView.setText(agreement);
             if (!agreed) {
                 builder = new AlertDialog.Builder(this);
-                final CharSequence[] items = {"I agree to the above Terms and Conditions."};
-                final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
-
                 builder.setTitle(R.string.agreement_title)
                         .setView(alertDialogLayout)
                         .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
@@ -173,8 +172,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 });
             }else
                 setupInterface();
+        }else {
+            Toast.makeText(this, "Agreement failed to load, contact the developer", Toast.LENGTH_LONG).show();
+           mProgressBar.setVisibility(View.GONE);
+           loadingTextView.setText(R.string.agreement_failed_to_load);
         }
-
 
     }
 
@@ -202,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 line = bufferedReader.readLine();
             }
         }
-        //return agreement.toString();
-        return null;
+        return agreement.toString();
     }
 
     @Override
