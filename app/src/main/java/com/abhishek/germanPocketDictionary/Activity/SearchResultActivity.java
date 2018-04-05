@@ -17,6 +17,7 @@ import com.abhishek.germanPocketDictionary.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class SearchResultActivity extends AppCompatActivity {
     WordAdapter mAdapter;
     ListView listView;
     SearchView searchView;
+    TextView mEmptyStateTextView;
     static boolean EMPTY = true;
     public static boolean searchState = EMPTY;
 
@@ -43,9 +45,12 @@ public class SearchResultActivity extends AppCompatActivity {
         TextView loadingTextView = findViewById(R.id.loading_text_view);
         loadingTextView.setVisibility(View.GONE);
 
-
         allWordsList = new ArrayList<>();
         allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra("AllWordArrayList");
+
+
+        mEmptyStateTextView = findViewById(R.id.empty_view);
+        mEmptyStateTextView.setText(R.string.no_words);
 
         mAdapter = new WordAdapter(this, allWordsList, searchState);
         listView.setAdapter(mAdapter);
@@ -71,15 +76,34 @@ public class SearchResultActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-              if (newText.length() == 0) {
-                  searchState = EMPTY;
-                  View view = findViewById(R.id.search_view);
-                  InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                  inputManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-              }else {
+                if (newText.length() == 0) {
+                    searchState = EMPTY;
+                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } else {
                     searchState = !EMPTY;
                 }
-                mAdapter.getFilter().filter(newText);
+
+                ArrayList<Word> filteredList = new ArrayList<>();
+
+                if (newText.length() != 0) {
+                    filteredList.clear();
+                    filteredList = handleSearch(newText);
+                    if (!filteredList.isEmpty()) {
+                        mAdapter = new WordAdapter(SearchResultActivity.this, filteredList, searchState);
+                        listView.setVisibility(View.VISIBLE);
+                        listView.setAdapter(mAdapter);
+                        mEmptyStateTextView.setVisibility(View.GONE);
+                    } else {
+                        mEmptyStateTextView.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.GONE);
+                    }
+                } else {
+                    mAdapter = new WordAdapter(SearchResultActivity.this, allWordsList, searchState);
+                    listView.setAdapter(mAdapter);
+                    mEmptyStateTextView.setVisibility(View.GONE);
+                }
+
                 mAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -106,4 +130,17 @@ public class SearchResultActivity extends AppCompatActivity {
         return allWordsList;
     }
 
+    private ArrayList<Word> handleSearch(String query) {
+
+        ArrayList<Word> filteredList = new ArrayList<>();
+        Word currentWord;
+        for (int i = 0; i < allWordsList.size(); i++) {
+            currentWord = allWordsList.get(i);
+
+            if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE |Pattern.UNICODE_CASE).matcher(currentWord.toString()).find()) {
+                filteredList.add(currentWord);
+            }
+        }
+        return filteredList;
+    }
 }

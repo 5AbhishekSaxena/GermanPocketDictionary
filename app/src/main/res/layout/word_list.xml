@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:textAppearance="?android:textAppearanceMedium"/>
 
     <!-- Loading indicator is only shown before the first load -->

@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             MENU_ITEM_HIDE = false;
             invalidateOptionsMenu();
         } else {
-            loadingTextView.setText(R.string.no_words);
+            loadingTextView.setText(R.string.no_internet_connection);
         }
     }
 

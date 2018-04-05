@@ -31,10 +31,13 @@ public class Word implements Serializable {
                 String category, String number, String verbRootWord, String verbPartizip, String helpingVerb) {
 
         mEnglishTranslation = englishTranslation;
-        if (germanPlural.equals("0"))
+        if (germanPlural.equals("-1"))
             mGermanPlural = "No Plural";
-        else
+        else if(!germanPlural.equals("0"))
             mGermanPlural = germanPlural;
+        else
+            mGermanPlural = null;
+
 
         if (!verbPartizip.equals("0"))
             mVerbPartizip = verbPartizip;
@@ -141,13 +144,18 @@ public class Word implements Serializable {
 
     @Override
     public String toString() {
-        return "Word(" +
-                "mGermanTranslation: " + mGermanTranslation + '\'' +
-                "mEnglishTranslation: " + mEnglishTranslation + '\'' +
-                "mGermanPlural: " + mGermanPlural + '\'' +
-                "mVerbPartizip: " + mVerbPartizip + '\'' +
-                "mVerbRootWord: " + mVerbRootWord + '\'' +
-                "mHelpingVerb: " + mHelpingVerb + '\'' +
-                "}";
+        return "Word{" +
+                "mGermanOpposite='" + mGermanOpposite + '\'' +
+                ", mGermanTranslation='" + mGermanTranslation + '\'' +
+                ", mEnglishTranslation='" + mEnglishTranslation + '\'' +
+                ", mGender=" + mGender +
+                ", mGermanPlural='" + mGermanPlural + '\'' +
+                ", mCategory='" + mCategory + '\'' +
+                ", mNumber=" + mNumber +
+                ", mVerbRootWord='" + mVerbRootWord + '\'' +
+                ", mVerbPartizip='" + mVerbPartizip + '\'' +
+                ", mGermanTranslationWithoutArticle='" + mGermanTranslationWithoutArticle + '\'' +
+                ", mHelpingVerb='" + mHelpingVerb + '\'' +
+                '}';
     }
 }
