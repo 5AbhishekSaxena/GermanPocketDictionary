@@ -1,6 +1,7 @@
 package com.abhishek.germanPocketDictionary.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -120,6 +121,8 @@ public class SearchResultActivity extends AppCompatActivity {
                 return true;
 
             case R.id.search_menu:
+                Intent searchIntent = new Intent(this,SearchResultActivity.class);
+                startActivity(searchIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);

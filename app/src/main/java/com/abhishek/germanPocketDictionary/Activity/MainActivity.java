@@ -10,13 +10,19 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +34,7 @@ import android.widget.Toast;
 
 import com.abhishek.germanPocketDictionary.Adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.Data.Word;
+import com.abhishek.germanPocketDictionary.Fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.Loader.GermanLoader;
 import com.abhishek.germanPocketDictionary.R;
 
@@ -39,6 +46,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 
@@ -48,12 +56,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     //private static final String GERMAN_EXCELSHEET_URL =
-      //      "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
+    //      "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
     private static final String GERMAN_EXCELSHEET_URL_TEST =
             "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
 
     private static final int GERMAN_LOADER_ID = 1;
 
+
+    DrawerLayout mDrawerLayout;
 
     /**
      * TextView that is displayed when the list is empty
@@ -67,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private AlertDialog alertDialog;
     private View alertDialogLayout;
 
+    private ViewPager viewPager;
+
+    private NavigationView navigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +89,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         setupAgreementAlertDialog();
     }
+
 
     public void setupInterface() {
 
@@ -95,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+
 
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -136,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 Editor editor = sharedPreferences.edit();
                                 editor.putBoolean("agreed", true);
                                 editor.apply();
+                                setupNavDrawer();
                                 setupInterface();
                             }
                         })
@@ -170,12 +191,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             updateAgreementStatus(false);
                     }
                 });
-            }else
+            } else {
+                setupNavDrawer();
                 setupInterface();
-        }else {
+            }
+        } else {
             Toast.makeText(this, "Agreement failed to load, contact the developer", Toast.LENGTH_LONG).show();
-           mProgressBar.setVisibility(View.GONE);
-           loadingTextView.setText(R.string.agreement_failed_to_load);
+            mProgressBar.setVisibility(View.GONE);
+            loadingTextView.setText(R.string.agreement_failed_to_load);
         }
 
     }
@@ -251,8 +274,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         if (oppositeList.isEmpty())
                             oppositeList.add(word);
                         else {
-                                if (!Pattern.compile(Pattern.quote(word.getmEnglishTranslation()), Pattern.CASE_INSENSITIVE |Pattern.UNICODE_CASE).matcher(oppositeList.toString()).find())
-                                    oppositeList.add(word);
+                            if (!Pattern.compile(Pattern.quote(word.getmEnglishTranslation()), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(oppositeList.toString()).find())
+                                oppositeList.add(word);
 
                         }
                     }
@@ -279,12 +302,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
             //Sort oppositeList
-            Collections.sort(oppositeList, (s1,s2) ->
-                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+            Collections.sort(oppositeList, (s1, s2) ->
+                    s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
 
 
             // Find the view pager that will allow the user to swipe between fragments
-            ViewPager viewPager = findViewById(R.id.viewpager);
+            viewPager = findViewById(R.id.viewpager);
             // Create an adapter that knows which fragment should be shown on each page
             CategoryPagerAdapter adapter = new CategoryPagerAdapter(this, getSupportFragmentManager());
 
@@ -295,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             TabLayout tabLayout = findViewById(R.id.sliding_tabs);
             tabLayout.setVisibility(View.VISIBLE);
             tabLayout.setupWithViewPager(viewPager);
-            viewPager.setCurrentItem(1);
+            viewPager.setCurrentItem(WordsFragment.NOUNS);
 
             MENU_ITEM_HIDE = false;
             invalidateOptionsMenu();
@@ -341,11 +364,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
+
         MenuItem searchItem = menu.findItem(R.id.search_menu);
-        if (MENU_ITEM_HIDE)
-            searchItem.setVisible(false);   //hide it
-        else
+        View navView = findViewById(R.id.nav_view);
+        if (MENU_ITEM_HIDE) {
+            searchItem.setVisible(false);//hide it
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+            navView.setVisibility(View.GONE);
+        } else {
             searchItem.setVisible(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            navView.setVisibility(View.VISIBLE);
+        }
 
         return true;
     }
@@ -354,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
             case R.id.search_menu:
@@ -376,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (goToMarket.resolveActivity(getPackageManager()) != null) {
                     Toast.makeText(this, "Opening PlayStore", Toast.LENGTH_SHORT).show();
                     startActivity(goToMarket);
-                }else
+                } else
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
 
@@ -384,4 +415,49 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupNavDrawer() {
+
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_menu);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        navigationView = findViewById(R.id.nav_view);
+
+        if (navigationView != null )
+        setupDrawerContent(navigationView);
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(item -> {
+            new Handler().postDelayed(() -> {
+                switch (item.getItemId()) {
+                    case R.id.nav_all_words:
+                        viewPager.setCurrentItem(WordsFragment.ALL_WORDS);
+                        break;
+
+                    case R.id.nav_nouns:
+                        viewPager.setCurrentItem(WordsFragment.NOUNS);
+                        break;
+
+                    case R.id.nav_verbs:
+                        viewPager.setCurrentItem(WordsFragment.VERBS);
+                        break;
+
+                    case R.id.nav_numbers:
+                        viewPager.setCurrentItem(WordsFragment.NUMBERS);
+                        break;
+                    case R.id.nav_colors:
+                        viewPager.setCurrentItem(WordsFragment.COLORS);
+                        break;
+                    case R.id.nav_questions:
+                        viewPager.setCurrentItem(WordsFragment.QUESTIONS);
+                        break;
+                    case R.id.nav_opposites:
+                        viewPager.setCurrentItem(WordsFragment.OPPOSITE);
+                        break;
+                }
+            }, 250);
+            mDrawerLayout.closeDrawer(Gravity.START);
+            return false;
+        });
+    }
 }

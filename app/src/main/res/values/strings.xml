@@ -55,6 +55,7 @@
     <!-- Feedback Menu Item -->
     <string name="action_save">Save</string>
     <string name="category_opposite">Opposite</string>
+    <string name="categories">Categories</string>
 
 
 </resources>

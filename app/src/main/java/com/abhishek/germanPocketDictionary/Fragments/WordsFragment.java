@@ -24,13 +24,13 @@ import com.abhishek.germanPocketDictionary.R;
 
 public class WordsFragment extends Fragment {
 
-    public static final int ALL_WORDS = 1;
-    public static final int NOUNS = 2;
-    public static final int VERBS = 3;
-    public static final int NUMBERS = 4;
-    public static final int COLORS = 5;
-    public static final int QUESTIONS = 6;
-    public static final int OPPOSITE = 7;
+    public static final int ALL_WORDS = 0;
+    public static final int NOUNS = 1;
+    public static final int VERBS = 2;
+    public static final int NUMBERS = 3;
+    public static final int COLORS = 4;
+    public static final int QUESTIONS = 5;
+    public static final int OPPOSITE = 6;
 
     public int selectedNoun;
     public int selectedVerb;
