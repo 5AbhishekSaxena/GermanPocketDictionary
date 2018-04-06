@@ -17,7 +17,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,15 +39,18 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
 
-    public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList;
+    public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList, oppositeList;
 
 
-    private static final String GERMAN_EXCELSHEET_URL =
-            "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
+    //private static final String GERMAN_EXCELSHEET_URL =
+      //      "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
+    private static final String GERMAN_EXCELSHEET_URL_TEST =
+            "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
 
     private static final int GERMAN_LOADER_ID = 1;
 
@@ -60,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressBar mProgressBar;
 
     private boolean MENU_ITEM_HIDE = true;
-
-    final private String LOG_TAG = this.getClass().getName();
 
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setupAgreementAlertDialog();
     }
 
-    private void setupInterface() {
+    public void setupInterface() {
 
         nounList = new ArrayList<>();
         numberList = new ArrayList<>();
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         allWordList = new ArrayList<>();
         verbList = new ArrayList<>();
         questionList = new ArrayList<>();
+        oppositeList = new ArrayList<>();
+
+
         mProgressBar = findViewById(R.id.loading_indicator);
         loadingTextView = findViewById(R.id.loading_text_view);
 
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getSupportLoaderManager();
-            Log.v(LOG_TAG, "Network req sent!");
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
@@ -106,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             mProgressBar.setVisibility(View.GONE);
             loadingTextView.setText(R.string.no_internet_connection);
-
         }
 
     }
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         try {
             agreement = fetchAgreementDetails();
         } catch (IOException e) {
-            //Log.e(LOG_TAG, "Error reading from terms_of_use_warranties_and_release_agreement text file: " + e);
         }
 
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Word>> onCreateLoader(int id, Bundle args) {
-        return new GermanLoader(this, GERMAN_EXCELSHEET_URL);
+        return new GermanLoader(this, GERMAN_EXCELSHEET_URL_TEST);
     }
 
     @Override
@@ -225,6 +225,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             allWordList.clear();
             verbList.clear();
             questionList.clear();
+            oppositeList.clear();
+
             allWordList.addAll(words);
 
             for (int i = 0; i < words.size(); i++) {
@@ -244,9 +246,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     if (word.getmCategory().contains("8"))
                         questionList.add(word);
+
+                    if (word.hasOpposite()) {
+                        if (oppositeList.isEmpty())
+                            oppositeList.add(word);
+                        else {
+                                if (!Pattern.compile(Pattern.quote(word.getmEnglishTranslation()), Pattern.CASE_INSENSITIVE |Pattern.UNICODE_CASE).matcher(oppositeList.toString()).find())
+                                    oppositeList.add(word);
+
+                        }
+                    }
                 }
             }
-
             //sort the AllWordsList
             Collections.sort(allWordList, (s1, s2) ->
                     s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
@@ -266,6 +277,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             //Sort questionList
             Collections.sort(questionList, (s1, s2) ->
                     s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+
+            //Sort oppositeList
+            Collections.sort(oppositeList, (s1,s2) ->
+                s1.getmGermanTranslationWithoutArticle().compareTo(s2.getmGermanTranslationWithoutArticle()));
+
 
             // Find the view pager that will allow the user to swipe between fragments
             ViewPager viewPager = findViewById(R.id.viewpager);
@@ -317,6 +333,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return questionList;
     }
 
+    public List<Word> getOppositeList() {
+        return oppositeList;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -343,12 +362,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startActivity(searchActivityIntent);
                 break;
 
-            case R.id.send_feedback:
+            case R.id.menu_item_feedback:
                 Intent feedbackActivityIntent = new Intent(this, FeedBackActivity.class);
                 startActivity(feedbackActivityIntent);
                 break;
 
-            case R.id.rate_this_app:
+            case R.id.menu_item_rate_this_app:
                 Intent goToMarket = new Intent(Intent.ACTION_VIEW);
                 //Try Google play
                 goToMarket.setData(Uri.parse("market://details?id=" + this.getPackageName()));

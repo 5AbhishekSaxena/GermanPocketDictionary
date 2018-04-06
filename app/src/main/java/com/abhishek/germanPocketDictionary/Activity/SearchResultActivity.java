@@ -137,7 +137,8 @@ public class SearchResultActivity extends AppCompatActivity {
         for (int i = 0; i < allWordsList.size(); i++) {
             currentWord = allWordsList.get(i);
 
-            if (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE |Pattern.UNICODE_CASE).matcher(currentWord.toString()).find()) {
+            if (Pattern.compile(Pattern.quote(query),
+                    Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(currentWord.toString()).find()) {
                 filteredList.add(currentWord);
             }
         }

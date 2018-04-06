@@ -37,13 +37,15 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
                 return WordsFragment.newInstance(WordsFragment.NUMBERS);
         else if (position == 4)
             return WordsFragment.newInstance(WordsFragment.COLORS);
-        else
+        else if (position == 5)
             return WordsFragment.newInstance(WordsFragment.QUESTIONS);
+        else
+            return WordsFragment.newInstance(WordsFragment.OPPOSITE);
     }
 
     @Override
     public int getCount() {
-        return 6;
+        return 7;
     }
 
     @Override
@@ -59,8 +61,10 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
             return mContext.getString(R.string.category_numbers);
          else if (position == 4)
              return mContext.getString(R.string.category_colors);
-         else
+         else if (position == 5)
              return mContext.getString(R.string.category_questions);
+         else
+             return mContext.getString(R.string.category_opposite);
 
     }
 }

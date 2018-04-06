@@ -41,16 +41,16 @@ public final class QueryUtils {
         }
 
         List<Word> words = new ArrayList<>();
-        try{
+        try {
             JSONObject baseJsonResponse = new JSONObject(germanJson);
-             JSONObject germanFeed = baseJsonResponse.getJSONObject("feed");
+            JSONObject germanFeed = baseJsonResponse.getJSONObject("feed");
             JSONArray germanArray = germanFeed.getJSONArray("entry");
 
-            for (int i = 0; i < germanArray.length() ; i++){
+            for (int i = 0; i < germanArray.length(); i++) {
                 JSONObject currentGerman = germanArray.getJSONObject(i);
 
                 JSONObject contentGerman = currentGerman.getJSONObject("content");
-                 String contentGermanData = contentGerman.getString("$t");
+                String contentGermanData = contentGerman.getString("$t");
 
                 JSONObject germanTranslation = currentGerman.getJSONObject("gsx$germantranslation");
                 String germanTranslationValue = String.valueOf(germanTranslation.getString("$t"));
@@ -76,60 +76,66 @@ public final class QueryUtils {
                 JSONObject helpingVerb = currentGerman.getJSONObject("gsx$helpingverb");
                 String helpingVerbValue = helpingVerb.getString("$t");
 
+                JSONObject opposite = currentGerman.getJSONObject("gsx$opposite");
+                String oppositeValue = opposite.getString("$t");
+
+                JSONObject oppositeMeaning = currentGerman.getJSONObject("gsx$oppositemeaning");
+                String oppositeMeaningValue = oppositeMeaning.getString("$t");
 
                 Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,
-                        categoryValue, numberValue, verbRootWordValue,verbPartizipIIValue, helpingVerbValue);
+                        categoryValue, numberValue, verbRootWordValue, verbPartizipIIValue, helpingVerbValue,
+                        oppositeValue, oppositeMeaningValue);
 
                 words.add(word);
             }
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the germanPocketDictionary sheets JSON results", e);
         }
 
         return words;
     }
 
-    public static URL createUrl(String stringUrl){
+    public static URL createUrl(String stringUrl) {
         URL url = null;
-        try{
+        try {
             url = new URL(stringUrl);
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Problem building the URL ", e);
         }
 
         return url;
     }
 
-    private static String makeHttpRequest(URL url) throws IOException{
-        String jsonResponse ="";
+    private static String makeHttpRequest(URL url) throws IOException {
+        String jsonResponse = "";
 
-        if(url== null){
+        if (url == null) {
             return jsonResponse;
         }
 
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
-        try{
+        try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode() == 200){
-                inputStream =urlConnection.getInputStream();
+            if (urlConnection.getResponseCode() == 200) {
+                inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Problem retrieving the German sheets JSON results.", e);
         } finally {
-            if (urlConnection != null){
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if(inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
 
@@ -137,13 +143,13 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException{
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
-        if(inputStream != null){
+        if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
-            while(line!=null){
+            while (line != null) {
                 output.append(line);
                 line = reader.readLine();
             }
@@ -151,14 +157,14 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    public static List<Word> fetchGermanData(String requestUrl){
+    public static List<Word> fetchGermanData(String requestUrl) {
         URL url = createUrl(requestUrl);
 
         String jsonResponse = null;
 
-        try{
+        try {
             jsonResponse = makeHttpRequest(url);
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
@@ -167,7 +173,7 @@ public final class QueryUtils {
         return words;
     }
 
-    public String getmJsonresponse(){
+    public String getmJsonresponse() {
         return mJsonresponse;
     }
 

@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Word implements Serializable {
 
     private String mGermanOpposite;
+    private String mGermanOppositeMeaning;
     private String mGermanTranslation;
     private String mEnglishTranslation;
     private int mGender;
@@ -28,35 +29,44 @@ public class Word implements Serializable {
 
 
     public Word(String germanTranslation, String englishTranslation, String germanPlural,
-                String category, String number, String verbRootWord, String verbPartizip, String helpingVerb) {
+                String category, String number, String verbRootWord, String verbPartizip,
+                String helpingVerb, String germanOpposite, String germanOppositeMeaning) {
 
         mEnglishTranslation = englishTranslation;
         if (germanPlural.equals("-1"))
             mGermanPlural = "No Plural";
         else if(!germanPlural.equals("0"))
-            mGermanPlural = germanPlural;
+            mGermanPlural = germanPlural.trim();
         else
             mGermanPlural = null;
 
 
         if (!verbPartizip.equals("0"))
-            mVerbPartizip = verbPartizip;
+            mVerbPartizip = verbPartizip.trim();
         else
             mVerbPartizip = null;
 
         if (!helpingVerb.equals("0"))
-            mHelpingVerb = helpingVerb;
+            mHelpingVerb = helpingVerb.trim();
         else
             mHelpingVerb = null;
 
 
         mCategory = category;
         mNumber = Integer.valueOf(number);
-        mGermanOpposite = null;
+
+        if (germanOpposite.equals("0")) {
+            mGermanOpposite = null;
+            mGermanOppositeMeaning = null;
+        }else{
+            mGermanOpposite = germanOpposite.trim();
+            mGermanOppositeMeaning = germanOppositeMeaning.trim();
+        }
+
         if (verbRootWord.equals("-1"))
             mVerbRootWord = "No Root Word";
         else
-            mVerbRootWord = verbRootWord;
+            mVerbRootWord = verbRootWord.trim();
 
         if (mCategory.contains("1a"))
             mGender = GENDER_MALE;
@@ -67,13 +77,18 @@ public class Word implements Serializable {
         else
             mGender = GENDER_NULL;
 
-        mGermanTranslationWithoutArticle = germanTranslation.toLowerCase()
+        mGermanTranslationWithoutArticle = germanTranslation.toLowerCase().trim()
                 .replace("ü", "u")
                 .replace("ö", "o")
                 .replace("ä", "a")
                 .replace("ß", "s");
 
         mGermanTranslation = updateGender(mGender) + germanTranslation;
+
+    }
+
+    public String getmGermanOppositeMeaning() {
+        return mGermanOppositeMeaning;
     }
 
     public String getmGermanTranslation() {
@@ -146,6 +161,7 @@ public class Word implements Serializable {
     public String toString() {
         return "Word{" +
                 "mGermanOpposite='" + mGermanOpposite + '\'' +
+                "mGermanOppositeMeaning='" + mGermanOppositeMeaning + '\'' +
                 ", mGermanTranslation='" + mGermanTranslation + '\'' +
                 ", mEnglishTranslation='" + mEnglishTranslation + '\'' +
                 ", mGender=" + mGender +

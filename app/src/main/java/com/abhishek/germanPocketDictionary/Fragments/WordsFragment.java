@@ -30,6 +30,7 @@ public class WordsFragment extends Fragment {
     public static final int NUMBERS = 4;
     public static final int COLORS = 5;
     public static final int QUESTIONS = 6;
+    public static final int OPPOSITE = 7;
 
     public int selectedNoun;
     public int selectedVerb;
@@ -126,6 +127,11 @@ public class WordsFragment extends Fragment {
 
                 case QUESTIONS:
                     mAdapter = new WordAdapter(this, activityReference.getQuestionList(), QUESTIONS);
+                    break;
+
+                case OPPOSITE:
+                    mAdapter = new WordAdapter(this,activityReference.getOppositeList(), OPPOSITE);
+                    break;
 
             }
         }

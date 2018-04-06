@@ -17,11 +17,38 @@ public class FeedBackActivity extends AppCompatActivity {
 
     private boolean FEEDBACK_FIELD_EMPTY = true;
 
+    private String userName;
+    private String feedback;
+    private  String additionalInformation;
+
+    EditText nameEditTextView ;
+    EditText feedbackEditTextView;
+    EditText additionalInformationEditTextView;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userName",userName);
+        outState.putString("feedback",feedback);
+        if(additionalInformation != null)
+            outState.putString("additionalInformation",additionalInformation);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
 
+        nameEditTextView = findViewById(R.id.edit_feedback_user_name);
+        feedbackEditTextView = findViewById(R.id.edit_feedback_feedback);
+        additionalInformationEditTextView = findViewById(R.id.edit_feedback_additional_information);
+
+        if (savedInstanceState != null) {
+            userName = savedInstanceState.getString("userName");
+            feedback = savedInstanceState.getString("feedback");
+            if (savedInstanceState.getString("additionalInformation") !=null)
+                additionalInformation = savedInstanceState.getString("additionalInformation");
+        }
     }
 
     @Override
@@ -52,12 +79,12 @@ public class FeedBackActivity extends AppCompatActivity {
         EditText feedbackEditTextView = findViewById(R.id.edit_feedback_feedback);
         EditText additionalInformationEditTextView = findViewById(R.id.edit_feedback_additional_information);
 
-        String userName = "Anonymous";
+        userName = "Anonymous";
 
         if (!nameEditTextView.getText().toString().isEmpty())
             userName = nameEditTextView.getText().toString().trim();
 
-        String feedback = feedbackEditTextView.getText().toString().trim();
+        feedback = feedbackEditTextView.getText().toString().trim();
 
         //feedback = feedbackEditTextView.getText().toString().trim();
         if(feedback.length() > 0)
@@ -65,7 +92,6 @@ public class FeedBackActivity extends AppCompatActivity {
         else
             setFEEDBACK_FIELD_EMPTY(true);
 
-        String additionalInformation;
         additionalInformation = additionalInformationEditTextView.getText().toString().trim();
 
         String feedbackSummary = "Feedback:\n" + feedback;
@@ -75,14 +101,14 @@ public class FeedBackActivity extends AppCompatActivity {
 
         feedbackSummary += additionalInformation;
         if (!isFEEDBACK_FIELD_EMPTY()) {
-            sendmail(userName, feedbackSummary);
+            sendMail(userName, feedbackSummary);
             finish();
         } else{
             Toast.makeText(this, "Feedback Field cannot be empty.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void sendmail(String userName, String feedback) {
+    public void sendMail(String userName, String feedback) {
         String addresses = "5abhisheksaxena@gmail.com";
         String[] mail = new String[]{addresses};
         String subject = "Feedback - " + userName;

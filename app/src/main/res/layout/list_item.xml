@@ -1,125 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:id="@+id/list_item">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@android:color/transparent"
+        android:padding="10dp"
+        android:id="@+id/regular_list_item">
 
-        <TextView
-            android:id="@+id/german_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="German"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/english_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="English"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@android:color/black" />
-
-        <RelativeLayout
-            android:id="@+id/expandable_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/plural_text_label"
+                android:id="@+id/german_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="@string/plural_word_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@android:color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/plural_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/plural_text_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@android:color/black"
-                tools:text="Shubham" />
-
-            <TextView
-                android:id="@+id/opposite_text_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/plural_text_label"
-                android:layout_marginTop="5dp"
-                android:text="@string/opposite_word_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                tools:text="German" />
 
             <TextView
-                android:id="@+id/opposite_text"
+                android:id="@+id/english_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/plural_text_label"
-                android:layout_margin="5dp"
-                android:layout_toEndOf="@id/opposite_text_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@android:color/black"
-                android:visibility="gone"
-                tools:text="Abhishek" />
-
-            <TextView
-                android:id="@+id/helping_text_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/opposite_text_label"
                 android:layout_marginTop="5dp"
-                android:text="@string/helping_verb_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                tools:text="English" />
 
-            <TextView
-                android:id="@+id/helping_verb_text"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/expandable_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/opposite_text_label"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@id/helping_text_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@android:color/black"
-                android:visibility="gone"
-                tools:text="Abhishek" />
-        </RelativeLayout>
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/plural_text_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/plural_word_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/arrow"
-        android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/plural_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/plural_text_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    tools:text="Shubham" />
+
+                <TextView
+                    android:id="@+id/opposite_text_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_below="@id/plural_text_label"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/opposite_word_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/opposite_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_below="@id/plural_text_label"
+                    android:layout_margin="5dp"
+                    android:layout_toEndOf="@id/opposite_text_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    tools:text="Abhishek" />
+
+                <TextView
+                    android:id="@+id/helping_text_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_below="@id/opposite_text_label"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/helping_verb_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/helping_verb_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_below="@id/opposite_text_label"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@id/helping_text_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black"
+                    android:visibility="gone"
+                    tools:text="Abhishek" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_keyboard_arrow_down_black_18dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/opposite_list_item"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_keyboard_arrow_down_black_18dp"
-        android:visibility="gone" />
-</RelativeLayout>
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:id="@+id/german_text_view_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                tools:text="German" />
+
+            <TextView
+                android:id="@+id/english_text_view_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                tools:text="English" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:id="@+id/german_text_view_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                tools:text="German" />
+
+            <TextView
+                android:id="@+id/english_text_view_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/black"
+                tools:text="English" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

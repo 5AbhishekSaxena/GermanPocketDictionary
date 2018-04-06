@@ -30,10 +30,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
     private View expandableView;
     private TextView partizipLabelTextView;
     private TextView partizipTextView;
-    private TextView helpingVerbTextLabel;
+    private TextView helpingVerbLabelTextView;
     private TextView helpingVerbTextView;
     private boolean EMPTY = true;
     private boolean searchState = EMPTY;
+    private TextView pluralLabelTextView;
     private TextView pluralTextView;
     private TextView oppositeTextView;
     private TextView oppositeLabelTextView;
@@ -55,10 +56,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        listItemView = convertView;
+        listItemView =  convertView;
 
         if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+            listItemView =  LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
 
         }
@@ -77,13 +78,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
         //Get the English Translation from the Word Class and update the list_item
         englishTextView.setText(currentWord.getmEnglishTranslation());
 
+
         expandableView = listItemView.findViewById(R.id.expandable_view);
+        pluralLabelTextView = expandableView.findViewById(R.id.plural_text_label);
         pluralTextView = expandableView.findViewById(R.id.plural_text);
-        rootWordLabelTextView = expandableView.findViewById(R.id.plural_text_label);
+        rootWordLabelTextView = pluralLabelTextView;
         rootWord = pluralTextView;
         partizipLabelTextView = expandableView.findViewById(R.id.opposite_text_label);
         partizipTextView = expandableView.findViewById(R.id.opposite_text);
-        helpingVerbTextLabel = expandableView.findViewById(R.id.helping_text_label);
+        helpingVerbLabelTextView = expandableView.findViewById(R.id.helping_text_label);
         helpingVerbTextView = expandableView.findViewById(R.id.helping_verb_text);
         oppositeLabelTextView = partizipLabelTextView;
         oppositeTextView = partizipTextView;
@@ -125,6 +128,24 @@ public class WordAdapter extends ArrayAdapter<Word> {
                 }
             }
 
+            if (mFragmentType == WordsFragment.OPPOSITE) {
+                View regularListView = listItemView.findViewById(R.id.regular_list_item);
+                regularListView.setVisibility(View.GONE);
+                View oppositeListView = listItemView.findViewById(R.id.opposite_list_item);
+                oppositeListView.setVisibility(View.VISIBLE);
+                TextView germanTextViewOne = oppositeListView.findViewById(R.id.german_text_view_one);
+                TextView germanTextViewTwo = oppositeListView.findViewById(R.id.german_text_view_two);
+                TextView englishTextViewOne = oppositeListView.findViewById(R.id.english_text_view_one);
+                TextView englishTextViewTwo = oppositeListView.findViewById(R.id.english_text_view_two);
+
+                germanTextViewOne.setText(currentWord.getmGermanTranslation());
+                englishTextViewOne.setText(currentWord.getmEnglishTranslation());
+
+                germanTextViewTwo.setText(currentWord.getmGermanOpposite());
+                englishTextViewTwo.setText(currentWord.getmGermanOppositeMeaning());
+
+            }
+
         } else {
             expandableView.setVisibility(View.GONE);
 
@@ -136,12 +157,15 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
                         if (currentWord.hasPlural())
                             viewPlural();
-                        if (currentWord.hasOpposite())
-                            viewOpposite();
-                    } else if (currentWord.getmCategory().contains("7")) {
+                    }
+                    if (currentWord.getmCategory().contains("7")) {
                         expandableView.setVisibility(View.VISIBLE);
                         viewRootWord();
                         viewPartizip();
+                    }
+                    if (currentWord.hasOpposite()) {
+                        expandableView.setVisibility(View.VISIBLE);
+                        viewOpposite();
                     }
                 }
             }
@@ -150,11 +174,13 @@ public class WordAdapter extends ArrayAdapter<Word> {
     }
 
     private void viewPlural() {
+        pluralLabelTextView.setVisibility(View.VISIBLE);
+        pluralTextView.setVisibility(View.VISIBLE);
         pluralTextView.setText(currentWord.getmGermanPlural());
 
         partizipLabelTextView.setVisibility(View.GONE);
         partizipTextView.setVisibility(View.GONE);
-        helpingVerbTextLabel.setVisibility(View.GONE);
+        helpingVerbLabelTextView.setVisibility(View.GONE);
         helpingVerbTextView.setVisibility(View.GONE);
 
 
@@ -175,13 +201,13 @@ public class WordAdapter extends ArrayAdapter<Word> {
             partizipLabelTextView.setText(R.string.partizip_label);
             partizipTextView.setVisibility(View.VISIBLE);
             partizipTextView.setText(currentWord.getmVerbPartizip());
-            helpingVerbTextLabel.setVisibility(View.VISIBLE);
+            helpingVerbLabelTextView.setVisibility(View.VISIBLE);
             helpingVerbTextView.setVisibility(View.VISIBLE);
             helpingVerbTextView.setText(currentWord.getmHelpingVerb());
         } else {
             partizipLabelTextView.setVisibility(View.GONE);
             partizipTextView.setVisibility(View.GONE);
-            helpingVerbTextLabel.setVisibility(View.GONE);
+            helpingVerbLabelTextView.setVisibility(View.GONE);
             helpingVerbTextView.setVisibility(View.GONE);
         }
     }
@@ -189,8 +215,10 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
     private void viewOpposite() {
         oppositeLabelTextView.setText(R.string.opposite_word_label);
-        oppositeTextView.setText(currentWord.getmGermanOpposite());
+        oppositeTextView.setText(currentWord.getmGermanOpposite() + " (" + currentWord.getmGermanOppositeMeaning() + ")");
+
         oppositeTextView.setVisibility(View.VISIBLE);
         oppositeLabelTextView.setVisibility(View.VISIBLE);
+
     }
 }
