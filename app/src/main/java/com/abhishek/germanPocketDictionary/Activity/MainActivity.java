@@ -50,6 +50,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
 
     public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList, oppositeList;

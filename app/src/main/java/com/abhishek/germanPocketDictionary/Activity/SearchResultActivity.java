@@ -89,7 +89,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
                 if (newText.length() != 0) {
                     filteredList.clear();
-                    filteredList = handleSearch(newText);
+                    filteredList = handleSearch(newText.trim());
                     if (!filteredList.isEmpty()) {
                         mAdapter = new WordAdapter(SearchResultActivity.this, filteredList, searchState);
                         listView.setVisibility(View.VISIBLE);
