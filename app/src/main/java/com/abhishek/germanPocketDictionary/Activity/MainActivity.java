@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // because this activity implements the LoaderCallbacks interface).
             loaderManager.initLoader(GERMAN_LOADER_ID, null, MainActivity.this);
         } else {
-
             mProgressBar.setVisibility(View.GONE);
             loadingTextView.setText(R.string.no_internet_connection);
         }

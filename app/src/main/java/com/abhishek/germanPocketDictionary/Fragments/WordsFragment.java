@@ -4,25 +4,33 @@ package com.abhishek.germanPocketDictionary.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.abhishek.germanPocketDictionary.Activity.MainActivity;
 import com.abhishek.germanPocketDictionary.Adapter.WordAdapter;
+import com.abhishek.germanPocketDictionary.Adapter.WordAdapterR;
 import com.abhishek.germanPocketDictionary.R;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.
  */
 
-public class WordsFragment extends Fragment {
+public class WordsFragment extends Fragment implements WordAdapterR.OnWordClickListener {
 
     public static final int ALL_WORDS = 0;
     public static final int NOUNS = 1;
@@ -35,7 +43,7 @@ public class WordsFragment extends Fragment {
     public int selectedNoun;
     public int selectedVerb;
 
-    private WordAdapter mAdapter;
+    private WordAdapterR mAdapter;
 
     private View rootView;
 
@@ -56,12 +64,13 @@ public class WordsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.word_list, container, false);
+        rootView = inflater.inflate(R.layout.word_list_r, container, false);
         // Find a reference to the {@link ListView} in the layout
-        ListView wordListView = rootView.findViewById(R.id.list);
+        //ListView wordListView = rootView.findViewById(R.id.list);
+        RecyclerView wordListViewR = rootView.findViewById(R.id.list);
 
-        mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
-        wordListView.setEmptyView(mEmptyStateTextView);
+        //mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
+        //wordListViewR.setEmptyView(mEmptyStateTextView);
         activityReference = ((MainActivity) getActivity());
 
         // Create a new adapter that takes an empty list of words as input
@@ -69,13 +78,14 @@ public class WordsFragment extends Fragment {
             fragmentType = getArguments().getInt("fragmentType");
             switch (fragmentType) {
                 case ALL_WORDS:
-                    mAdapter = new WordAdapter(this, activityReference.getAllWordList(), ALL_WORDS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getAllWordList(), ALL_WORDS, this);
                     break;
 
                 case NOUNS:
-                    mAdapter = new WordAdapter(this, activityReference.getNounList(), NOUNS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getNounList(), NOUNS, this);
                     selectedNoun = -1;
-                    wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    //TODO(pending): fix open/close of items - nouns
+                    /*wordListViewR.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
@@ -93,13 +103,14 @@ public class WordsFragment extends Fragment {
                             }
                             mAdapter.notifyDataSetChanged();
                         }
-                    });
+                    });*/
                     break;
 
                 case VERBS:
-                    mAdapter = new WordAdapter(this, activityReference.getVerbList(), VERBS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getVerbList(), VERBS, this);
                     selectedVerb = -1;
-                    wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    //TODO(pending) : fix open/close of items - verbs
+                    /*wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ViewGroup mainView = rootView.findViewById(R.id.main_view);
@@ -114,23 +125,23 @@ public class WordsFragment extends Fragment {
 
                             mAdapter.notifyDataSetChanged();
                         }
-                    });
+                    });*/
                     break;
 
                 case NUMBERS:
-                    mAdapter = new WordAdapter(this, activityReference.getNumberList(), NUMBERS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getNumberList(), NUMBERS, this);
                     break;
 
                 case COLORS:
-                    mAdapter = new WordAdapter(this, activityReference.getColorList(), COLORS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getColorList(), COLORS, this);
                     break;
 
                 case QUESTIONS:
-                    mAdapter = new WordAdapter(this, activityReference.getQuestionList(), QUESTIONS);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getQuestionList(), QUESTIONS, this);
                     break;
 
                 case OPPOSITE:
-                    mAdapter = new WordAdapter(this,activityReference.getOppositeList(), OPPOSITE);
+                    mAdapter = new WordAdapterR(this, getContext(), activityReference.getOppositeList(), OPPOSITE, this);
                     break;
 
             }
@@ -138,7 +149,11 @@ public class WordsFragment extends Fragment {
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        wordListView.setAdapter(mAdapter);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        wordListViewR.setLayoutManager(manager);
+        wordListViewR.canScrollVertically(LinearLayout.VERTICAL);
+        wordListViewR.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        wordListViewR.setAdapter(mAdapter);
 
 
         View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
@@ -149,5 +164,45 @@ public class WordsFragment extends Fragment {
 
         return rootView;
 
+    }
+
+    @Override
+    public void onWordClickListener(int position, View view) {
+        Log.d(TAG, "onWordClickListener: clicked, position : " + position);
+
+        if (getArguments() != null) {
+            fragmentType = getArguments().getInt("fragmentType");
+
+            switch (fragmentType) {
+                case NOUNS:
+                    //ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                    ImageView arrowImageView = view.findViewById(R.id.arrow);
+                    TransitionManager.beginDelayedTransition((ViewGroup) view, new ChangeBounds());
+                    if (selectedNoun != position) {
+                        view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+
+                        arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                        selectedNoun = position;
+                    } else {
+                        arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                        view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                        selectedNoun = -1;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case VERBS:
+                    //ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                   // TransitionManager.beginDelayedTransition(mainView, new ChangeBounds());
+                    if (selectedVerb != position) {
+                        view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                        selectedVerb = position;
+                    } else {
+                        view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                        selectedVerb = -1;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 }

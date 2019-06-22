@@ -4,15 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.abhishek.germanPocketDictionary.Adapter.WordAdapter;
+import com.abhishek.germanPocketDictionary.Adapter.WordAdapterR;
 import com.abhishek.germanPocketDictionary.Data.Word;
 import com.abhishek.germanPocketDictionary.R;
 
@@ -20,11 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity{
 
     List<Word> allWordsList;
-    WordAdapter mAdapter;
-    ListView listView;
+    WordAdapterR mAdapter;
+    //ListView listView;
+    RecyclerView recyclerListView;
     SearchView searchView;
     TextView mEmptyStateTextView;
     static boolean EMPTY = true;
@@ -38,7 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        listView = findViewById(R.id.list);
+        recyclerListView = findViewById(R.id.list);
 
         View progressBar = findViewById(R.id.loading_indicator);
         progressBar.setVisibility(View.GONE);
@@ -52,9 +58,14 @@ public class SearchResultActivity extends AppCompatActivity {
 
         mEmptyStateTextView = findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_words);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerListView.setLayoutManager(manager);
+        recyclerListView.canScrollVertically(LinearLayout.VERTICAL);
+        recyclerListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        mAdapter = new WordAdapter(this, allWordsList, searchState);
-        listView.setAdapter(mAdapter);
+
+        mAdapter = new WordAdapterR(this, allWordsList, searchState, null);
+        recyclerListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -91,17 +102,17 @@ public class SearchResultActivity extends AppCompatActivity {
                     filteredList.clear();
                     filteredList = handleSearch(newText.trim());
                     if (!filteredList.isEmpty()) {
-                        mAdapter = new WordAdapter(SearchResultActivity.this, filteredList, searchState);
-                        listView.setVisibility(View.VISIBLE);
-                        listView.setAdapter(mAdapter);
+                        mAdapter = new WordAdapterR(SearchResultActivity.this, filteredList, searchState, null);
+                        recyclerListView.setVisibility(View.VISIBLE);
+                        recyclerListView.setAdapter(mAdapter);
                         mEmptyStateTextView.setVisibility(View.GONE);
                     } else {
                         mEmptyStateTextView.setVisibility(View.VISIBLE);
-                        listView.setVisibility(View.GONE);
+                        recyclerListView.setVisibility(View.GONE);
                     }
                 } else {
-                    mAdapter = new WordAdapter(SearchResultActivity.this, allWordsList, searchState);
-                    listView.setAdapter(mAdapter);
+                    mAdapter = new WordAdapterR(SearchResultActivity.this, allWordsList, searchState, null);
+                    recyclerListView.setAdapter(mAdapter);
                     mEmptyStateTextView.setVisibility(View.GONE);
                 }
 
@@ -117,7 +128,7 @@ public class SearchResultActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.home:
-                this.listView.setVisibility(View.GONE);
+                this.recyclerListView.setVisibility(View.GONE);
                 return true;
 
             case R.id.search_menu:
