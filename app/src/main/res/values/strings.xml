@@ -56,6 +56,8 @@
     <string name="action_save">Save</string>
     <string name="category_opposite">Opposite</string>
     <string name="categories">Categories</string>
+    <string name="error_loading_data">Error Loading Data from the server</string>
+    <string name="arrow_content_desp">arrow</string>
 
 
 </resources>

@@ -1,7 +1,7 @@
 package com.abhishek.germanPocketDictionary.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -14,20 +14,19 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +34,13 @@ import android.widget.Toast;
 import com.abhishek.germanPocketDictionary.Adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.Data.Word;
 import com.abhishek.germanPocketDictionary.Fragments.WordsFragment;
-import com.abhishek.germanPocketDictionary.Loader.GermanLoader;
+import com.abhishek.germanPocketDictionary.QueryUtils.VolleyCalls;
 import com.abhishek.germanPocketDictionary.R;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,21 +54,15 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
-
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Word>> {
+public class MainActivity extends AppCompatActivity {
 
     public List<Word> allWordList, nounList, verbList, numberList, colorList, questionList, oppositeList;
 
 
-    //private static final String GERMAN_EXCELSHEET_URL =
-    //      "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
-    private static final String GERMAN_EXCELSHEET_URL_TEST =
-            "https://spreadsheets.google.com/feeds/list/1jZFNioSCd23081WAzWU5zl-rmJwczaGTUwlA_AXq9rs/od6/public/values?alt=json";
+    private static final String GERMAN_EXCELSHEET_URL =
+          "https://spreadsheets.google.com/feeds/list/1hk9Y8QILoh-GzpcqfqMoodkrlLmG6CJ5xApvsKFDs_o/od6/public/values?alt=json";
 
-    private static final int GERMAN_LOADER_ID = 1;
-
-
-    DrawerLayout mDrawerLayout;
+    private DrawerLayout mDrawerLayout;
 
     /**
      * TextView that is displayed when the list is empty
@@ -74,13 +72,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private boolean MENU_ITEM_HIDE = true;
 
-    private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
-    private View alertDialogLayout;
 
     private ViewPager viewPager;
-
-    private NavigationView navigationView;
 
 
     @Override
@@ -110,21 +104,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mProgressBar = findViewById(R.id.loading_indicator);
         loadingTextView = findViewById(R.id.loading_text_view);
 
+        String strTag = "general_req";
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
+        NetworkInfo networkInfo = null;
+        if (connMgr != null) {
+            networkInfo = connMgr.getActiveNetworkInfo();
+        }
 
 
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getSupportLoaderManager();
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(GERMAN_LOADER_ID, null, MainActivity.this);
+
+            StringRequest strReq = new StringRequest(GERMAN_EXCELSHEET_URL, response ->
+                    updateUI(extractFeatureFromJson(response)), error -> {
+                        mProgressBar.setVisibility(View.GONE);
+                        loadingTextView.setText(getString(R.string.error_loading_data));
+                    });
+
+            VolleyCalls.getInstance().addToRequestQueue(strReq, strTag);
         } else {
             mProgressBar.setVisibility(View.GONE);
             loadingTextView.setText(R.string.no_internet_connection);
@@ -132,111 +131,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    private void setupAgreementAlertDialog() {
-        String agreement = null;
-        try {
-            agreement = fetchAgreementDetails();
-        } catch (IOException e) {
-        }
-
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean agreed = sharedPreferences.getBoolean("agreed", false);
-        if (agreement != null) {
-
-            alertDialogLayout = this.getLayoutInflater().inflate(R.layout.agreement_alertbox_layout, null);
-            TextView agreementTextView = alertDialogLayout.findViewById(R.id.agreement_details);
-            agreementTextView.setText(agreement);
-            if (!agreed) {
-                builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.agreement_title)
-                        .setView(alertDialogLayout)
-                        .setPositiveButton("I Agree", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("agreed", true);
-                                editor.apply();
-                                setupNavDrawer();
-                                setupInterface();
-                            }
-                        })
-                        .setNegativeButton("I Disagree", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Application is Closing", Toast.LENGTH_SHORT).show();
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    finishAndRemoveTask();
-                                } else
-                                    finishAffinity();
-
-                                Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("agreed", false);
-                                editor.apply();
-                            }
-                        })
-                        .setCancelable(false);
-
-                alertDialog = builder.create();
-                alertDialog.show();
-
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                CheckBox checkBox = alertDialogLayout.findViewById(R.id.agreement_checkbox);
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked)
-                            updateAgreementStatus(true);
-                        else
-                            updateAgreementStatus(false);
-                    }
-                });
-            } else {
-                setupNavDrawer();
-                setupInterface();
-            }
-        } else {
-            Toast.makeText(this, "Agreement failed to load, contact the developer", Toast.LENGTH_LONG).show();
-            mProgressBar.setVisibility(View.GONE);
-            loadingTextView.setText(R.string.agreement_failed_to_load);
-        }
-
-    }
-
-    private void updateAgreementStatus(Boolean status) {
-
-        if (status) {
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-        } else
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-    }
-
-    private String fetchAgreementDetails() throws IOException {
-
-        StringBuilder agreement = new StringBuilder();
-        InputStream inputStream = getResources().openRawResource(
-                getResources().getIdentifier("com.abhishek.germanPocketDictionary:raw/terms_of_use_warranties_and_release_agreement", null, null));
-
-        if (inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                agreement.append("\n");
-                agreement.append(line);
-                line = bufferedReader.readLine();
-            }
-        }
-        return agreement.toString();
-    }
-
-    @Override
-    public Loader<List<Word>> onCreateLoader(int id, Bundle args) {
-        return new GermanLoader(this, GERMAN_EXCELSHEET_URL_TEST);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<Word>> loader, List<Word> words) {
+    private void updateUI(List<Word> words) {
         mProgressBar.setVisibility(View.GONE);
 
         if (words != null && !words.isEmpty()) {
@@ -327,9 +222,100 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    private void setupAgreementAlertDialog() {
+        String agreement = null;
+        try {
+            agreement = fetchAgreementDetails();
+        } catch (IOException e) {
+            agreementLoadingFailed();
+        }
 
-    @Override
-    public void onLoaderReset(Loader<List<Word>> loader) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean agreed = sharedPreferences.getBoolean("agreed", false);
+        if (agreement != null) {
+
+            @SuppressLint("InflateParams") View alertDialogLayout = this.getLayoutInflater().inflate(R.layout.agreement_alertbox_layout, null);
+            TextView agreementTextView = alertDialogLayout.findViewById(R.id.agreement_details);
+            agreementTextView.setText(agreement);
+            if (!agreed) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.agreement_title)
+                        .setView(alertDialogLayout)
+                        .setPositiveButton("I Agree", (dialog, which) -> {
+                            Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("agreed", true);
+                            editor.apply();
+                            setupNavDrawer();
+                            setupInterface();
+                        })
+                        .setNegativeButton("I Disagree", (dialog, which) -> {
+                            Toast.makeText(MainActivity.this, "Application is Closing", Toast.LENGTH_SHORT).show();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                finishAndRemoveTask();
+                            } else
+                                finishAffinity();
+
+                            Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("agreed", false);
+                            editor.apply();
+                        })
+                        .setCancelable(false);
+
+                alertDialog = builder.create();
+                alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                CheckBox checkBox = alertDialogLayout.findViewById(R.id.agreement_checkbox);
+                checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked)
+                        updateAgreementStatus(true);
+                    else
+                        updateAgreementStatus(false);
+                });
+            } else {
+                setupNavDrawer();
+                setupInterface();
+            }
+        } else {
+            agreementLoadingFailed();
+        }
+
+    }
+
+    private void agreementLoadingFailed(){
+        Toast.makeText(this, "Agreement failed to load, contact the developer", Toast.LENGTH_LONG).show();
+        mProgressBar.setVisibility(View.GONE);
+        loadingTextView.setText(R.string.agreement_failed_to_load);
+
+    }
+
+    private void updateAgreementStatus(Boolean status) {
+
+        if (status) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+        } else
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+    }
+
+    private String fetchAgreementDetails() throws IOException {
+
+        StringBuilder agreement = new StringBuilder();
+        InputStream inputStream = getResources().openRawResource(
+                getResources().getIdentifier("com.abhishek.germanPocketDictionary:raw/terms_of_use_warranties_and_release_agreement", null, null));
+
+        //noinspection ConstantConditions
+        if (inputStream != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                agreement.append("\n");
+                agreement.append(line);
+                line = bufferedReader.readLine();
+            }
+        }
+        return agreement.toString();
     }
 
     public List<Word> getAllWordList() {
@@ -420,10 +406,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_menu);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
-        if (navigationView != null )
-        setupDrawerContent(navigationView);
+        if (navigationView != null)
+            setupDrawerContent(navigationView);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -460,4 +446,77 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return false;
         });
     }
+
+    public ArrayList<Word> extractFeatureFromJson(String germanJson) {
+
+        if (TextUtils.isEmpty(germanJson)) {
+            return null;
+        }
+
+        ArrayList<Word> words = new ArrayList<>();
+        try {
+            JSONObject baseJsonResponse = new JSONObject(germanJson);
+            JSONObject germanFeed = baseJsonResponse.getJSONObject("feed");
+            JSONArray germanArray = germanFeed.getJSONArray("entry");
+
+            for (int i = 0; i < germanArray.length(); i++) {
+                JSONObject currentGerman = germanArray.getJSONObject(i);
+
+                //JSONObject contentGerman = currentGerman.getJSONObject("content");
+                //String contentGermanData = contentGerman.getString("$t");
+
+                JSONObject germanTranslation = currentGerman.getJSONObject("gsx$germantranslation");
+                String germanTranslationValue = String.valueOf(germanTranslation.getString("$t"));
+
+                JSONObject englishTranslation = currentGerman.getJSONObject("gsx$englishtranslation");
+                String englishTranslationValue = String.valueOf(englishTranslation.getString("$t"));
+
+                JSONObject germanPlural = currentGerman.getJSONObject("gsx$plural");
+                String germanPluralValue = germanPlural.getString("$t");
+
+                JSONObject number = currentGerman.getJSONObject("gsx$numbervalue");
+                String numberValue = number.getString("$t");
+
+                JSONObject category = currentGerman.getJSONObject("gsx$category");
+                String categoryValue = category.getString("$t");
+
+                JSONObject verbRootWord = currentGerman.getJSONObject("gsx$verbrootword");
+                String verbRootWordValue = verbRootWord.getString("$t");
+
+                JSONObject verbPartizipII = currentGerman.getJSONObject("gsx$partizipii");
+                String verbPartizipIIValue = verbPartizipII.getString("$t");
+
+                JSONObject helpingVerb = currentGerman.getJSONObject("gsx$helpingverb");
+                String helpingVerbValue = helpingVerb.getString("$t");
+
+                JSONObject opposite = currentGerman.getJSONObject("gsx$opposite");
+                String oppositeValue = opposite.getString("$t");
+
+                JSONObject oppositeMeaning = currentGerman.getJSONObject("gsx$oppositemeaning");
+                String oppositeMeaningValue = oppositeMeaning.getString("$t");
+
+                Word word = new Word(germanTranslationValue, englishTranslationValue, germanPluralValue,
+                        categoryValue, numberValue, verbRootWordValue, verbPartizipIIValue, helpingVerbValue,
+                        oppositeValue, oppositeMeaningValue);
+
+                words.add(word);
+            }
+
+        } catch (JSONException e) {
+            Log.e(MainActivity.class.getName(), "Problem parsing the germanPocketDictionary sheets JSON results", e);
+        }
+
+        return words;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START))
+            mDrawerLayout.closeDrawer(Gravity.START);
+        else
+            super.onBackPressed();
+    }
+
+
 }

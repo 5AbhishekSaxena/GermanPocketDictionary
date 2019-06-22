@@ -1,5 +1,7 @@
 package com.abhishek.germanPocketDictionary.Data;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -22,6 +24,7 @@ public class Word implements Serializable {
     private String mHelpingVerb;
 
 
+    @SuppressWarnings("FieldCanBeLocal")
     final private int GENDER_NULL = 0;
     final private int GENDER_MALE = 1;
     final private int GENDER_FEMALE = 2;
@@ -157,6 +160,7 @@ public class Word implements Serializable {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return "Word{" +

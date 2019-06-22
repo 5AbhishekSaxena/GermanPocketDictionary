@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.abhishek.germanPocketDictionary.Adapter.WordAdapter;
-import com.abhishek.germanPocketDictionary.Adapter.WordAdapterR;
 import com.abhishek.germanPocketDictionary.Data.Word;
 import com.abhishek.germanPocketDictionary.R;
 
@@ -25,24 +23,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class SearchResultActivity extends AppCompatActivity{
+public class SearchResultActivity extends AppCompatActivity {
 
-    List<Word> allWordsList;
-    WordAdapterR mAdapter;
+    List<Word> allWordsList = null/*= (ArrayList<Word>) getIntent().getSerializableExtra("AllWordArrayList")*/;
+    WordAdapter mAdapter;
     //ListView listView;
     RecyclerView recyclerListView;
     SearchView searchView;
     TextView mEmptyStateTextView;
     static boolean EMPTY = true;
-    public static boolean searchState = EMPTY;
+    public static boolean searchState = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         recyclerListView = findViewById(R.id.list);
 
@@ -52,7 +52,9 @@ public class SearchResultActivity extends AppCompatActivity{
         TextView loadingTextView = findViewById(R.id.loading_text_view);
         loadingTextView.setVisibility(View.GONE);
 
-        allWordsList = new ArrayList<>();
+        if (allWordsList == null)
+            allWordsList = new ArrayList<>();
+
         allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra("AllWordArrayList");
 
 
@@ -64,7 +66,7 @@ public class SearchResultActivity extends AppCompatActivity{
         recyclerListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
-        mAdapter = new WordAdapterR(this, allWordsList, searchState, null);
+        mAdapter = new WordAdapter(this, allWordsList, null);
         recyclerListView.setAdapter(mAdapter);
     }
 
@@ -88,10 +90,13 @@ public class SearchResultActivity extends AppCompatActivity{
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                newText = newText.trim();
                 if (newText.length() == 0) {
                     searchState = EMPTY;
                     InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    if (inputManager != null) {
+                        inputManager.hideSoftInputFromWindow(searchView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
                 } else {
                     searchState = !EMPTY;
                 }
@@ -102,7 +107,7 @@ public class SearchResultActivity extends AppCompatActivity{
                     filteredList.clear();
                     filteredList = handleSearch(newText.trim());
                     if (!filteredList.isEmpty()) {
-                        mAdapter = new WordAdapterR(SearchResultActivity.this, filteredList, searchState, null);
+                        mAdapter = new WordAdapter(SearchResultActivity.this, filteredList, null);
                         recyclerListView.setVisibility(View.VISIBLE);
                         recyclerListView.setAdapter(mAdapter);
                         mEmptyStateTextView.setVisibility(View.GONE);
@@ -111,7 +116,7 @@ public class SearchResultActivity extends AppCompatActivity{
                         recyclerListView.setVisibility(View.GONE);
                     }
                 } else {
-                    mAdapter = new WordAdapterR(SearchResultActivity.this, allWordsList, searchState, null);
+                    mAdapter = new WordAdapter(SearchResultActivity.this, allWordsList, null);
                     recyclerListView.setAdapter(mAdapter);
                     mEmptyStateTextView.setVisibility(View.GONE);
                 }
@@ -132,16 +137,11 @@ public class SearchResultActivity extends AppCompatActivity{
                 return true;
 
             case R.id.search_menu:
-                Intent searchIntent = new Intent(this,SearchResultActivity.class);
+                Intent searchIntent = new Intent(this, SearchResultActivity.class);
                 startActivity(searchIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public List<Word> getAllWordsList() {
-        return allWordsList;
     }
 
     private ArrayList<Word> handleSearch(String query) {

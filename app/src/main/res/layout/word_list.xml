@@ -2,13 +2,12 @@
 <!-- Layout for a list of earthquakes -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_view"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/tan_background"
     >
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:orientation="vertical"
         android:layout_width="match_parent"
