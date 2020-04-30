@@ -29,8 +29,11 @@ public class Utils {
         return gson.fromJson(json, type);
     }
 
-    public static List<Word> getWordsFromCategory(Context context, String category){
+    public static List<Word> getWordsUsingCategory(Context context, String category){
         List<Word> allWords = SharedPreferenceManager.getInstance(context).getListFromPreference(Constants.TABLES.ALL_WORDS);
+        if (category.equals(Constants.TABLES.ALL_WORDS))
+            return allWords;
+
         List<Word> filteredList = new ArrayList<>();
         if (allWords != null && !allWords.isEmpty()) {
             for (Word word : allWords){

@@ -64,7 +64,7 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
             if (fragmentType != null) {
                 switch (fragmentType) {
                     case Constants.TABLES.ALL_WORDS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getAllWordsList(), Constants.TABLES.ALL_WORDS, this);
+                        mAdapter = new WordAdapter(this, getContext(), /*activityReference.getAllWordsList(),*/ Constants.TABLES.ALL_WORDS, this);
                         break;
 
                     case Constants.API_KEYS.CATEGORY_NOUNS:

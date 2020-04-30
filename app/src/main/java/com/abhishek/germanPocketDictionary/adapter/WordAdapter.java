@@ -23,7 +23,7 @@ import java.util.List;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
-import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsFromCategory;
+import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsUsingCategory;
 
 import com.abhishek.germanPocketDictionary.utilities.Constants;
 
@@ -51,7 +51,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     public WordAdapter(WordsFragment fragment, Context context, /*List<Word> words,*/ String fragmentType,
                        OnWordClickListener onWordClickListener) {
         this.context = context;
-        this.words = getWordsFromCategory(context, fragmentType);
+        this.words = getWordsUsingCategory(context, fragmentType);
         this.fragment = fragment;
         mFragmentType = fragmentType;
         this.onWordClickListener = onWordClickListener;
