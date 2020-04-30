@@ -499,6 +499,42 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    private ValueEventListener getWordsValueEventListener() {
+        if (wordsValueEventListener == null) {
+            wordsValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    allWordsList.clear();
+                    for (DataSnapshot wordsSnapshot : dataSnapshot.getChildren()) {
+                        Word word = wordsSnapshot.getValue(Word.class);
+                        if (word != null) {
+                            allWordsList.add(word);
+                        }
+                    }
+
+                    if (allWordsList != null && !allWordsList.isEmpty()) {
+                        Log.d(LOG_TAG, "words successfully fetched from the db");
+                        Log.d(LOG_TAG, "updating preferences....");
+                        SharedPreferenceManager prefManager = SharedPreferenceManager
+                                .getInstance(MainActivity.this);
+                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
+                        hideProgressbarAndLoadingTextView();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
+                    Log.d(LOG_TAG, "Firebase onCancelled - Failed to load data, please try again!");
+                    /*progressBar.setVisibility(View.GONE);
+                    loadingTextView.setText(getString(R.string.error_loading_data));*/
+                    hideProgressBarAndShowTextView(R.string.error_loading_data);
+                }
+            };
+        }
+        return wordsValueEventListener;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -587,41 +623,5 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (wordsReference != null && wordsValueEventListener != null) {
             wordsReference.removeEventListener(wordsValueEventListener);
         }
-    }
-
-    private ValueEventListener getWordsValueEventListener() {
-        if (wordsValueEventListener == null) {
-            wordsValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    allWordsList.clear();
-                    for (DataSnapshot wordsSnapshot : dataSnapshot.getChildren()) {
-                        Word word = wordsSnapshot.getValue(Word.class);
-                        if (word != null) {
-                            allWordsList.add(word);
-                        }
-                    }
-
-                    if (allWordsList != null && !allWordsList.isEmpty()) {
-                        Log.d(LOG_TAG, "words successfully fetched from the db");
-                        Log.d(LOG_TAG, "updating preferences....");
-                        SharedPreferenceManager prefManager = SharedPreferenceManager
-                                .getInstance(MainActivity.this);
-                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
-                        hideProgressbarAndLoadingTextView();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
-                    Log.d(LOG_TAG, "Firebase onCancelled - Failed to load data, please try again!");
-                    /*progressBar.setVisibility(View.GONE);
-                    loadingTextView.setText(getString(R.string.error_loading_data));*/
-                    hideProgressBarAndShowTextView(R.string.error_loading_data);
-                }
-            };
-        }
-        return wordsValueEventListener;
     }
 }

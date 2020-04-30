@@ -64,33 +64,33 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
             if (fragmentType != null) {
                 switch (fragmentType) {
                     case Constants.TABLES.ALL_WORDS:
-                        mAdapter = new WordAdapter(this, getContext(), /*activityReference.getAllWordsList(),*/ Constants.TABLES.ALL_WORDS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.TABLES.ALL_WORDS, this);
                         break;
 
                     case Constants.API_KEYS.CATEGORY_NOUNS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getNounList(),  Constants.API_KEYS.CATEGORY_NOUNS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_NOUNS, this);
                         selectedNoun = -1;
                         break;
 
                     case Constants.API_KEYS.CATEGORY_VERBS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getVerbList(), Constants.API_KEYS.CATEGORY_VERBS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_VERBS, this);
                         selectedVerb = -1;
                         break;
 
                     case Constants.API_KEYS.CATEGORY_NUMBERS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getNumberList(), Constants.API_KEYS.CATEGORY_NUMBERS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_NUMBERS, this);
                         break;
 
                     case Constants.API_KEYS.CATEGORY_COLORS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getColorList(), Constants.API_KEYS.CATEGORY_COLORS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_COLORS, this);
                         break;
 
                     case Constants.API_KEYS.CATEGORY_QUESTIONS:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getQuestionList(), Constants.API_KEYS.CATEGORY_QUESTIONS, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_QUESTIONS, this);
                         break;
 
                     case Constants.API_KEYS.CATEGORY_OPPOSITE:
-                        mAdapter = new WordAdapter(this, getContext(), activityReference.getOppositeList(), Constants.API_KEYS.CATEGORY_OPPOSITE, this);
+                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_OPPOSITE, this);
                         break;
                 }
             }

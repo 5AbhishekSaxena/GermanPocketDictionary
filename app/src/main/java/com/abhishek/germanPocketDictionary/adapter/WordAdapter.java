@@ -48,20 +48,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     //private final OnClickListener mOnClickListener = new MyOnClickListener();
 
-    public WordAdapter(WordsFragment fragment, Context context, /*List<Word> words,*/ String fragmentType,
+    public WordAdapter(WordsFragment fragment, Context context, String fragmentType,
                        OnWordClickListener onWordClickListener) {
         this.context = context;
         this.words = getWordsUsingCategory(context, fragmentType);
-        this.fragment = fragment;
-        mFragmentType = fragmentType;
-        this.onWordClickListener = onWordClickListener;
-        //preferenceManager = SharedPreferenceManager.getInstance(context);
-    }
-
-    public WordAdapter(WordsFragment fragment, Context context, List<Word> words, String fragmentType,
-                       OnWordClickListener onWordClickListener) {
-        this.context = context;
-        this.words = words;
         this.fragment = fragment;
         mFragmentType = fragmentType;
         this.onWordClickListener = onWordClickListener;
