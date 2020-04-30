@@ -295,8 +295,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Log.d(LOG_TAG, "fetching words from the firebase...");
 
         //fixme
-        /*ConnectionUtils connectionUtils = new ConnectionUtils(this);
-        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+        ConnectionUtils connectionUtils = new ConnectionUtils(this);
+        /*AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(Void... voids) {
@@ -311,9 +311,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 }
 
             }
-        };
+        };*/
+        //task.execute();
 
-        task.execute();*/
+        if(!connectionUtils.hasInternetAccess())
+            noInternetConnection();
 
         wordsReference = FirebaseHandler.getInstance().getWordsReference();
         if (wordsReference != null) {
