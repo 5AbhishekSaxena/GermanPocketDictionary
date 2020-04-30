@@ -2,8 +2,10 @@ package com.abhishek.germanPocketDictionary.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +26,6 @@ import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.C
 import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsFromCategory;
 
 import com.abhishek.germanPocketDictionary.utilities.Constants;
-import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
 
 /**
  * @author Abhishek Saxena
@@ -84,75 +85,78 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Word currentWord = words.get(position);
-        if (!mFragmentType.equals(CATEGORY_OPPOSITE)) {
-            holder.germanTextView.setText(currentWord.getGermanTranslation());
-            holder.englishTextView.setText(currentWord.getEnglishTranslation());
-        }
+        if (currentWord != null) {
 
-        if (!isActivity) {
-            if (currentWord.hasPlural()) {
-                viewPlural(holder, currentWord);
+            if (!mFragmentType.equals(CATEGORY_OPPOSITE)) {
+                holder.germanTextView.setText(currentWord.getGermanTranslation());
+                holder.englishTextView.setText(currentWord.getEnglishTranslation());
             }
 
-            if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE) ) {
-                viewOpposite(holder, currentWord);
-            }
-
-            if (mFragmentType.equals(CATEGORY_NOUNS)) {
-                /*setList(getWordsFromCategory(context, CATEGORY_NOUNS));*/
-                holder.arrowImageView.setVisibility(View.VISIBLE);
-                if (fragment.selectedNoun == position) {
-                    holder.expandableView.setVisibility(View.VISIBLE);
-                    holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
-                } else {
-                    holder.expandableView.setVisibility(View.GONE);
-                    holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
+            if (!isActivity) {
+                if (currentWord.hasPlural()) {
+                    viewPlural(holder, currentWord);
                 }
-            }
 
-            if (mFragmentType.equals(CATEGORY_VERBS)) {
-                holder.arrowImageView.setVisibility(View.VISIBLE);
-                if (fragment.selectedVerb == position) {
-                    holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
-                    holder.expandableView.setVisibility(View.VISIBLE);
-                    viewRootWord(holder, currentWord);
-
-                    if (currentWord.hasPartizip()) {
-                        viewPartizip(holder, currentWord);
-                    }
-                } else {
-                    holder.expandableView.setVisibility(View.GONE);
-                    holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
+                if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE)) {
+                    viewOpposite(holder, currentWord);
                 }
-            }
 
-            if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
-                holder.germanTextViewOne.setText(currentWord.getGermanTranslation());
-                holder.englishTextViewOne.setText(currentWord.getEnglishTranslation());
-
-                holder.germanTextViewTwo.setText(currentWord.getGermanOpposite());
-                holder.englishTextViewTwo.setText(currentWord.getGermanOppositeMeaning());
-            }
-        } else {
-            holder.expandableView.setVisibility(View.GONE);
-
-            if (holder.expandableView != null) {
-                if (!SearchResultActivity.searchState) {
-                    if (currentWord.getCategory().equals(CATEGORY_NOUNS)) {
+                if (mFragmentType.equals(CATEGORY_NOUNS)) {
+                    /*setList(getWordsFromCategory(context, CATEGORY_NOUNS));*/
+                    holder.arrowImageView.setVisibility(View.VISIBLE);
+                    if (fragment.selectedNoun == position) {
                         holder.expandableView.setVisibility(View.VISIBLE);
-
-
-                        if (currentWord.hasPlural())
-                            viewPlural(holder, currentWord);
+                        holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
+                    } else {
+                        holder.expandableView.setVisibility(View.GONE);
+                        holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
                     }
-                    if (currentWord.getCategory().equals(CATEGORY_VERBS)) {
+                }
+
+                if (mFragmentType.equals(CATEGORY_VERBS)) {
+                    holder.arrowImageView.setVisibility(View.VISIBLE);
+                    if (fragment.selectedVerb == position) {
+                        holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
                         holder.expandableView.setVisibility(View.VISIBLE);
                         viewRootWord(holder, currentWord);
-                        viewPartizip(holder, currentWord);
+
+                        if (currentWord.hasPartizip()) {
+                            viewPartizip(holder, currentWord);
+                        }
+                    } else {
+                        holder.expandableView.setVisibility(View.GONE);
+                        holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_down_black_18dp);
                     }
-                    if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE)) {
-                        holder.expandableView.setVisibility(View.VISIBLE);
-                        viewOpposite(holder, currentWord);
+                }
+
+                if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
+                    holder.germanTextViewOne.setText(currentWord.getGermanTranslation());
+                    holder.englishTextViewOne.setText(currentWord.getEnglishTranslation());
+
+                    holder.germanTextViewTwo.setText(currentWord.getGermanOpposite());
+                    holder.englishTextViewTwo.setText(currentWord.getGermanOppositeMeaning());
+                }
+            } else {
+                holder.expandableView.setVisibility(View.GONE);
+
+                if (holder.expandableView != null) {
+                    if (!SearchResultActivity.searchState) {
+                        if (currentWord.getCategory().equals(CATEGORY_NOUNS)) {
+                            holder.expandableView.setVisibility(View.VISIBLE);
+
+
+                            if (currentWord.hasPlural())
+                                viewPlural(holder, currentWord);
+                        }
+                        if (currentWord.getCategory().equals(CATEGORY_VERBS)) {
+                            holder.expandableView.setVisibility(View.VISIBLE);
+                            viewRootWord(holder, currentWord);
+                            viewPartizip(holder, currentWord);
+                        }
+                        if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE)) {
+                            holder.expandableView.setVisibility(View.VISIBLE);
+                            viewOpposite(holder, currentWord);
+                        }
                     }
                 }
             }
@@ -193,7 +197,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
         ViewHolder(View itemView, boolean isActivity, OnWordClickListener onWordClickListener) {
             super(itemView);
-            if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
+            if (!mFragmentType.equals(CATEGORY_OPPOSITE)) {
                 germanTextView = itemView.findViewById(R.id.german_text_view);
                 englishTextView = itemView.findViewById(R.id.english_text_view);
                 expandableView = itemView.findViewById(R.id.expandable_view);

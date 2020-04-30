@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ViewPager viewPager;
 
     private Bundle savedInstanceState;
+
+    private DatabaseReference wordsReference;
+    private ValueEventListener wordsValueEventListener;
 
 
     @Override
@@ -223,7 +227,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         break;
 
                     case R.id.nav_verbs:
-                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_VERBS));                        break;
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_VERBS));
+                        break;
 
                     case R.id.nav_numbers:
                         viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_NUMBERS));
@@ -245,11 +250,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     public void setupInterface() {
+        allWordsList = new ArrayList<>();
         nounList = new ArrayList<>();
+        verbList = new ArrayList<>();
         numberList = new ArrayList<>();
         colorList = new ArrayList<>();
-        allWordsList = new ArrayList<>();
-        verbList = new ArrayList<>();
         questionList = new ArrayList<>();
         oppositeList = new ArrayList<>();
 
@@ -295,43 +300,30 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         Log.d(LOG_TAG, "fetching words from the firebase...");
 
-        ConnectionUtils connectionUtils = new ConnectionUtils(this);
-        if (!connectionUtils.hasInternetAccess()) {
-            noInternetConnection();
-        }
+        //fixme
+        /*ConnectionUtils connectionUtils = new ConnectionUtils(this);
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
 
-        DatabaseReference wordsReference = FirebaseHandler.getInstance().getWordsReference();
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                return connectionUtils.hasInternetAccess();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean hasNetwork) {
+                super.onPostExecute(hasNetwork);
+                if (!hasNetwork) {
+                    noInternetConnection();
+                }
+
+            }
+        };
+
+        task.execute();*/
+
+        wordsReference = FirebaseHandler.getInstance().getWordsReference();
         if (wordsReference != null) {
-            wordsReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    allWordsList.clear();
-                    for (DataSnapshot wordsSnapshot : dataSnapshot.getChildren()) {
-                        Word word = wordsSnapshot.getValue(Word.class);
-                        if (word != null) {
-                            allWordsList.add(word);
-                        }
-                    }
-
-                    if (allWordsList != null && !allWordsList.isEmpty()) {
-                        Log.d(LOG_TAG, "words successfully fetched from the db");
-                        Log.d(LOG_TAG, "updating preferences....");
-                        SharedPreferenceManager prefManager = SharedPreferenceManager
-                                .getInstance(MainActivity.this);
-                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
-                        hideProgressbarAndLoadingTextView();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
-                    /*progressBar.setVisibility(View.GONE);
-                    loadingTextView.setText(getString(R.string.error_loading_data));*/
-                    hideProgressBarAndShowTextView(R.string.error_loading_data);
-                }
-
-            });
+            wordsReference.addValueEventListener(getWordsValueEventListener());
         }
     }
 
@@ -592,5 +584,55 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferenceManager.getInstance(this).unregisterOnSharedPreferenceChangeListener(this);
+        if (wordsReference != null && wordsValueEventListener != null) {
+            wordsReference.removeEventListener(wordsValueEventListener);
+        }
+    }
+
+    /*public void fixColors() {
+        Log.d(LOG_TAG, "fix colors called");
+        DatabaseReference wordBackupReference = FirebaseHandler.getInstance().getBackupBranch();
+        for (Word word : allWordsList) {
+            if (word.getCategory().equals(CATEGORY_NUMBERS) && word.getNumberValue() == -1) {
+                word.setCategory(CATEGORY_COLORS);
+                wordBackupReference.child(word.getId()).setValue(word);
+            }
+        }
+    }*/
+
+    private ValueEventListener getWordsValueEventListener() {
+        if (wordsValueEventListener == null) {
+            wordsValueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    allWordsList.clear();
+                    for (DataSnapshot wordsSnapshot : dataSnapshot.getChildren()) {
+                        Word word = wordsSnapshot.getValue(Word.class);
+                        if (word != null) {
+                            allWordsList.add(word);
+                        }
+                    }
+
+                    if (allWordsList != null && !allWordsList.isEmpty()) {
+                        Log.d(LOG_TAG, "words successfully fetched from the db");
+                        Log.d(LOG_TAG, "updating preferences....");
+                        SharedPreferenceManager prefManager = SharedPreferenceManager
+                                .getInstance(MainActivity.this);
+                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
+                        hideProgressbarAndLoadingTextView();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
+                    Log.d(LOG_TAG, "Firebase onCancelled - Failed to load data, please try again!");
+                    /*progressBar.setVisibility(View.GONE);
+                    loadingTextView.setText(getString(R.string.error_loading_data));*/
+                    hideProgressBarAndShowTextView(R.string.error_loading_data);
+                }
+            };
+        }
+        return wordsValueEventListener;
     }
 }

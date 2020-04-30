@@ -35,4 +35,7 @@ public class FirebaseHandler {
         return getDatabaseRootReference().child(Constants.TABLES.ALL_WORDS);
     }
 
+    public DatabaseReference getBackupBranch() {
+        return getDatabaseRootReference().child("words-backup");
+    }
 }

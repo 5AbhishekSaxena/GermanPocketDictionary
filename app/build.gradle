@@ -50,7 +50,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
 
     //Preference Manager
     implementation "androidx.preference:preference:1.1.1"

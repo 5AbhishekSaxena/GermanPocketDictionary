@@ -24,15 +24,16 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/sliding_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
                     app:tabIndicatorColor="@android:color/white"
                     app:tabMode="scrollable"
+                    android:visibility="invisible"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextColor="@color/shadow_white" />
             </androidx.viewpager.widget.ViewPager>
