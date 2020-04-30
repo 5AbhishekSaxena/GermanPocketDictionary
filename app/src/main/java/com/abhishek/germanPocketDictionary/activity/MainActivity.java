@@ -589,17 +589,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    /*public void fixColors() {
-        Log.d(LOG_TAG, "fix colors called");
-        DatabaseReference wordBackupReference = FirebaseHandler.getInstance().getBackupBranch();
-        for (Word word : allWordsList) {
-            if (word.getCategory().equals(CATEGORY_NUMBERS) && word.getNumberValue() == -1) {
-                word.setCategory(CATEGORY_COLORS);
-                wordBackupReference.child(word.getId()).setValue(word);
-            }
-        }
-    }*/
-
     private ValueEventListener getWordsValueEventListener() {
         if (wordsValueEventListener == null) {
             wordsValueEventListener = new ValueEventListener() {
