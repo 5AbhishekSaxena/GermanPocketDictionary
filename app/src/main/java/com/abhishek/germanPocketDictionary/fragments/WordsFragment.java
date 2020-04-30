@@ -54,7 +54,7 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
         View rootView = inflater.inflate(R.layout.word_list, container, false);
         // Find a reference to the {@link ListView} in the layout
         //ListView wordListView = rootView.findViewById(R.id.list);
-        RecyclerView wordListViewR = rootView.findViewById(R.id.list);
+        RecyclerView wordRecyclerView = rootView.findViewById(R.id.list);
 
         MainActivity activityReference = ((MainActivity) getActivity());
 
@@ -96,9 +96,9 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
             }
         }
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        wordListViewR.setLayoutManager(manager);
-        wordListViewR.canScrollVertically(LinearLayout.VERTICAL);
-        wordListViewR.setAdapter(mAdapter);
+        wordRecyclerView.setLayoutManager(manager);
+        wordRecyclerView.canScrollVertically(LinearLayout.VERTICAL);
+        wordRecyclerView.setAdapter(mAdapter);
 
         View loadingIndicator = rootView.findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
