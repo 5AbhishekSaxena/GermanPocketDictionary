@@ -1,11 +1,13 @@
 package com.abhishek.germanPocketDictionary.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,16 +24,16 @@ import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
 import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
+import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    List<Word> allWordsList = null/*= (ArrayList<Word>) getIntent().getSerializableExtra("AllWordArrayList")*/;
+    List<Word> allWordsList = null;
     WordAdapter mAdapter;
-    //ListView listView;
     RecyclerView recyclerListView;
     SearchView searchView;
     TextView mEmptyStateTextView;
@@ -62,7 +64,7 @@ public class SearchResultActivity extends AppCompatActivity {
         if (allWordsList == null)
             allWordsList = new ArrayList<>();
 
-        allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra(Constants.TABLES.ALL_WORDS);
+        allWordsList = SharedPreferenceManager.getInstance(this).getListFromPreference(Constants.TABLES.ALL_WORDS);
 
 
         mEmptyStateTextView = findViewById(R.id.empty_view);
@@ -137,16 +139,9 @@ public class SearchResultActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-
-           /* case R.id.search_menu:
-                Intent searchIntent = new Intent(this, SearchResultActivity.class);
-                startActivity(searchIntent);
-                break;*/
+        if (item.getItemId() == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -164,5 +159,16 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         }
         return filteredList;
+    }
+
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if(allWordsList != null) {
+            allWordsList.clear();
+            allWordsList.addAll(SharedPreferenceManager.getInstance(this).getListFromPreference(Constants.TABLES.ALL_WORDS));
+            if (mAdapter != null)
+                mAdapter.notifyDataSetChanged();
+        }
     }
 }

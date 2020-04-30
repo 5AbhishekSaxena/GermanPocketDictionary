@@ -56,6 +56,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
 
     public WordAdapter(Activity context, List<Word> words,
                        OnWordClickListener onWordClickListener) {
+        mFragmentType = "search_type";
         this.context = context;
         isActivity = true;
         this.words = words;

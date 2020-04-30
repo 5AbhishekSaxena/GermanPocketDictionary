@@ -249,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void setupInterface() {
         allWordsList = new ArrayList<>();
 
+        attachValueEventListener();
+
         SharedPreferenceManager.getInstance(this).registerOnSharedPreferenceChangeListener(this);
         if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.ALL_WORDS)) {
             Log.d(LOG_TAG, "fetching json from savedInstanceBundle..");
@@ -262,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 fetchWordsFromPreference();
         } else
             fetchWordsFromPreference();
+
     }
 
     private void fetchWordsFromPreference() {
@@ -292,13 +295,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Log.d(LOG_TAG, "fetching words from the firebase...");
         ConnectionUtils connectionUtils = new ConnectionUtils(this);
 
-        if(!connectionUtils.hasInternetAccess())
+        if (!connectionUtils.hasInternetAccess())
             noInternetConnection();
 
-        wordsReference = FirebaseHandler.getInstance().getWordsReference();
-        if (wordsReference != null) {
-            wordsReference.addValueEventListener(getWordsValueEventListener());
-        }
+        if (wordsReference == null)
+            wordsReference = FirebaseHandler.getInstance().getWordsReference();
+
+        wordsReference.addListenerForSingleValueEvent(getWordsValueEventListener());
+    }
+
+    private void attachValueEventListener() {
+        if (wordsReference == null)
+            wordsReference = FirebaseHandler.getInstance().getWordsReference();
+
+        wordsReference.addValueEventListener(getWordsValueEventListener());
     }
 
     private void updateUI() {
