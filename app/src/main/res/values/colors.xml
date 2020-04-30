@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFAB40</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#1976d2</color> <!--FFAB40-->
+    <color name="colorPrimaryDark">#004ba0</color>
+    <color name="colorPrimaryLight">#6ab7ff</color>
+    <color name="colorAccent">#6ab7ff</color>   <!--FF4081-->
 
     <color name="primary_color">#FFAB40</color>
+
+    <color name="shadow_white">#EDE7F6</color>
 
     <!-- Background color for app -->
     <color name="tan_background">#ECEFF1</color>

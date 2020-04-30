@@ -1,100 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/activity_margin"
-    tools:context=".Activity.FeedBackActivity">
+    tools:context=".activity.FeedBackActivity">
 
-    <!-- Overview category -->
-    <LinearLayout
+    <include layout="@layout/simple_toolbar" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Label -->
-        <TextView
-            style="@style/CategoryStyle"
-            android:text="@string/feedback_name_label" />
-
-        <!-- Input fields -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical"
-            android:paddingLeft="4dp">
-
-            <!-- Name field -->
-            <EditText
-                android:id="@+id/edit_feedback_user_name"
-                style="@style/EditorFieldStyle"
-                android:hint="@string/hint_user_name"
-                android:inputType="textCapWords" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <!-- Measurement category -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <!-- Label -->
-            <TextView
-                style="@style/CategoryStyle"
-                android:text="@string/feedback_feedback_label" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_name_layout"
+                style="@style/TextInputStandardStyle">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical"
-                android:paddingLeft="4dp">
-
-                <EditText
-                    android:id="@+id/edit_feedback_feedback"
+                <!-- Name field -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/user_name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/hint_feedback" />
-            </LinearLayout>
+                    android:hint="@string/hint_user_name"
+                    android:inputType="textCapWords|textAutoComplete"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/feedback_layout"
+                style="@style/TextInputStandardStyle"
+                android:layout_below="@id/user_name_layout">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- Additional Information category -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Label -->
-            <TextView
-                style="@style/CategoryStyle"
-                android:text="@string/feedback_additional_information_label" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical"
-                android:paddingLeft="4dp">
-
-                <EditText
-                    android:id="@+id/edit_feedback_additional_information"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/feedback_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/hint_additional_information" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                    android:hint="@string/hint_feedback"
+                    android:scrollbars="vertical"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:gravity="top|start"
+                    android:maxLines="12" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/additional_information_layout"
+                style="@style/TextInputStandardStyle"
+                android:layout_below="@id/feedback_layout">
+
+                <!-- Name field -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/additional_information_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/hint_additional_information"
+                    android:inputType="textCapSentences" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/send_mail_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/ic_send_black_24dp"
+                android:tint="@color/shadow_white"
+                app:elevation="6dp"
+                app:fabSize="normal" />
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

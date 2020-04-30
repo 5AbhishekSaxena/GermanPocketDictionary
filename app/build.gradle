@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.abhishek.germanPocketDictionary"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 8
-        versionName '1.0.8'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 11
+        versionName '1.1.1'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //Defining Log debugging
         buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
@@ -38,11 +39,24 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible,GradleCompatible
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //Design
+    implementation 'com.google.android.material:material:1.1.0'
+
+    //CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+
+    //Preference Manager
+    implementation "androidx.preference:preference:1.1.1"
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
+
+

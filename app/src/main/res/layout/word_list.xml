@@ -7,7 +7,7 @@
     android:background="@color/tan_background"
     >
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:orientation="vertical"
         android:layout_width="match_parent"

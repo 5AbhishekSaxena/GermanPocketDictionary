@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "895042857043",
+    "firebase_url": "https://germanv1-6ec53.firebaseio.com",
+    "project_id": "germanv1-6ec53",
+    "storage_bucket": "germanv1-6ec53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895042857043:android:5d66b2690ac37f077bbea6",
+        "android_client_info": {
+          "package_name": "com.abhishek.germanPocketDictionary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895042857043-8f510a818a6i0djrre47ujfup099bpq9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAatQC9lZS_zcp-XHUhawF5Z6mN9EGu8rI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895042857043-8f510a818a6i0djrre47ujfup099bpq9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -31,7 +31,7 @@
     <string name="root_word_label">Root Word:\u0020</string>
     <string name="plural_word_label">Plural:\u0020 </string>
     <string name="opposite_word_label">Opposite:\u0020 </string>
-    <string name="partizip_label">Partizip II:\u0020 </string>
+    <string name="partizip_label">Partizip II:\u0020</string>
     <string name="helping_verb_label">Helping verb:\u0020 </string>
 
 
@@ -47,10 +47,10 @@
     <string name="feedback_additional_information_label">Additional Information:\u0020</string>
 
     <!-- Hints for the Feedback Activity -->
-    <string name="hint_user_name">User Name</string>
-    <string name="hint_email">Enter Email</string>
-    <string name="hint_feedback">Enter Feedback</string>
-    <string name="hint_additional_information">(Optional)</string>
+    <string name="hint_user_name">User Name*</string>
+    <string name="hint_email">Email*</string>
+    <string name="hint_feedback">Feedback*</string>
+    <string name="hint_additional_information">Additional Information (Optional)</string>
 
     <!-- Feedback Menu Item -->
     <string name="action_save">Save</string>
@@ -58,6 +58,9 @@
     <string name="categories">Categories</string>
     <string name="error_loading_data">Error Loading Data from the server</string>
     <string name="arrow_content_desp">arrow</string>
+    <string name="error_feedback_empty">Feedback field is empty.</string>
+    <string name="error_user_name_empty">Username field is empty</string>
+    <string name="feedback_label">Feedback</string>
 
 
 </resources>

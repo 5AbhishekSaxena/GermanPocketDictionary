@@ -8,7 +8,7 @@
     android:visibility="gone">
 
     <TextView
-        android:id="@+id/plural_text_label"
+        android:id="@+id/label_one_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -19,21 +19,21 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/plural_text"
+        android:id="@+id/value_one_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/plural_text_label"
+        android:layout_toEndOf="@id/label_one_text_view"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@android:color/black"
         android:visibility="gone"
         tools:text="Shubham" />
 
     <TextView
-        android:id="@+id/opposite_text_label"
+        android:id="@+id/label_two_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/plural_text_label"
+        android:layout_below="@id/label_one_text_view"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
         android:text="@string/opposite_word_label"
@@ -43,24 +43,24 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/opposite_text"
+        android:id="@+id/value_two_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/plural_text_label"
-        android:layout_margin="5dp"
-        android:layout_toEndOf="@id/opposite_text_label"
+        android:layout_below="@id/label_one_text_view"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/label_two_text_view"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@android:color/black"
         android:visibility="gone"
         tools:text="Abhishek" />
 
     <TextView
-        android:id="@+id/helping_text_label"
+        android:id="@+id/label_three_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/opposite_text_label"
+        android:layout_below="@id/label_two_text_view"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
         android:text="@string/helping_verb_label"
@@ -70,13 +70,13 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/helping_verb_text"
+        android:id="@+id/value_three_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/opposite_text_label"
+        android:layout_below="@id/label_two_text_view"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/helping_text_label"
+        android:layout_toEndOf="@id/label_three_text_view"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@android:color/black"
         android:visibility="gone"
