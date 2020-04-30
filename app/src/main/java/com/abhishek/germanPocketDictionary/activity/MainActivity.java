@@ -30,7 +30,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.firebase.FirebaseHandler;
-import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.ConnectionUtils;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
@@ -49,10 +48,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_COLORS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
@@ -293,26 +290,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             allWordsList = new ArrayList<>();
 
         Log.d(LOG_TAG, "fetching words from the firebase...");
-
-        //fixme
         ConnectionUtils connectionUtils = new ConnectionUtils(this);
-        /*AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
-
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                return connectionUtils.hasInternetAccess();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean hasNetwork) {
-                super.onPostExecute(hasNetwork);
-                if (!hasNetwork) {
-                    noInternetConnection();
-                }
-
-            }
-        };*/
-        //task.execute();
 
         if(!connectionUtils.hasInternetAccess())
             noInternetConnection();
@@ -344,9 +322,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     private void noInternetConnection() {
-        /*progressBar.setVisibility(View.GONE);
-        loadingTextView.setText(getString(R.string.no_internet_connection));
-        loadingTextView.setVisibility(View.VISIBLE);*/
         hideProgressBarAndShowTextView(R.string.no_internet_connection);
     }
 
@@ -426,8 +401,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
                     Log.d(LOG_TAG, "Firebase onCancelled - Failed to load data, please try again!");
-                    /*progressBar.setVisibility(View.GONE);
-                    loadingTextView.setText(getString(R.string.error_loading_data));*/
                     hideProgressBarAndShowTextView(R.string.error_loading_data);
                 }
             };
