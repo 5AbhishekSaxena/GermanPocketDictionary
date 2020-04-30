@@ -18,9 +18,13 @@ import com.abhishek.germanPocketDictionary.R;
 
 import java.util.List;
 
-import static com.abhishek.germanPocketDictionary.fragments.WordsFragment.OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
+import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsFromCategory;
+
+import com.abhishek.germanPocketDictionary.utilities.Constants;
+import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
 
 /**
  * @author Abhishek Saxena
@@ -32,16 +36,28 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private Context context;
     private WordsFragment fragment;
 
-    private int mFragmentType;
+    private String mFragmentType;
 
     private boolean isActivity;
 
     private List<Word> words;
     private OnWordClickListener onWordClickListener;
 
+    //private SharedPreferenceManager preferenceManager;
+
     //private final OnClickListener mOnClickListener = new MyOnClickListener();
 
-    public WordAdapter(WordsFragment fragment, Context context, List<Word> words, int fragmentType,
+    public WordAdapter(WordsFragment fragment, Context context, /*List<Word> words,*/ String fragmentType,
+                       OnWordClickListener onWordClickListener) {
+        this.context = context;
+        this.words = getWordsFromCategory(context, fragmentType);
+        this.fragment = fragment;
+        mFragmentType = fragmentType;
+        this.onWordClickListener = onWordClickListener;
+        //preferenceManager = SharedPreferenceManager.getInstance(context);
+    }
+
+    public WordAdapter(WordsFragment fragment, Context context, List<Word> words, String fragmentType,
                        OnWordClickListener onWordClickListener) {
         this.context = context;
         this.words = words;
@@ -61,14 +77,14 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(mFragmentType == OPPOSITE ? R.layout.opposite_words : R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(mFragmentType.equals(Constants.API_KEYS.CATEGORY_OPPOSITE) ? R.layout.opposite_words : R.layout.list_item, parent, false);
         return new ViewHolder(view, isActivity, onWordClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Word currentWord = words.get(position);
-        if (mFragmentType != OPPOSITE) {
+        if (!mFragmentType.equals(CATEGORY_OPPOSITE)) {
             holder.germanTextView.setText(currentWord.getGermanTranslation());
             holder.englishTextView.setText(currentWord.getEnglishTranslation());
         }
@@ -78,11 +94,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 viewPlural(holder, currentWord);
             }
 
-            if (currentWord.hasOpposite() && mFragmentType != OPPOSITE) {
+            if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE) ) {
                 viewOpposite(holder, currentWord);
             }
 
-            if (mFragmentType == WordsFragment.NOUNS) {
+            if (mFragmentType.equals(CATEGORY_NOUNS)) {
+                /*setList(getWordsFromCategory(context, CATEGORY_NOUNS));*/
                 holder.arrowImageView.setVisibility(View.VISIBLE);
                 if (fragment.selectedNoun == position) {
                     holder.expandableView.setVisibility(View.VISIBLE);
@@ -93,7 +110,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 }
             }
 
-            if (mFragmentType == WordsFragment.VERBS) {
+            if (mFragmentType.equals(CATEGORY_VERBS)) {
                 holder.arrowImageView.setVisibility(View.VISIBLE);
                 if (fragment.selectedVerb == position) {
                     holder.arrowImageView.setImageResource(R.drawable.ic_keyboard_arrow_up_black_18dp);
@@ -109,7 +126,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 }
             }
 
-            if (mFragmentType == OPPOSITE) {
+            if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
                 holder.germanTextViewOne.setText(currentWord.getGermanTranslation());
                 holder.englishTextViewOne.setText(currentWord.getEnglishTranslation());
 
@@ -133,7 +150,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                         viewRootWord(holder, currentWord);
                         viewPartizip(holder, currentWord);
                     }
-                    if (currentWord.hasOpposite() && mFragmentType != OPPOSITE) {
+                    if (currentWord.hasOpposite() && !mFragmentType.equals(CATEGORY_OPPOSITE)) {
                         holder.expandableView.setVisibility(View.VISIBLE);
                         viewOpposite(holder, currentWord);
                     }
@@ -176,7 +193,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
         ViewHolder(View itemView, boolean isActivity, OnWordClickListener onWordClickListener) {
             super(itemView);
-            if (mFragmentType != OPPOSITE) {
+            if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
                 germanTextView = itemView.findViewById(R.id.german_text_view);
                 englishTextView = itemView.findViewById(R.id.english_text_view);
                 expandableView = itemView.findViewById(R.id.expandable_view);
@@ -194,7 +211,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
             if (!isActivity) {
                 arrowImageView = itemView.findViewById(R.id.arrow);
-                if (mFragmentType == OPPOSITE) {
+                if (mFragmentType.equals(CATEGORY_OPPOSITE)) {
                     oppositeListView = itemView.findViewById(R.id.opposite_list_item);
                     germanTextViewOne = oppositeListView.findViewById(R.id.german_text_view_one);
                     germanTextViewTwo = oppositeListView.findViewById(R.id.german_text_view_two);
@@ -260,5 +277,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
         holder.oppositeTextView.setVisibility(View.VISIBLE);
         holder.oppositeLabelTextView.setVisibility(View.VISIBLE);
+    }
+
+    public void setList(List<Word> words) {
+        this.words.clear();
+        this.words.addAll(words);
+        notifyDataSetChanged();
     }
 }

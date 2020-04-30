@@ -56,9 +56,11 @@ import java.util.regex.Pattern;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_COLORS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NUMBERS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_QUESTIONS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.PREF_AGREEMENT_KEY;
+import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -213,28 +215,27 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             new Handler().postDelayed(() -> {
                 switch (item.getItemId()) {
                     case R.id.nav_all_words:
-                        viewPager.setCurrentItem(WordsFragment.ALL_WORDS);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(Constants.TABLES.ALL_WORDS));
                         break;
 
                     case R.id.nav_nouns:
-                        viewPager.setCurrentItem(WordsFragment.NOUNS);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_NOUNS));
                         break;
 
                     case R.id.nav_verbs:
-                        viewPager.setCurrentItem(WordsFragment.VERBS);
-                        break;
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_VERBS));                        break;
 
                     case R.id.nav_numbers:
-                        viewPager.setCurrentItem(WordsFragment.NUMBERS);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_NUMBERS));
                         break;
                     case R.id.nav_colors:
-                        viewPager.setCurrentItem(WordsFragment.COLORS);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_COLORS));
                         break;
                     case R.id.nav_questions:
-                        viewPager.setCurrentItem(WordsFragment.QUESTIONS);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_QUESTIONS));
                         break;
                     case R.id.nav_opposites:
-                        viewPager.setCurrentItem(WordsFragment.OPPOSITE);
+                        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_OPPOSITE));
                         break;
                 }
             }, 250);
@@ -253,9 +254,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         oppositeList = new ArrayList<>();
 
         SharedPreferenceManager.getInstance(this).registerOnSharedPreferenceChangeListener(this);
-        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.WORDS)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.ALL_WORDS)) {
             Log.d(LOG_TAG, "fetching json from savedInstanceBundle..");
-            String json = savedInstanceState.getString(Constants.TABLES.WORDS);
+            String json = savedInstanceState.getString(Constants.TABLES.ALL_WORDS);
             if (json != null && !json.equals("")) {
                 allWordsList.clear();
                 allWordsList.addAll(Utils.getWordListFromJson(json));
@@ -271,8 +272,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         showProgressBarAndLoadingTextView();
         Log.d(LOG_TAG, "fetching words from the pref...");
         SharedPreferenceManager prefManager = SharedPreferenceManager.getInstance(this);
-        if (prefManager.contains(Constants.TABLES.WORDS)) {
-            List<Word> words = prefManager.getListFromPreference(Constants.TABLES.WORDS);
+        if (prefManager.contains(Constants.TABLES.ALL_WORDS)) {
+            List<Word> words = prefManager.getListFromPreference(Constants.TABLES.ALL_WORDS);
             if (words == null || words.isEmpty()) {
                 Log.d(LOG_TAG, "fetching words from db - words in pref is empty/null");
                 fetchWordsFromDb();
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                         Log.d(LOG_TAG, "updating preferences....");
                         SharedPreferenceManager prefManager = SharedPreferenceManager
                                 .getInstance(MainActivity.this);
-                        prefManager.setList(Constants.TABLES.WORDS, allWordsList);
+                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
                         hideProgressbarAndLoadingTextView();
                     }
                 }
@@ -417,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setVisibility(View.VISIBLE);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(WordsFragment.NOUNS);
+        viewPager.setCurrentItem(getFragmentLocationFromCategory(CATEGORY_NOUNS));
         MENU_ITEM_HIDE = false;
         invalidateOptionsMenu();
     }
@@ -535,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
             case R.id.search_menu:
                 Intent searchActivityIntent = new Intent(this, SearchResultActivity.class);
-                searchActivityIntent.putExtra(Constants.TABLES.WORDS, (ArrayList<Word>) allWordsList);
+                searchActivityIntent.putExtra(Constants.TABLES.ALL_WORDS, (ArrayList<Word>) allWordsList);
                 startActivity(searchActivityIntent);
                 break;
 
@@ -582,7 +583,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (allWordsList != null) {
             Log.d(LOG_TAG, "saving all words list in outState");
             String json = Utils.getJsonFromList(allWordsList);
-            outState.putString(Constants.TABLES.WORDS, json);
+            outState.putString(Constants.TABLES.ALL_WORDS, json);
         }
         super.onSaveInstanceState(outState);
     }

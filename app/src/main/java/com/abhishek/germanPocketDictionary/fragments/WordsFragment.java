@@ -22,6 +22,7 @@ import com.abhishek.germanPocketDictionary.activity.MainActivity;
 import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
+import com.abhishek.germanPocketDictionary.utilities.Constants;
 
 import java.util.ArrayList;
 
@@ -33,25 +34,17 @@ import static android.content.ContentValues.TAG;
 
 public class WordsFragment extends Fragment implements OnWordClickListener {
 
-    public static final int ALL_WORDS = 0;
-    public static final int NOUNS = 1;
-    public static final int VERBS = 2;
-    public static final int NUMBERS = 3;
-    public static final int COLORS = 4;
-    public static final int QUESTIONS = 5;
-    public static final int OPPOSITE = 6;
-
     public int selectedNoun;
     public int selectedVerb;
 
     private RecyclerView.Adapter mAdapter;
 
-    private int fragmentType;
+    private String fragmentType;
 
-    public static WordsFragment newInstance(int type) {
+    public static WordsFragment newInstance(String type) {
         WordsFragment wordFragment = new WordsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("fragmentType", type);
+        bundle.putString(Constants.API_KEYS.FRAGMENT_TYPE, type);
         wordFragment.setArguments(bundle);
         return wordFragment;
     }
@@ -67,37 +60,39 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
 
         // Create a new adapter that takes an empty list of words as input
         if (getArguments() != null && activityReference != null) {
-            fragmentType = getArguments().getInt("fragmentType");
-            switch (fragmentType) {
-                case ALL_WORDS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getAllWordsList(), ALL_WORDS, this);
-                    break;
+            fragmentType = getArguments().getString(Constants.API_KEYS.FRAGMENT_TYPE);
+            if (fragmentType != null) {
+                switch (fragmentType) {
+                    case Constants.TABLES.ALL_WORDS:
+                        mAdapter = new WordAdapter(this, getContext(), /*activityReference.getAllWordsList(),*/ Constants.TABLES.ALL_WORDS, this);
+                        break;
 
-                case NOUNS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getNounList(),  NOUNS, this);
-                    selectedNoun = -1;
-                    break;
+                    case Constants.API_KEYS.CATEGORY_NOUNS:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getNounList(),  Constants.API_KEYS.CATEGORY_NOUNS, this);
+                        selectedNoun = -1;
+                        break;
 
-                case VERBS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getVerbList(), VERBS, this);
-                    selectedVerb = -1;
-                    break;
+                    case Constants.API_KEYS.CATEGORY_VERBS:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getVerbList(), Constants.API_KEYS.CATEGORY_VERBS, this);
+                        selectedVerb = -1;
+                        break;
 
-                case NUMBERS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getNumberList(), NUMBERS, this);
-                    break;
+                    case Constants.API_KEYS.CATEGORY_NUMBERS:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getNumberList(), Constants.API_KEYS.CATEGORY_NUMBERS, this);
+                        break;
 
-                case COLORS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getColorList(), COLORS, this);
-                    break;
+                    case Constants.API_KEYS.CATEGORY_COLORS:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getColorList(), Constants.API_KEYS.CATEGORY_COLORS, this);
+                        break;
 
-                case QUESTIONS:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getQuestionList(), QUESTIONS, this);
-                    break;
+                    case Constants.API_KEYS.CATEGORY_QUESTIONS:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getQuestionList(), Constants.API_KEYS.CATEGORY_QUESTIONS, this);
+                        break;
 
-                case OPPOSITE:
-                    mAdapter = new WordAdapter(this, getContext(), activityReference.getOppositeList(), OPPOSITE, this);
-                    break;
+                    case Constants.API_KEYS.CATEGORY_OPPOSITE:
+                        mAdapter = new WordAdapter(this, getContext(), activityReference.getOppositeList(), Constants.API_KEYS.CATEGORY_OPPOSITE, this);
+                        break;
+                }
             }
         }
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -120,10 +115,10 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
         Log.d(TAG, "onWordClickListener: clicked, position : " + position);
 
         if (getArguments() != null) {
-            fragmentType = getArguments().getInt("fragmentType");
+            fragmentType = getArguments().getString(Constants.API_KEYS.FRAGMENT_TYPE);
 
             switch (fragmentType) {
-                case NOUNS:
+                case Constants.API_KEYS.CATEGORY_NOUNS:
                     if (getActivity() != null) {
                         //ViewGroup mainView = rootView.findViewById(R.id.main_view);
                         ImageView arrowImageView = view.findViewById(R.id.arrow);
@@ -141,7 +136,7 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
                         mAdapter.notifyDataSetChanged();
                     }
                     break;
-                case VERBS:
+                case Constants.API_KEYS.CATEGORY_VERBS:
                     if (selectedVerb != position) {
                         view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
                         selectedVerb = position;

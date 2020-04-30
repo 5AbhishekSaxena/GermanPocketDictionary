@@ -32,7 +32,7 @@ public class FirebaseHandler {
     }
 
     public DatabaseReference getWordsReference(){
-        return getDatabaseRootReference().child(Constants.TABLES.WORDS);
+        return getDatabaseRootReference().child(Constants.TABLES.ALL_WORDS);
     }
 
 }

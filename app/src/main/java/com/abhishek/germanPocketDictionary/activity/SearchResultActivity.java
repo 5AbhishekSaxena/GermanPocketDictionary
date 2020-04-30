@@ -1,7 +1,6 @@
 package com.abhishek.germanPocketDictionary.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,7 +62,7 @@ public class SearchResultActivity extends AppCompatActivity {
         if (allWordsList == null)
             allWordsList = new ArrayList<>();
 
-        allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra(Constants.TABLES.WORDS);
+        allWordsList = (ArrayList<Word>) getIntent().getSerializableExtra(Constants.TABLES.ALL_WORDS);
 
 
         mEmptyStateTextView = findViewById(R.id.empty_view);

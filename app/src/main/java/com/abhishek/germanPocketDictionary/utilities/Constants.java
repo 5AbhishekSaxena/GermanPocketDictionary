@@ -16,10 +16,13 @@ public class Constants {
         String FEMALE = "gender_female";
         String NEUTRAL = "gender_neutral";
 
+        String FRAGMENT_TYPE = "fragment_type";
+
+        //String CATEGORY_ALL_WORDS = "category_all_words";
         String CATEGORY_NOUNS = "category_nouns";
         String CATEGORY_VERBS = "category_verbs";
         String CATEGORY_NUMBERS = "category_numbers";
-        String CATEGORY_COLORS = "category_numbers";
+        String CATEGORY_COLORS = "category_colors";
         String CATEGORY_QUESTIONS = "category_questions";
         String CATEGORY_OPPOSITE = "category_opposite";
 
@@ -31,7 +34,17 @@ public class Constants {
     }
 
     public interface TABLES {
-        String WORDS = "words";
+        String ALL_WORDS = "all_words";
     }
+    /*
+    public interface FRAGMENT_TYPE{
+        public static final int ALL_WORDS = 0;
+        public static final int NOUNS = 1;
+        public static final int VERBS = 2;
+        public static final int NUMBERS = 3;
+        public static final int COLORS = 4;
+        public static final int QUESTIONS = 5;
+        public static final int OPPOSITE = 6;
+    }*/
 
 }

@@ -8,6 +8,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.R;
 
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.ALL_WORDS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.COLORS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.NOUNS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.NUMBERS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.OPPOSITE;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.QUESTIONS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.FRAGMENT_TYPE.VERBS;
+
 /**
  * Created by Abhishek Saxena on 12/10/2017.
  */
@@ -27,19 +35,19 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-            return WordsFragment.newInstance(WordsFragment.ALL_WORDS);
+            return WordsFragment.newInstance(ALL_WORDS);
         else if (position == 1)
-            return WordsFragment.newInstance(WordsFragment.NOUNS);
+            return WordsFragment.newInstance(NOUNS);
         else if (position == 2)
-            return WordsFragment.newInstance(WordsFragment.VERBS);
+            return WordsFragment.newInstance(VERBS);
         else if (position == 3 )
-                return WordsFragment.newInstance(WordsFragment.NUMBERS);
+                return WordsFragment.newInstance(NUMBERS);
         else if (position == 4)
-            return WordsFragment.newInstance(WordsFragment.COLORS);
+            return WordsFragment.newInstance(COLORS);
         else if (position == 5)
-            return WordsFragment.newInstance(WordsFragment.QUESTIONS);
+            return WordsFragment.newInstance(QUESTIONS);
         else
-            return WordsFragment.newInstance(WordsFragment.OPPOSITE);
+            return WordsFragment.newInstance(OPPOSITE);
     }
 
     @Override
