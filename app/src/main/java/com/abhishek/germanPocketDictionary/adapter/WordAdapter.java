@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import com.abhishek.germanPocketDictionary.utilities.Constants;
  * @since 22-06-2019 04:14
  */
 
-public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
+public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Context context;
     private WordsFragment fragment;
@@ -43,10 +44,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     private List<Word> words;
     private OnWordClickListener onWordClickListener;
-
-    //private SharedPreferenceManager preferenceManager;
-
-    //private final OnClickListener mOnClickListener = new MyOnClickListener();
 
     public WordAdapter(WordsFragment fragment, Context context, String fragmentType,
                        OnWordClickListener onWordClickListener) {
@@ -92,7 +89,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 }
 
                 if (mFragmentType.equals(CATEGORY_NOUNS)) {
-                    /*setList(getWordsFromCategory(context, CATEGORY_NOUNS));*/
                     holder.arrowImageView.setVisibility(View.VISIBLE);
                     if (fragment.selectedNoun == position) {
                         holder.expandableView.setVisibility(View.VISIBLE);
@@ -273,9 +269,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         holder.oppositeLabelTextView.setVisibility(View.VISIBLE);
     }
 
-    public void setList(List<Word> words) {
-        this.words.clear();
-        this.words.addAll(words);
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        words.clear();
+        words.addAll(getWordsUsingCategory(context, mFragmentType));
         notifyDataSetChanged();
     }
 }

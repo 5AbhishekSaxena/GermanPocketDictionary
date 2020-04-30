@@ -66,7 +66,7 @@ import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLoc
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public List<Word> allWordsList, nounList, verbList, numberList, colorList, questionList, oppositeList;
+    public List<Word> allWordsList;
 
     private final String LOG_TAG = getClass().getName();
 
@@ -251,12 +251,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     public void setupInterface() {
         allWordsList = new ArrayList<>();
-        nounList = new ArrayList<>();
-        verbList = new ArrayList<>();
-        numberList = new ArrayList<>();
-        colorList = new ArrayList<>();
-        questionList = new ArrayList<>();
-        oppositeList = new ArrayList<>();
 
         SharedPreferenceManager.getInstance(this).registerOnSharedPreferenceChangeListener(this);
         if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.ALL_WORDS)) {
@@ -266,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 allWordsList.clear();
                 allWordsList.addAll(Utils.getWordListFromJson(json));
                 Log.d(LOG_TAG, "successfully fetched data from savedInstanceBundle");
-                categorizeWords();
+                updateUI();
             } else
                 fetchWordsFromPreference();
         } else
@@ -286,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Log.d(LOG_TAG, "Successfully fetched words from the pref.");
                 allWordsList.clear();
                 allWordsList.addAll(words);
-                categorizeWords();
+                updateUI();
             }
         } else {
             Log.d(LOG_TAG, "words not found in shared preferences");
@@ -327,75 +321,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         }
     }
 
-    private void categorizeWords() {
-
-        if (allWordsList != null && !allWordsList.isEmpty()) {
-            hideProgressbarAndLoadingTextView();
-
-            nounList.clear();
-            numberList.clear();
-            colorList.clear();
-            verbList.clear();
-            questionList.clear();
-            oppositeList.clear();
-
-            for (Word word : allWordsList) {
-                if (word.getCategory() != null) {
-                    if (word.getCategory().equals(CATEGORY_NOUNS))
-                        nounList.add(word);
-
-                    if (word.getCategory().equals(CATEGORY_NUMBERS))
-                        numberList.add(word);
-
-                    if (word.getCategory().equals(CATEGORY_COLORS))
-                        colorList.add(word);
-
-                    if (word.getCategory().equals(CATEGORY_VERBS))
-                        verbList.add(word);
-
-                    if (word.getCategory().equals(CATEGORY_QUESTIONS))
-                        questionList.add(word);
-
-                    if (word.hasOpposite()) {
-                        if (oppositeList.isEmpty())
-                            oppositeList.add(word);
-                        else {
-                            if (!Pattern.compile(Pattern.quote(word.getEnglishTranslation()), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(oppositeList.toString()).find())
-                                oppositeList.add(word);
-                        }
-                    }
-                }
-            }
-            //sort the AllWordsList
-            Collections.sort(allWordsList, (s1, s2) ->
-                    s1.getGermanTranslationWithoutArticle().compareTo(s2.getGermanTranslationWithoutArticle()));
-
-            //sort the wordsList
-            Collections.sort(nounList, (s1, s2) ->
-                    s1.getGermanTranslationWithoutArticle().compareTo(s2.getGermanTranslationWithoutArticle()));
-
-            //Sort numberList
-            Collections.sort(numberList, (s1, s2) ->
-                    Integer.compare(s1.getNumberValue(), s2.getNumberValue()));
-
-            //Sort verbList
-            Collections.sort(verbList, (s1, s2) ->
-                    s1.getGermanTranslationWithoutArticle().compareTo(s2.getGermanTranslationWithoutArticle()));
-
-            //Sort questionList
-            Collections.sort(questionList, (s1, s2) ->
-                    s1.getGermanTranslationWithoutArticle().compareTo(s2.getGermanTranslationWithoutArticle()));
-
-            //Sort oppositeList
-            Collections.sort(oppositeList, (s1, s2) ->
-                    s1.getGermanTranslationWithoutArticle().compareTo(s2.getGermanTranslationWithoutArticle()));
-
-            Log.v(getClass().getName(), allWordsList.get(0).toString());
-            updateUI();
-        } else
-            hideProgressBarAndShowTextView(R.string.error_loading_data);
-    }
-
     private void updateUI() {
         hideProgressbarAndLoadingTextView();
         // Find the view pager that will allow the user to swipe between fragments
@@ -405,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
@@ -420,34 +346,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         loadingTextView.setText(getString(R.string.no_internet_connection));
         loadingTextView.setVisibility(View.VISIBLE);*/
         hideProgressBarAndShowTextView(R.string.no_internet_connection);
-    }
-
-    public List<Word> getAllWordsList() {
-        return allWordsList;
-    }
-
-    public List<Word> getNounList() {
-        return nounList;
-    }
-
-    public List<Word> getNumberList() {
-        return numberList;
-    }
-
-    public List<Word> getColorList() {
-        return colorList;
-    }
-
-    public List<Word> getVerbList() {
-        return verbList;
-    }
-
-    public List<Word> getQuestionList() {
-        return questionList;
-    }
-
-    public List<Word> getOppositeList() {
-        return oppositeList;
     }
 
     private void showProgressBarAndLoadingTextView() {
