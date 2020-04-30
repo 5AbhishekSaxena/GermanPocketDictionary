@@ -34,7 +34,7 @@ public class Constants {
     }
 
     public interface TABLES {
-        String ALL_WORDS = "all_words";
+        String ALL_WORDS = "words";
     }
     /*
     public interface FRAGMENT_TYPE{
