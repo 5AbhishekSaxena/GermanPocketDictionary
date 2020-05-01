@@ -4,8 +4,13 @@
 [![GitHub issues by-label](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/5AbhishekSaxena/LibraryModule/blob/master/LICENSE)
 ![Project Version](https://img.shields.io/badge/Build%20Version-1.1.3-%23ff69b4)
 
-This is a project primarily focusing on code optimisation, efficiently, architecture and features using a basic model of a library management system. I am trying to use java concepts in order to improve my skills and implement my idea in minimum number of lines and minimum repetition of the code.
+An app designed to help the students who want to search for meanings and translations. This greatly helps them to learn german at a faster pace having the translations and meanings at their fingertips through a clean and self explanatory UI designed keeping in mind the usage patterns of beginners in language learning.
 
+Also for tourists and people who want to search for frequently used words in german language with words divided into categories such as nouns ,verbs, numbers, colours and questions for easy navigation and quick access of most commonly used vocabulary in daily life.
+
+All this with a universal search bar for fast results.
+
+#Play Store Link: https://play.google.com/store/apps/details?id=com.abhishek.germanPocketDictionary&hl=en
 
 ### Why contribute to this repository
 - Beginner-friendly
