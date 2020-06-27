@@ -1,7 +1,6 @@
 # German Pocket Dictionary
 [![Contribution Open](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/5AbhishekSaxena/LibraryModule/blob/master/CONTRIBUTING.md)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/5AbhishekSaxena/LibraryModule/issues)
-[![GitHub issues by-label](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/5AbhishekSaxena/LibraryModule/blob/master/LICENSE)
 ![Project Version](https://img.shields.io/badge/Build%20Version-1.1.3-%23ff69b4)
 
 An app designed to help the students who want to search for meanings and translations. This greatly helps them to learn german at a faster pace having the translations and meanings at their fingertips through a clean and self explanatory UI designed keeping in mind the usage patterns of beginners in language learning.
