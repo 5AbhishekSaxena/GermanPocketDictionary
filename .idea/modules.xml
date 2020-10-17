@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GermanPocketDictionary.iml" filepath="$PROJECT_DIR$/GermanPocketDictionary.iml" group="GermanPocketDictionary" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="GermanPocketDictionary/app" />
+      <module fileurl="file://$PROJECT_DIR$/GermanPocketDictionary.iml" filepath="$PROJECT_DIR$/GermanPocketDictionary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/GermanPocketDictionary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/GermanPocketDictionary.app.iml" />
     </modules>
   </component>
 </project>
