@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.activity;
+package com.abhishek.germanPocketDictionary.activity.feedback;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -74,23 +74,11 @@ public class FeedBackActivity extends AppCompatActivity {
         }));
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.feedback_menu, menu);
-        return true;
-    }*/
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-
-            /*case R.id.action_save:
-                saveFeedback();
-                return true;*/
+        if (item.getItemId() == R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

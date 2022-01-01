@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +27,7 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhishek.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.activity.feedback.FeedBackActivity;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.firebase.FirebaseHandler;
 import com.abhishek.germanPocketDictionary.model.Word;
