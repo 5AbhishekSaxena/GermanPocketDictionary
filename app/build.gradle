@@ -35,6 +35,7 @@ android {
     }
     productFlavors {
     }
+    namespace 'com.abhishek.germanPocketDictionary'
 }
 
 dependencies {
