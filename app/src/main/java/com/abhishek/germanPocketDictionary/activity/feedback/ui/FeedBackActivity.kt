@@ -3,12 +3,11 @@ package com.abhishek.germanPocketDictionary.activity.feedback.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NavUtils
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.abhishek.germanPocketDictionary.R
@@ -41,15 +40,13 @@ class FeedBackActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_feed_back)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setContentAndInitializeDataBinding()
+
+        setSupportActionBar(binding.appBarLayout.toolbar)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.title = getString(R.string.feedback_label)
         }
-
-        initializeDataBinding()
 
         addTechChangeListenerToInputLayouts()
 
@@ -66,9 +63,8 @@ class FeedBackActivity : AppCompatActivity() {
         setOnClickListeners()
     }
 
-    private fun initializeDataBinding() {
-        val layoutInflater = LayoutInflater.from(this)
-        binding = ActivityFeedBackBinding.inflate(layoutInflater)
+    private fun setContentAndInitializeDataBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_feed_back)
     }
 
     private fun addTechChangeListenerToInputLayouts() {
@@ -110,13 +106,11 @@ class FeedBackActivity : AppCompatActivity() {
     }
 
     private fun setSendMailFloatingActionButtonClickListener() {
-        binding.run {
-            sendMailFloatingActionButton.setOnClickListener { _ ->
-                val username = usernameEditText.text.toString()
-                val feedback = feedbackEditText.text.toString()
-                val additionalInformation = additionalInformationEditText.text?.toString()
-                viewModel.onSendFeedback(username, feedback, additionalInformation)
-            }
+        binding.sendMailFloatingActionButton.setOnClickListener {
+            val username = binding.usernameEditText.text.toString()
+            val feedback = binding.feedbackEditText.text.toString()
+            val additionalInformation = binding.additionalInformationEditText.text?.toString()
+            viewModel.onSendFeedback(username, feedback, additionalInformation)
         }
     }
 

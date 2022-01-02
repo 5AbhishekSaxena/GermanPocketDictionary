@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".activity.feedback.ui.FeedBackActivity">
 
-        <include layout="@layout/simple_toolbar" />
+        <include
+            android:id="@+id/app_bar_layout"
+            layout="@layout/simple_toolbar" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -37,7 +43,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/feedback_layout"
                     style="@style/TextInputStandardStyle"
-                    android:layout_below="@id/user_name_layout">
+                    android:layout_below="@id/username_layout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/feedback_edit_text"
