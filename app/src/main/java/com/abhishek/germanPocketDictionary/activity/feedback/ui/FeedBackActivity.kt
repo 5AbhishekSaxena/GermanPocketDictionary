@@ -3,6 +3,7 @@ package com.abhishek.germanPocketDictionary.activity.feedback.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,26 +15,17 @@ import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.DeveloperRepository
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.Email
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.ProdDeveloperRepository
+import com.abhishek.germanPocketDictionary.databinding.ActivityFeedBackBinding
 import com.abhishek.germanPocketDictionary.utilities.Constants
 import com.abhishek.germanPocketDictionary.utilities.EventObserver
 import com.abhishek.germanPocketDictionary.utilities.HideErrorLine
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class FeedBackActivity : AppCompatActivity() {
     private var username: String? = null
     private var feedback: String? = null
     private var additionalInformation: String? = null
 
-    private var usernameLayout: TextInputLayout? = null
-    private var feedbackLayout: TextInputLayout? = null
-
-    private var usernameEditText: TextInputEditText? = null
-    private var feedbackEditText: TextInputEditText? = null
-
-    private var additionalInformationEditText: TextInputEditText? = null
-    private var sendMailFloatingActionButton: FloatingActionButton? = null
+    private lateinit var binding: ActivityFeedBackBinding
 
     private val developerRepository: DeveloperRepository = ProdDeveloperRepository()
 
@@ -57,7 +49,8 @@ class FeedBackActivity : AppCompatActivity() {
             it.title = getString(R.string.feedback_label)
         }
 
-        bindViews()
+        initializeDataBinding()
+
         addTechChangeListenerToInputLayouts()
 
         if (savedInstanceState != null) {
@@ -68,28 +61,19 @@ class FeedBackActivity : AppCompatActivity() {
                     Constants.API_KEYS.ADDITIONAL_INFORMATION
                 )
         }
-        sendMailFloatingActionButton?.setOnClickListener { _ ->
-            val username = usernameEditText?.text?.toString()
-            val feedback = feedbackEditText?.text?.toString()
-            val additionalInformation = additionalInformationEditText?.text?.toString()
-            viewModel.onSendFeedback(username, feedback, additionalInformation)
-        }
 
         subscribeToObservers()
+        setOnClickListeners()
     }
 
-    private fun bindViews() {
-        usernameLayout = findViewById(R.id.user_name_layout)
-        feedbackLayout = findViewById(R.id.feedback_layout)
-        usernameEditText = findViewById(R.id.user_name_edit_text)
-        feedbackEditText = findViewById(R.id.feedback_edit_text)
-        additionalInformationEditText = findViewById(R.id.additional_information_edit_text)
-        sendMailFloatingActionButton = findViewById(R.id.send_mail_fab)
+    private fun initializeDataBinding() {
+        val layoutInflater = LayoutInflater.from(this)
+        binding = ActivityFeedBackBinding.inflate(layoutInflater)
     }
 
     private fun addTechChangeListenerToInputLayouts() {
-        usernameEditText?.addTextChangedListener(HideErrorLine(usernameLayout))
-        feedbackEditText?.addTextChangedListener(HideErrorLine(feedbackLayout))
+        binding.usernameEditText.addTextChangedListener(HideErrorLine(binding.usernameLayout))
+        binding.feedbackEditText.addTextChangedListener(HideErrorLine(binding.feedbackLayout))
     }
 
     private fun subscribeToObservers() {
@@ -101,7 +85,7 @@ class FeedBackActivity : AppCompatActivity() {
     private fun observeUsernameError() {
         viewModel.usernameError.observe(this) {
             it?.let {
-                usernameLayout?.error = it
+                binding.usernameLayout.error = it
             }
         }
     }
@@ -109,7 +93,7 @@ class FeedBackActivity : AppCompatActivity() {
     private fun observeFeedbackError() {
         viewModel.feedbackError.observe(this) {
             it?.let {
-                feedbackLayout?.error = it
+                binding.feedbackLayout.error = it
             }
         }
     }
@@ -119,6 +103,21 @@ class FeedBackActivity : AppCompatActivity() {
             sendEmail(it)
             finish()
         })
+    }
+
+    private fun setOnClickListeners() {
+        setSendMailFloatingActionButtonClickListener()
+    }
+
+    private fun setSendMailFloatingActionButtonClickListener() {
+        binding.run {
+            sendMailFloatingActionButton.setOnClickListener { _ ->
+                val username = usernameEditText.text.toString()
+                val feedback = feedbackEditText.text.toString()
+                val additionalInformation = additionalInformationEditText.text?.toString()
+                viewModel.onSendFeedback(username, feedback, additionalInformation)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
