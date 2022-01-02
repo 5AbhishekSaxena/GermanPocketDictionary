@@ -1,10 +1,18 @@
 package com.abhishek.germanPocketDictionary.activity;
 
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_COLORS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NUMBERS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_QUESTIONS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.PREF_AGREEMENT_KEY;
+import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +36,7 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhishek.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.activity.feedback.ui.FeedBackActivity;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.firebase.FirebaseHandler;
 import com.abhishek.germanPocketDictionary.model.Word;
@@ -50,15 +59,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_COLORS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NUMBERS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_QUESTIONS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.PREF_AGREEMENT_KEY;
-import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -295,8 +295,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Log.d(LOG_TAG, "fetching words from the firebase...");
         ConnectionUtils connectionUtils = new ConnectionUtils(this);
 
-        if (!connectionUtils.hasInternetAccess())
-            noInternetConnection();
+//        if (!connectionUtils.hasInternetAccess())
+//            noInternetConnection();
 
         if (wordsReference == null)
             wordsReference = FirebaseHandler.getInstance().getWordsReference();

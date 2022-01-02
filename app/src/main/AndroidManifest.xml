@@ -38,7 +38,7 @@
                 android:value=".activity.MainActivity" />
 
         </activity>
-        <activity android:name=".activity.FeedBackActivity"
+        <activity android:name=".activity.feedback.ui.FeedBackActivity"
             android:label="Feedback"
             android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
