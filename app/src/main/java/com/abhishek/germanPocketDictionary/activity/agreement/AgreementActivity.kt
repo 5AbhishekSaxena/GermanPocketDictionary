@@ -60,46 +60,48 @@ class AgreementActivity : AppCompatActivity() {
             agreementLoadingFailed()
         }
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (agreement != null) {
-            @SuppressLint("InflateParams") val alertDialogLayout: View =
-                layoutInflater.inflate(R.layout.agreement_alertbox_layout, null)
-            val agreementTextView = alertDialogLayout.findViewById<TextView>(R.id.agreement_details)
-            agreementTextView.text = agreement
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(R.string.agreement_title)
-                .setView(alertDialogLayout)
-                .setPositiveButton(
-                    "I Agree"
-                ) { _: DialogInterface?, _: Int ->
-                    val editor = sharedPreferences.edit()
-                    editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, true)
-                    editor.apply()
-                    onAgreementAccepted()
-                }
-                .setNegativeButton(
-                    "I Disagree"
-                ) { _: DialogInterface?, _: Int ->
-                    Toast.makeText(this, "Application is Closing", Toast.LENGTH_SHORT)
-                        .show()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        finishAndRemoveTask()
-                    } else finishAffinity()
-                    val editor = sharedPreferences.edit()
-                    editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, false)
-                    editor.apply()
-                }
-                .setCancelable(false)
-            alertDialog = builder.create()
-            alertDialog?.show()
-            alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
-            val checkBox = alertDialogLayout.findViewById<CheckBox>(R.id.agreement_checkbox)
-            checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-                if (isChecked) updateAgreementStatus(
-                    true
-                ) else updateAgreementStatus(false)
-            }
-        } else {
+
+        if (agreement == null) {
             agreementLoadingFailed()
+            return
+        }
+
+        @SuppressLint("InflateParams") val alertDialogLayout: View =
+            layoutInflater.inflate(R.layout.agreement_alertbox_layout, null)
+        val agreementTextView = alertDialogLayout.findViewById<TextView>(R.id.agreement_details)
+        agreementTextView.text = agreement
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.agreement_title)
+            .setView(alertDialogLayout)
+            .setPositiveButton(
+                "I Agree"
+            ) { _: DialogInterface?, _: Int ->
+                val editor = sharedPreferences.edit()
+                editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, true)
+                editor.apply()
+                onAgreementAccepted()
+            }
+            .setNegativeButton(
+                "I Disagree"
+            ) { _: DialogInterface?, _: Int ->
+                Toast.makeText(this, "Application is Closing", Toast.LENGTH_SHORT)
+                    .show()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAndRemoveTask()
+                } else finishAffinity()
+                val editor = sharedPreferences.edit()
+                editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, false)
+                editor.apply()
+            }
+            .setCancelable(false)
+        alertDialog = builder.create()
+        alertDialog?.show()
+        alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
+        val checkBox = alertDialogLayout.findViewById<CheckBox>(R.id.agreement_checkbox)
+        checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
+            if (isChecked) updateAgreementStatus(
+                true
+            ) else updateAgreementStatus(false)
         }
     }
 
