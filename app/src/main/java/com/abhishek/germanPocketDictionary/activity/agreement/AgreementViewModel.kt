@@ -58,4 +58,17 @@ class AgreementViewModel(
             apply()
         }
     }
+
+    fun checkIfAgreementIsAccepted(): Boolean {
+        return sharedPreferences.getBoolean(Constants.API_KEYS.PREF_AGREEMENT_KEY, false)
+    }
+
+    fun migrateOldAgreementStatusKeyToNewOneIfPresent() {
+        if (sharedPreferences.contains("agreed")) {
+            sharedPreferenceEditor.apply {
+                remove("agreed")
+                apply()
+            }
+        }
+    }
 }

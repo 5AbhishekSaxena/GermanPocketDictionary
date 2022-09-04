@@ -15,10 +15,8 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.activity.MainActivity
-import com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS
 import java.io.IOException
 
 class AgreementActivity : AppCompatActivity() {
@@ -33,23 +31,13 @@ class AgreementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isAgreementAccepted = checkIfAgreementIsAccepted()
+        viewModel.migrateOldAgreementStatusKeyToNewOneIfPresent()
+
+        val isAgreementAccepted = viewModel.checkIfAgreementIsAccepted()
         if (isAgreementAccepted)
             onAgreementAccepted()
         else
             setupAgreementAlertDialog()
-    }
-
-    private fun checkIfAgreementIsAccepted(): Boolean {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val agreed = sharedPreferences.getBoolean(API_KEYS.PREF_AGREEMENT_KEY, false)
-        if (sharedPreferences.contains("agreed")) {
-            val editor = sharedPreferences.edit()
-            editor.remove("agreed")
-            editor.apply()
-        }
-
-        return agreed
     }
 
     private fun setupAgreementAlertDialog() {
