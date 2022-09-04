@@ -24,7 +24,15 @@ class AgreementViewModel(
 
     private val sharedPreferenceEditor: SharedPreferences.Editor = sharedPreferences.edit()
 
-    fun loadAgreementDetails(): String {
+    private var agreement: String? = null
+
+    fun getAgreement(): String {
+        return agreement ?: loadAgreement().also {
+            agreement = it
+        }
+    }
+
+    private fun loadAgreement(): String {
         val agreement = StringBuilder()
         return try {
             val inputStream =

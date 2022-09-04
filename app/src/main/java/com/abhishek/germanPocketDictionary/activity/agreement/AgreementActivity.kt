@@ -49,12 +49,8 @@ class AgreementActivity : AppCompatActivity() {
     private fun setupAgreementAlertDialog() {
         var agreement: String? = null
         try {
-            agreement = viewModel.loadAgreementDetails()
+            agreement = viewModel.getAgreement()
         } catch (e: IOException) {
-            agreementLoadingFailed()
-        }
-
-        if (agreement == null) {
             agreementLoadingFailed()
             return
         }
