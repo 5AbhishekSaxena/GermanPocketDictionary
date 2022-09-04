@@ -11,6 +11,7 @@ import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -18,10 +19,7 @@ import androidx.preference.PreferenceManager
 import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.activity.MainActivity
 import com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
 
 class AgreementActivity : AppCompatActivity() {
 
@@ -29,6 +27,8 @@ class AgreementActivity : AppCompatActivity() {
     private var progressBar: ProgressBar? = null
 
     private var alertDialog: AlertDialog? = null
+
+    private val viewModel: AgreementViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class AgreementActivity : AppCompatActivity() {
     private fun setupAgreementAlertDialog() {
         var agreement: String? = null
         try {
-            agreement = fetchAgreementDetails()
+            agreement = viewModel.loadAgreementDetails()
         } catch (e: IOException) {
             agreementLoadingFailed()
         }
@@ -108,33 +108,6 @@ class AgreementActivity : AppCompatActivity() {
     private fun onAgreementAccepted() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    @Throws(IOException::class)
-    private fun fetchAgreementDetails(): String? {
-        val agreement = StringBuilder()
-        return try {
-            val inputStream = resources.openRawResource(
-                resources.getIdentifier(
-                    "com.abhishek.germanPocketDictionary:raw/terms_of_use_warranties_and_release_agreement",
-                    null,
-                    null
-                )
-            )
-            if (inputStream != null) {
-                val inputStreamReader = InputStreamReader(inputStream, StandardCharsets.UTF_8)
-                val bufferedReader = BufferedReader(inputStreamReader)
-                var line = bufferedReader.readLine()
-                while (line != null) {
-                    agreement.append("\n")
-                    agreement.append(line)
-                    line = bufferedReader.readLine()
-                }
-            }
-            agreement.toString()
-        } catch (e: Exception) {
-            throw IOException()
-        }
     }
 
     private fun agreementLoadingFailed() {
