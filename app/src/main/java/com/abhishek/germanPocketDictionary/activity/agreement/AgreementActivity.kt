@@ -3,9 +3,9 @@ package com.abhishek.germanPocketDictionary.activity.agreement
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
@@ -30,6 +30,7 @@ class AgreementActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_agreement)
 
         viewModel.migrateOldAgreementStatusKeyToNewOneIfPresent()
 
@@ -38,6 +39,11 @@ class AgreementActivity : AppCompatActivity() {
             onAgreementAccepted()
         else
             setupAgreementAlertDialog()
+
+        val showAgreementButton: Button = findViewById(R.id.show_agreement_button)
+        showAgreementButton.setOnClickListener {
+            setupAgreementAlertDialog()
+        }
     }
 
     private fun setupAgreementAlertDialog() {
@@ -70,13 +76,6 @@ class AgreementActivity : AppCompatActivity() {
                 "I Disagree"
             ) { _: DialogInterface?, _: Int ->
                 viewModel.onAgreementDenied()
-
-                Toast.makeText(this, "Application is Closing", Toast.LENGTH_SHORT)
-                    .show()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAndRemoveTask()
-                } else
-                    finishAffinity()
             }
             .setCancelable(false)
         alertDialog = builder.create()
