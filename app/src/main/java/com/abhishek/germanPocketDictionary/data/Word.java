@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.Data;
+package com.abhishek.germanPocketDictionary.data;
 
 import androidx.annotation.NonNull;
 
