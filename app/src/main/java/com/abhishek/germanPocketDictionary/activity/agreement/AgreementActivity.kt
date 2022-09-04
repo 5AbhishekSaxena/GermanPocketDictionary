@@ -50,10 +50,12 @@ class AgreementActivity : AppCompatActivity() {
             return
         }
 
-        @SuppressLint("InflateParams") val alertDialogLayout: View =
-            layoutInflater.inflate(R.layout.agreement_alertbox_layout, null)
-        val agreementTextView = alertDialogLayout.findViewById<TextView>(R.id.agreement_details)
-        agreementTextView.text = agreement
+        val alertDialogLayout = getAlertDialogLayout(
+            agreement = agreement,
+            onCheckedChangeListener = ::updateAgreementStatus,
+        )
+
+        @SuppressLint("InflateParams")
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.agreement_title)
             .setView(alertDialogLayout)
@@ -72,10 +74,6 @@ class AgreementActivity : AppCompatActivity() {
         alertDialog = builder.create()
         alertDialog?.show()
         alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
-        val checkBox = alertDialogLayout.findViewById<CheckBox>(R.id.agreement_checkbox)
-        checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-            updateAgreementStatus(isChecked)
-        }
     }
 
     private fun onAgreementAccepted() {
@@ -90,5 +88,21 @@ class AgreementActivity : AppCompatActivity() {
 
     private fun updateAgreementStatus(status: Boolean) {
         alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = status
+    }
+
+    private fun getAlertDialogLayout(
+        agreement: String,
+        onCheckedChangeListener: (Boolean) -> Unit
+    ): View {
+        val alertDialogLayout: View =
+            layoutInflater.inflate(R.layout.agreement_alertbox_layout, null)
+        val agreementTextView = alertDialogLayout.findViewById<TextView>(R.id.agreement_details)
+        agreementTextView.text = agreement
+        val checkBox = alertDialogLayout.findViewById<CheckBox>(R.id.agreement_checkbox)
+        checkBox.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            onCheckedChangeListener(isChecked)
+        }
+
+        return alertDialogLayout
     }
 }
