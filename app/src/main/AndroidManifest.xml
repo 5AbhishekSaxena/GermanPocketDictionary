@@ -13,16 +13,27 @@
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
+
+        <activity
+            android:name=".activity.agreement.AgreementActivity"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:exported="true">
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:exported="true">
 
             <meta-data
                 android:name="android.app.default_searchable"
