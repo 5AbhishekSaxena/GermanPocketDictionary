@@ -1,8 +1,9 @@
 package com.abhishek.germanPocketDictionary.data
 
 import com.abhishek.germanPocketDictionary.model.Word
+import javax.inject.Inject
 
-class WordsRepository(
+class WordsRepository @Inject constructor(
     private val wordsDataSource: WordsDataSource
 ) {
 

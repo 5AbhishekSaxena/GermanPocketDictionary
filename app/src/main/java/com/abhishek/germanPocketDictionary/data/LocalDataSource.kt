@@ -5,12 +5,14 @@ import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.model.Word
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.InputStream
 import java.lang.reflect.Type
+import javax.inject.Inject
 
 
-class LocalDataSource(
-    private val context: Context
+class LocalDataSource @Inject constructor(
+    @ApplicationContext private val context: Context
 ) : WordsDataSource {
 
     override fun getWords(): List<Word> {

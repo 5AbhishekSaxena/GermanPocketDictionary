@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 32
@@ -65,6 +66,10 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.43.2"
+    kapt "com.google.dagger:hilt-compiler:2.43.2"
 
     def lifecycle_version = "2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"

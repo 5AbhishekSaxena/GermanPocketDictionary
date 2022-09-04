@@ -5,12 +5,12 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.abhishek.germanPocketDictionary.data.LocalDataSource
 import com.abhishek.germanPocketDictionary.data.WordsRepository
 import com.abhishek.germanPocketDictionary.model.Word
 
 class HomeViewModel(
-    application: Application
+    application: Application,
+    private val wordsRepository: WordsRepository
 ) : AndroidViewModel(application) {
 
     private val context: Context
@@ -20,8 +20,6 @@ class HomeViewModel(
     val allWords: LiveData<List<Word>> = _allWords
 
     fun getWords() {
-        val wordsDataSource = LocalDataSource(context)
-        val wordsRepository = WordsRepository(wordsDataSource)
         _allWords.value = wordsRepository.getWords()
     }
 
