@@ -6,33 +6,27 @@ import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.C
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_QUESTIONS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.PREF_AGREEMENT_KEY;
 import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhishek.germanPocketDictionary.R;
@@ -51,11 +45,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,8 +67,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private boolean MENU_ITEM_HIDE = true;
 
-    private AlertDialog alertDialog;
-
     private ViewPager viewPager;
 
     private Bundle savedInstanceState;
@@ -98,107 +85,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setupAgreementAlertDialog();
-    }
-
-    private void setupAgreementAlertDialog() {
-        String agreement = null;
-        try {
-            agreement = fetchAgreementDetails();
-        } catch (IOException e) {
-            agreementLoadingFailed();
-        }
-
-        final SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this);
-
-        boolean agreed = sharedPreferences.getBoolean(PREF_AGREEMENT_KEY, false);
-        if (sharedPreferences.contains("agreed")) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("agreed");
-            editor.apply();
-        }
-
-        if (agreement != null) {
-            @SuppressLint("InflateParams") View alertDialogLayout = getLayoutInflater().inflate(R.layout.agreement_alertbox_layout, null);
-            TextView agreementTextView = alertDialogLayout.findViewById(R.id.agreement_details);
-            agreementTextView.setText(agreement);
-            if (!agreed) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(R.string.agreement_title)
-                        .setView(alertDialogLayout)
-                        .setPositiveButton("I Agree", (dialog, which) -> {
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean(PREF_AGREEMENT_KEY, true);
-                            editor.apply();
-                            setupNavDrawer();
-                            setupInterface();
-                        })
-                        .setNegativeButton("I Disagree", (dialog, which) -> {
-                            Toast.makeText(this, "Application is Closing", Toast.LENGTH_SHORT).show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                finishAndRemoveTask();
-                            } else
-                                finishAffinity();
-
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean(PREF_AGREEMENT_KEY, false);
-                            editor.apply();
-                        })
-                        .setCancelable(false);
-
-                alertDialog = builder.create();
-                alertDialog.show();
-
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                CheckBox checkBox = alertDialogLayout.findViewById(R.id.agreement_checkbox);
-                checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked)
-                        updateAgreementStatus(true);
-                    else
-                        updateAgreementStatus(false);
-                });
-            } else {
-                setupNavDrawer();
-                setupInterface();
-            }
-        } else {
-            agreementLoadingFailed();
-        }
-    }
-
-    private String fetchAgreementDetails() throws IOException {
-
-        StringBuilder agreement = new StringBuilder();
-        try {
-            InputStream inputStream = getResources().openRawResource(
-                    getResources().getIdentifier("com.abhishek.germanPocketDictionary:raw/terms_of_use_warranties_and_release_agreement", null, null));
-
-            //noinspection ConstantConditions
-            if (inputStream != null) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    agreement.append("\n");
-                    agreement.append(line);
-                    line = bufferedReader.readLine();
-                }
-            }
-            return agreement.toString();
-        } catch (Exception e) {
-            throw new IOException();
-        }
-    }
-
-    private void agreementLoadingFailed() {
-        Toast.makeText(this, "Agreement failed to load, contact the developer", Toast.LENGTH_LONG).show();
-        hideProgressBarAndShowTextView(R.string.agreement_failed_to_load);
-    }
-
-    public void updateAgreementStatus(Boolean status) {
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(status);
+        setupNavDrawer();
+        setupInterface();
     }
 
     private void setupNavDrawer() {
