@@ -32,16 +32,17 @@ class AgreementActivity : AppCompatActivity() {
         val isAgreementAccepted = viewModel.checkIfAgreementIsAccepted()
         if (isAgreementAccepted)
             onAgreementAccepted()
-        else
-            setupAgreementAlertDialog()
+        else {
+            showAgreementDialog()
+        }
 
         val showAgreementButton: Button = findViewById(R.id.show_agreement_button)
         showAgreementButton.setOnClickListener {
-            setupAgreementAlertDialog()
+            showAgreementDialog()
         }
     }
 
-    private fun setupAgreementAlertDialog() {
+    private fun showAgreementDialog() {
         val agreement: String
         try {
             agreement = viewModel.getAgreement()
@@ -50,6 +51,13 @@ class AgreementActivity : AppCompatActivity() {
             return
         }
 
+        if (alertDialog == null)
+            alertDialog = createAgreementDialog(agreement)
+
+        alertDialog?.show()
+    }
+
+    private fun createAgreementDialog(agreement: String): AlertDialog {
         val alertDialogLayout = getAlertDialogLayout(
             agreement = agreement,
             onCheckedChangeListener = ::updateAgreementStatus,
@@ -71,9 +79,9 @@ class AgreementActivity : AppCompatActivity() {
                 viewModel.onAgreementDenied()
             }
             .setCancelable(false)
-        alertDialog = builder.create()
-        alertDialog?.show()
-        alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
+        val alertDialog = builder.create()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
+        return alertDialog
     }
 
     private fun onAgreementAccepted() {
