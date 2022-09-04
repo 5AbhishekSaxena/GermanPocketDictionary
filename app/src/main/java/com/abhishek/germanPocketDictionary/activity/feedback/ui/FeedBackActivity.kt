@@ -31,7 +31,7 @@ class FeedBackActivity : AppCompatActivity() {
     @Suppress("UNCHECKED_CAST")
     private val viewModel: FeedbackViewModel by viewModels(factoryProducer = {
         val viewModelFactory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return FeedbackViewModel(developerRepository) as T
             }
         }
