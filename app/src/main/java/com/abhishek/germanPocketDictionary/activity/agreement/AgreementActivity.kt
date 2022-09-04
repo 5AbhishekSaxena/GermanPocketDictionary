@@ -83,9 +83,7 @@ class AgreementActivity : AppCompatActivity() {
         alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled = false
         val checkBox = alertDialogLayout.findViewById<CheckBox>(R.id.agreement_checkbox)
         checkBox.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) updateAgreementStatus(
-                true
-            ) else updateAgreementStatus(false)
+            updateAgreementStatus(isChecked)
         }
     }
 
