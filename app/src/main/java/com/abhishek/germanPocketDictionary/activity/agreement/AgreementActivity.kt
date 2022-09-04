@@ -59,7 +59,6 @@ class AgreementActivity : AppCompatActivity() {
         } catch (e: IOException) {
             agreementLoadingFailed()
         }
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (agreement == null) {
             agreementLoadingFailed()
@@ -76,22 +75,20 @@ class AgreementActivity : AppCompatActivity() {
             .setPositiveButton(
                 "I Agree"
             ) { _: DialogInterface?, _: Int ->
-                val editor = sharedPreferences.edit()
-                editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, true)
-                editor.apply()
+                viewModel.onAgreementAccepted()
                 onAgreementAccepted()
             }
             .setNegativeButton(
                 "I Disagree"
             ) { _: DialogInterface?, _: Int ->
+                viewModel.onAgreementDenied()
+
                 Toast.makeText(this, "Application is Closing", Toast.LENGTH_SHORT)
                     .show()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAndRemoveTask()
-                } else finishAffinity()
-                val editor = sharedPreferences.edit()
-                editor.putBoolean(API_KEYS.PREF_AGREEMENT_KEY, false)
-                editor.apply()
+                } else
+                    finishAffinity()
             }
             .setCancelable(false)
         alertDialog = builder.create()

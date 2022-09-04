@@ -2,8 +2,11 @@ package com.abhishek.germanPocketDictionary.activity.agreement
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
+import androidx.preference.PreferenceManager
 import com.abhishek.germanPocketDictionary.R
+import com.abhishek.germanPocketDictionary.utilities.Constants
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -15,6 +18,11 @@ class AgreementViewModel(
 
     private val context: Context
         get() = getApplication<Application>().applicationContext
+
+    private val sharedPreferences: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
+
+    private val sharedPreferenceEditor: SharedPreferences.Editor = sharedPreferences.edit()
 
     fun loadAgreementDetails(): String {
         val agreement = StringBuilder()
@@ -36,4 +44,18 @@ class AgreementViewModel(
         }
     }
 
+    fun onAgreementAccepted() {
+        updateAgreementAcceptanceStatus(true)
+    }
+
+    fun onAgreementDenied() {
+        updateAgreementAcceptanceStatus(false)
+    }
+
+    private fun updateAgreementAcceptanceStatus(status: Boolean) {
+        sharedPreferenceEditor.apply {
+            putBoolean(Constants.API_KEYS.PREF_AGREEMENT_KEY, status)
+            apply()
+        }
+    }
 }
