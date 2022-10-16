@@ -16,34 +16,42 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.MainActivity;
 import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
-import com.abhishek.germanPocketDictionary.data.LocalDataSource;
-import com.abhishek.germanPocketDictionary.data.WordsDataSource;
+import com.abhishek.germanPocketDictionary.data.WordsRepository;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
-import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
 
-import java.util.List;
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.
  */
 
+@AndroidEntryPoint
 public class WordsFragment extends Fragment implements OnWordClickListener {
 
     public int selectedNoun;
     public int selectedVerb;
 
-    private RecyclerView.Adapter mAdapter;
+    private WordsViewModel wordsViewModel;
+
+    private WordAdapter mAdapter;
 
     private String fragmentType;
+
+    @Inject
+    WordsRepository wordsRepository;
 
     public static WordsFragment newInstance(String type) {
         WordsFragment wordFragment = new WordsFragment();
@@ -61,18 +69,13 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
         RecyclerView wordRecyclerView = rootView.findViewById(R.id.list);
 
         MainActivity activityReference = ((MainActivity) getActivity());
-        Context context = getContext();
-
-        if (context == null) return rootView;
-
-        WordsDataSource wordsDataSource = new LocalDataSource(context);
 
         // Create a new adapter that takes an empty list of words as input
         if (getArguments() != null && activityReference != null) {
             fragmentType = getArguments().getString(Constants.API_KEYS.FRAGMENT_TYPE);
             if (fragmentType != null) {
 
-                mAdapter = createAdapter(this, getContext(), fragmentType, this, wordsDataSource);
+                mAdapter = createAdapter(this, getContext(), fragmentType, this);
 
                 if (fragmentType.equals(Constants.API_KEYS.CATEGORY_NOUNS))
                     selectedNoun = -1;
@@ -96,11 +99,26 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
 
     }
 
-    private WordAdapter createAdapter(WordsFragment fragment, Context context, String category,
-                                      OnWordClickListener onWordClickListener,
-                                      WordsDataSource wordsDataSource) {
-        List<Word> words = wordsDataSource.getWordsByCategory(category);
-        return new WordAdapter(fragment, context, category, onWordClickListener, words);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        WordsViewModel.Factory wordsViewModelFactory = new WordsViewModel.Factory(wordsRepository, fragmentType);
+        wordsViewModel = ViewModelProviders.of(this, wordsViewModelFactory).get(WordsViewModel.class);
+
+        wordsViewModel.fetchWordsByCategory();
+        observeToWords();
+    }
+
+    private void observeToWords() {
+        wordsViewModel.getWords().observe(getViewLifecycleOwner(), words -> mAdapter.submitList(words));
+    }
+
+    private WordAdapter createAdapter(WordsFragment fragment,
+                                      Context context,
+                                      String category,
+                                      OnWordClickListener onWordClickListener) {
+        return new WordAdapter(fragment, context, category, onWordClickListener);
     }
 
     @Override

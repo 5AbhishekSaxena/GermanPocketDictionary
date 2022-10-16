@@ -24,6 +24,7 @@ import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
 import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,16 +44,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
     private List<Word> words;
     private OnWordClickListener onWordClickListener;
 
-    public WordAdapter(WordsFragment fragment, Context context, String fragmentType,
-                       OnWordClickListener onWordClickListener,
-                       List<Word> words) {
-        this.context = context;
-        this.words = words;
-        this.fragment = fragment;
-        mFragmentType = fragmentType;
-        this.onWordClickListener = onWordClickListener;
-    }
-
     public WordAdapter(Activity context, List<Word> words,
                        OnWordClickListener onWordClickListener) {
         mFragmentType = "search_type";
@@ -60,6 +51,20 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
         isActivity = true;
         this.words = words;
         this.onWordClickListener = onWordClickListener;
+    }
+
+    public WordAdapter(WordsFragment fragment, Context context, String fragmentType,
+                       OnWordClickListener onWordClickListener) {
+        this.context = context;
+        this.words = new ArrayList<>();
+        this.fragment = fragment;
+        mFragmentType = fragmentType;
+        this.onWordClickListener = onWordClickListener;
+    }
+
+    public void submitList(List<Word> words) {
+        this.words = words;
+        notifyDataSetChanged();
     }
 
     @NonNull

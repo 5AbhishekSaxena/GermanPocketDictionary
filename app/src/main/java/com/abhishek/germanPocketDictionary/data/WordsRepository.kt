@@ -10,4 +10,8 @@ class WordsRepository @Inject constructor(
     fun getWords(): List<Word> {
         return wordsDataSource.getWords()
     }
+
+    fun getWordsByCategory(category: String): List<Word> {
+        return wordsDataSource.getWordsByCategory(category)
+    }
 }
