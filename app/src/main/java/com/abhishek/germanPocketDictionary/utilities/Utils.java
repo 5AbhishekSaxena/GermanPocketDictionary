@@ -34,7 +34,6 @@ public class Utils {
 
     public static List<Word> getWordsUsingCategory(Context context, String category) {
         List<Word> allWords = SharedPreferenceManager.getInstance(context).getListFromPreference(Constants.TABLES.ALL_WORDS);
-        if (allWords == null) allWords = new ArrayList<>();
         List<Word> filteredList = new ArrayList<>();
         if (category.equals(Constants.TABLES.ALL_WORDS)) {
             filteredList.addAll(allWords);

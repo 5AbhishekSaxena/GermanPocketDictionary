@@ -1,6 +1,6 @@
-package com.abhishek.germanPocketDictionary.data;
+package com.abhishek.germanPocketDictionary.Data;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -165,7 +165,7 @@ public class Word implements Serializable {
     public String toString() {
         return "Word{"
                 + "mGermanOpposite='" + mGermanOpposite
-                + '\'' + "mGermanOppositeMeaning='" + mGermanOppositeMeaning
+                + '\'' + "mGermanOppositeMeaning='"+ mGermanOppositeMeaning
                 + '\'' + ", mGermanTranslation='" + mGermanTranslation
                 + '\'' + ", mEnglishTranslation='" + mEnglishTranslation
                 + '\'' + ", mGender=" + mGender
