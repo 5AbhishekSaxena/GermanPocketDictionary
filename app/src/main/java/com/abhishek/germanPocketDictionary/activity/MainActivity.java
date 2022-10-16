@@ -8,6 +8,7 @@ import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.C
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
 import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -250,9 +252,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_item_rate_this_app:
-                Uri playStoreAppUri = Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName());
-                Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, playStoreAppUri);
-                startActivity(playStoreIntent);
+                try {
+                    Uri playStoreAppUri = Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName());
+                    Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, playStoreAppUri);
+                    startActivity(playStoreIntent);
+                } catch (ActivityNotFoundException exception) {
+                    Toast.makeText(this, "Unable to open Play Store.", Toast.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
