@@ -8,6 +8,7 @@ import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.C
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
 import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -251,18 +252,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_item_rate_this_app:
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW);
-                //Try Google play
-                goToMarket.setData(Uri.parse("market://details?id=" + this.getPackageName()));
-                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                if (goToMarket.resolveActivity(getPackageManager()) != null) {
-                    Toast.makeText(this, "Opening PlayStore", Toast.LENGTH_SHORT).show();
-                    startActivity(goToMarket);
-                } else
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
-
+                try {
+                    Uri playStoreAppUri = Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName());
+                    Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, playStoreAppUri);
+                    startActivity(playStoreIntent);
+                } catch (ActivityNotFoundException exception) {
+                    Toast.makeText(this, "Unable to open Play Store.", Toast.LENGTH_SHORT).show();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
