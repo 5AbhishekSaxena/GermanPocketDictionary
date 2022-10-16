@@ -1,17 +1,7 @@
 package com.abhishek.germanPocketDictionary.activity;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,17 +10,28 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
-import com.abhishek.germanPocketDictionary.model.Word;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.abhishek.germanPocketDictionary.R;
-import com.abhishek.germanPocketDictionary.utilities.Constants;
-import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
+import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
+import com.abhishek.germanPocketDictionary.data.WordsRepository;
+import com.abhishek.germanPocketDictionary.model.Word;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class SearchResultActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class SearchResultActivity extends AppCompatActivity {
 
     List<Word> allWordsList = null;
     WordAdapter mAdapter;
@@ -39,6 +40,10 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
     TextView mEmptyStateTextView;
     static boolean EMPTY = true;
     public static boolean searchState = true;
+
+    @Inject
+    WordsRepository wordsRepository;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,9 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
 
         recyclerListView = findViewById(R.id.list);
 
+        mAdapter = new WordAdapter(this, null);
+        recyclerListView.setAdapter(mAdapter);
+
         View progressBar = findViewById(R.id.loading_indicator);
         progressBar.setVisibility(View.GONE);
 
@@ -64,8 +72,8 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
         if (allWordsList == null)
             allWordsList = new ArrayList<>();
 
-        allWordsList = SharedPreferenceManager.getInstance(this).getListFromPreference(Constants.TABLES.ALL_WORDS);
-
+        allWordsList = wordsRepository.getWords();
+        mAdapter.submitList(allWordsList);
 
         mEmptyStateTextView = findViewById(R.id.empty_view);
         mEmptyStateTextView.setText(R.string.no_words);
@@ -73,10 +81,6 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
         recyclerListView.setLayoutManager(manager);
         recyclerListView.canScrollVertically(LinearLayout.VERTICAL);
         recyclerListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-
-        mAdapter = new WordAdapter(this, allWordsList, null);
-        recyclerListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -116,17 +120,15 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
                     filteredList.clear();
                     filteredList = handleSearch(newText.trim());
                     if (!filteredList.isEmpty()) {
-                        mAdapter = new WordAdapter(SearchResultActivity.this, filteredList, null);
                         recyclerListView.setVisibility(View.VISIBLE);
-                        recyclerListView.setAdapter(mAdapter);
+                        mAdapter.submitList(filteredList);
                         mEmptyStateTextView.setVisibility(View.GONE);
                     } else {
                         mEmptyStateTextView.setVisibility(View.VISIBLE);
                         recyclerListView.setVisibility(View.GONE);
                     }
                 } else {
-                    mAdapter = new WordAdapter(SearchResultActivity.this, allWordsList, null);
-                    recyclerListView.setAdapter(mAdapter);
+                    mAdapter.submitList(allWordsList);
                     mEmptyStateTextView.setVisibility(View.GONE);
                 }
 
@@ -159,16 +161,5 @@ public class SearchResultActivity extends AppCompatActivity implements SharedPre
             }
         }
         return filteredList;
-    }
-
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        if(allWordsList != null) {
-            allWordsList.clear();
-            allWordsList.addAll(SharedPreferenceManager.getInstance(this).getListFromPreference(Constants.TABLES.ALL_WORDS));
-            if (mAdapter != null)
-                mAdapter.notifyDataSetChanged();
-        }
     }
 }
