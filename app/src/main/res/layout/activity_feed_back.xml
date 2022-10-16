@@ -1,79 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.FeedBackActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include layout="@layout/simple_toolbar" />
+    <data>
 
-    <ScrollView
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical"
+        tools:context=".activity.feedback.ui.FeedBackActivity">
 
-        <RelativeLayout
+        <include
+            android:id="@+id/app_bar_layout"
+            layout="@layout/simple_toolbar" />
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/user_name_layout"
-                style="@style/TextInputStandardStyle">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <!-- Name field -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/user_name_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/hint_user_name"
-                    android:inputType="textCapWords|textAutoComplete"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username_layout"
+                    style="@style/TextInputStandardStyle">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/feedback_layout"
-                style="@style/TextInputStandardStyle"
-                android:layout_below="@id/user_name_layout">
+                    <!-- Name field -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/username_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/hint_user_name"
+                        android:inputType="textCapWords|textAutoComplete"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/feedback_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/hint_feedback"
-                    android:scrollbars="vertical"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:gravity="top|start"
-                    android:maxLines="12" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/feedback_layout"
+                    style="@style/TextInputStandardStyle"
+                    android:layout_below="@id/username_layout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/additional_information_layout"
-                style="@style/TextInputStandardStyle"
-                android:layout_below="@id/feedback_layout">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/feedback_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:hint="@string/hint_feedback"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines="12"
+                        android:scrollbars="vertical" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Name field -->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/additional_information_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/hint_additional_information"
-                    android:inputType="textCapSentences" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/additional_information_layout"
+                    style="@style/TextInputStandardStyle"
+                    android:layout_below="@id/feedback_layout">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/send_mail_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/ic_send_black_24dp"
-                android:tint="@color/shadow_white"
-                app:elevation="6dp"
-                app:fabSize="normal" />
-        </RelativeLayout>
-    </ScrollView>
-</LinearLayout>
+                    <!-- Name field -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/additional_information_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/hint_additional_information"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/send_mail_floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/ic_send_black_24dp"
+                    android:tint="@color/shadow_white"
+                    app:elevation="6dp"
+                    app:fabSize="normal" />
+            </RelativeLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

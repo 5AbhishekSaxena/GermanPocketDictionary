@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.abhishek.germanPocketDictionary">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,20 +8,33 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".GPDApplication"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
+
+        <activity
+            android:name=".activity.agreement.AgreementActivity"
+            android:exported="true"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:exported="true">
 
             <meta-data
                 android:name="android.app.default_searchable"
@@ -38,7 +50,7 @@
                 android:value=".activity.MainActivity" />
 
         </activity>
-        <activity android:name=".activity.FeedBackActivity"
+        <activity android:name=".activity.feedback.ui.FeedBackActivity"
             android:label="Feedback"
             android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
