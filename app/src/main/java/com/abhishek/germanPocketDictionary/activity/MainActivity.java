@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
-    private Bundle savedInstanceState;
-
     @Inject
     WordsRepository wordsRepository;
     private HomeViewModel homeViewModel;
@@ -78,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
-        this.savedInstanceState = savedInstanceState;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -287,10 +284,5 @@ public class MainActivity extends AppCompatActivity {
             outState.putString(Constants.TABLES.ALL_WORDS, json);
         }
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
