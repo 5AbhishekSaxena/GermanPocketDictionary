@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.activity;
+package com.abhishek.germanPocketDictionary.activity.search;
 
 import android.content.Context;
 import android.os.Bundle;
