@@ -9,7 +9,6 @@ import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.C
 import static com.abhishek.germanPocketDictionary.utilities.Utils.getFragmentLocationFromCategory;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,9 +34,7 @@ import com.abhishek.germanPocketDictionary.activity.feedback.ui.FeedBackActivity
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.data.WordsRepository;
 import com.abhishek.germanPocketDictionary.model.Word;
-import com.abhishek.germanPocketDictionary.utilities.ConnectionUtils;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
-import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
 import com.abhishek.germanPocketDictionary.utilities.Utils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -51,7 +48,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity {
 
     public List<Word> allWordsList;
 
@@ -86,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupNavDrawer();
-        setupInterface();
+
+        allWordsList = new ArrayList<>();
 
         HomeViewModel.HomeViewModelFactory homeViewModelFactory = new HomeViewModel.HomeViewModelFactory(wordsRepository);
         homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel.class);
@@ -142,57 +140,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             mDrawerLayout.closeDrawer(GravityCompat.START);
             return false;
         });
-    }
-
-    public void setupInterface() {
-        allWordsList = new ArrayList<>();
-
-        SharedPreferenceManager.getInstance(this).registerOnSharedPreferenceChangeListener(this);
-        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.ALL_WORDS)) {
-            Log.d(LOG_TAG, "fetching json from savedInstanceBundle..");
-            String json = savedInstanceState.getString(Constants.TABLES.ALL_WORDS);
-            if (json != null && !json.equals("")) {
-                allWordsList.clear();
-                allWordsList.addAll(Utils.getWordListFromJson(json));
-                Log.d(LOG_TAG, "successfully fetched data from savedInstanceBundle");
-                updateUI();
-            } else
-                fetchWordsFromPreference();
-        } else
-            fetchWordsFromPreference();
-
-    }
-
-    private void fetchWordsFromPreference() {
-        showProgressBarAndLoadingTextView();
-        Log.d(LOG_TAG, "fetching words from the pref...");
-        SharedPreferenceManager prefManager = SharedPreferenceManager.getInstance(this);
-        if (prefManager.contains(Constants.TABLES.ALL_WORDS)) {
-            List<Word> words = prefManager.getListFromPreference(Constants.TABLES.ALL_WORDS);
-            if (words == null || words.isEmpty()) {
-                Log.d(LOG_TAG, "fetching words from db - words in pref is empty/null");
-                fetchWordsFromDb();
-            } else {
-                Log.d(LOG_TAG, "Successfully fetched words from the pref.");
-                allWordsList.clear();
-                allWordsList.addAll(words);
-                prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
-                updateUI();
-            }
-        } else {
-            Log.d(LOG_TAG, "words not found in shared preferences");
-            fetchWordsFromDb();
-        }
-    }
-
-    private void fetchWordsFromDb() {
-        if (allWordsList == null)
-            allWordsList = new ArrayList<>();
-
-        ConnectionUtils connectionUtils = new ConnectionUtils(this);
-
-//        if (!connectionUtils.hasInternetAccess())
-//            noInternetConnection();
     }
 
     private void updateUI() {
@@ -331,13 +278,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             super.onBackPressed();
     }
 
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.d(LOG_TAG, "preference updated");
-        fetchWordsFromPreference();
-    }
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         Log.d(LOG_TAG, "onSaveInstanceState called");
@@ -352,6 +292,5 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SharedPreferenceManager.getInstance(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }
