@@ -10,9 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +26,6 @@ import com.abhishek.germanPocketDictionary.model.Word;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -40,6 +41,8 @@ public class SearchResultActivity extends AppCompatActivity {
     TextView mEmptyStateTextView;
     static boolean EMPTY = true;
     public static boolean searchState = true;
+
+    private SearchViewModel viewModel;
 
     @Inject
     WordsRepository wordsRepository;
@@ -81,10 +84,32 @@ public class SearchResultActivity extends AppCompatActivity {
         recyclerListView.setLayoutManager(manager);
         recyclerListView.canScrollVertically(LinearLayout.VERTICAL);
         recyclerListView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        SearchViewModel.Factory factory = new SearchViewModel.Factory(wordsRepository);
+        viewModel = ViewModelProviders.of(this, factory).get(SearchViewModel.class);
+
+        observeWords();
+    }
+
+    private void observeWords() {
+        viewModel.getWords().observe(
+                this,
+                words -> {
+                    if (words == null || words.isEmpty()) {
+                        mEmptyStateTextView.setVisibility(View.VISIBLE);
+                        recyclerListView.setVisibility(View.GONE);
+                    } else {
+                        recyclerListView.setVisibility(View.VISIBLE);
+                        mEmptyStateTextView.setVisibility(View.GONE);
+                    }
+
+                    mAdapter.submitList(words);
+                }
+        );
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
         MenuItem item = menu.findItem(R.id.search_menu);
@@ -102,9 +127,8 @@ public class SearchResultActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                newText = newText.trim();
-                if (newText.length() == 0) {
+            public boolean onQueryTextChange(String query) {
+                if (query.length() == 0) {
                     searchState = EMPTY;
                     InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (inputManager != null) {
@@ -114,25 +138,8 @@ public class SearchResultActivity extends AppCompatActivity {
                     searchState = !EMPTY;
                 }
 
-                ArrayList<Word> filteredList = new ArrayList<>();
+                viewModel.filterWords(query);
 
-                if (newText.length() != 0) {
-                    filteredList.clear();
-                    filteredList = handleSearch(newText.trim());
-                    if (!filteredList.isEmpty()) {
-                        recyclerListView.setVisibility(View.VISIBLE);
-                        mAdapter.submitList(filteredList);
-                        mEmptyStateTextView.setVisibility(View.GONE);
-                    } else {
-                        mEmptyStateTextView.setVisibility(View.VISIBLE);
-                        recyclerListView.setVisibility(View.GONE);
-                    }
-                } else {
-                    mAdapter.submitList(allWordsList);
-                    mEmptyStateTextView.setVisibility(View.GONE);
-                }
-
-                mAdapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -146,20 +153,5 @@ public class SearchResultActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private ArrayList<Word> handleSearch(String query) {
-
-        ArrayList<Word> filteredList = new ArrayList<>();
-        Word currentWord;
-        for (int i = 0; i < allWordsList.size(); i++) {
-            currentWord = allWordsList.get(i);
-
-            if (Pattern.compile(Pattern.quote(query),
-                    Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(currentWord.toString()).find()) {
-                filteredList.add(currentWord);
-            }
-        }
-        return filteredList;
     }
 }

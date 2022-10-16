@@ -17,6 +17,14 @@ class SearchViewModel @Inject constructor(
     private val _words = MutableLiveData<List<Word>>()
     val words: LiveData<List<Word>> = _words
 
+    init {
+        getAllWords()
+    }
+
+    private fun getAllWords() {
+        _words.value = wordsRepository.getWords()
+    }
+
     fun filterWords(query: String) {
         _words.value = wordsRepository.filterWords(query)
     }
