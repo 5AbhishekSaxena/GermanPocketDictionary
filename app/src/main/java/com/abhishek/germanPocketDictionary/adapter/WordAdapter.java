@@ -1,11 +1,12 @@
 package com.abhishek.germanPocketDictionary.adapter;
 
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
+import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
+import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsUsingCategory;
+
 import android.app.Activity;
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,20 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.SearchResultActivity;
+import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
 import com.abhishek.germanPocketDictionary.model.Word;
-import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
-import com.abhishek.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.utilities.Constants;
 
 import java.util.List;
-
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
-import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsUsingCategory;
-
-import com.abhishek.germanPocketDictionary.utilities.Constants;
 
 /**
  * @author Abhishek Saxena
@@ -46,9 +44,10 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
     private OnWordClickListener onWordClickListener;
 
     public WordAdapter(WordsFragment fragment, Context context, String fragmentType,
-                       OnWordClickListener onWordClickListener) {
+                       OnWordClickListener onWordClickListener,
+                       List<Word> words) {
         this.context = context;
-        this.words = getWordsUsingCategory(context, fragmentType);
+        this.words = words;
         this.fragment = fragment;
         mFragmentType = fragmentType;
         this.onWordClickListener = onWordClickListener;
@@ -66,7 +65,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(mFragmentType.equals(Constants.API_KEYS.CATEGORY_OPPOSITE) ? R.layout.opposite_words : R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(mFragmentType.equals(Constants.API_KEYS.CATEGORY_OPPOSITE) ? R.layout.opposite_words : R.layout.list_item, parent, false);
         return new ViewHolder(view, isActivity, onWordClickListener);
     }
 

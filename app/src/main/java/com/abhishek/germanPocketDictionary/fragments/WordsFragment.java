@@ -1,13 +1,10 @@
 package com.abhishek.germanPocketDictionary.fragments;
 
 
-import android.content.SharedPreferences;
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.transition.ChangeBounds;
 import android.transition.TransitionManager;
 import android.util.Log;
@@ -18,15 +15,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.MainActivity;
 import com.abhishek.germanPocketDictionary.adapter.WordAdapter;
-import com.abhishek.germanPocketDictionary.R;
+import com.abhishek.germanPocketDictionary.data.LocalDataSource;
+import com.abhishek.germanPocketDictionary.data.WordsDataSource;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
+import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
 
-import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
+import java.util.List;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.
@@ -57,42 +61,24 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
         RecyclerView wordRecyclerView = rootView.findViewById(R.id.list);
 
         MainActivity activityReference = ((MainActivity) getActivity());
+        Context context = getContext();
+
+        if (context == null) return rootView;
+
+        WordsDataSource wordsDataSource = new LocalDataSource(context);
 
         // Create a new adapter that takes an empty list of words as input
         if (getArguments() != null && activityReference != null) {
             fragmentType = getArguments().getString(Constants.API_KEYS.FRAGMENT_TYPE);
             if (fragmentType != null) {
-                switch (fragmentType) {
-                    case Constants.TABLES.ALL_WORDS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.TABLES.ALL_WORDS, this);
-                        break;
 
-                    case Constants.API_KEYS.CATEGORY_NOUNS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_NOUNS, this);
-                        selectedNoun = -1;
-                        break;
+                mAdapter = createAdapter(this, getContext(), fragmentType, this, wordsDataSource);
 
-                    case Constants.API_KEYS.CATEGORY_VERBS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_VERBS, this);
-                        selectedVerb = -1;
-                        break;
+                if (fragmentType.equals(Constants.API_KEYS.CATEGORY_NOUNS))
+                    selectedNoun = -1;
 
-                    case Constants.API_KEYS.CATEGORY_NUMBERS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_NUMBERS, this);
-                        break;
-
-                    case Constants.API_KEYS.CATEGORY_COLORS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_COLORS, this);
-                        break;
-
-                    case Constants.API_KEYS.CATEGORY_QUESTIONS:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_QUESTIONS, this);
-                        break;
-
-                    case Constants.API_KEYS.CATEGORY_OPPOSITE:
-                        mAdapter = new WordAdapter(this, getContext(), Constants.API_KEYS.CATEGORY_OPPOSITE, this);
-                        break;
-                }
+                if (fragmentType.equals(Constants.API_KEYS.CATEGORY_VERBS))
+                    selectedVerb = -1;
             }
         }
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -108,6 +94,13 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
 
         return rootView;
 
+    }
+
+    private WordAdapter createAdapter(WordsFragment fragment, Context context, String category,
+                                      OnWordClickListener onWordClickListener,
+                                      WordsDataSource wordsDataSource) {
+        List<Word> words = wordsDataSource.getWordsByCategory(category);
+        return new WordAdapter(fragment, context, category, onWordClickListener, words);
     }
 
     @Override
