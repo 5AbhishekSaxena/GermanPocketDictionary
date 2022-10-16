@@ -21,8 +21,12 @@ class WordsRepository @Inject constructor(
     }
 
     fun filterWords(query: String): List<Word> {
+        if (query.isBlank()) return words
+
+        val sanitizedQuery = query.trim()
+
         return words.filter {
-            val literalPattern = Pattern.quote(query)
+            val literalPattern = Pattern.quote(sanitizedQuery)
             val flags = Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CASE
 
             val pattern = Pattern.compile(literalPattern, flags)
