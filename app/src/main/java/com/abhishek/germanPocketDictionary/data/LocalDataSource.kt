@@ -3,6 +3,7 @@ package com.abhishek.germanPocketDictionary.data
 import android.content.Context
 import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.model.Word
+import com.abhishek.germanPocketDictionary.utilities.Constants
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,11 +20,15 @@ class LocalDataSource @Inject constructor(
 
     override fun getWords(): List<Word> {
         if (words.isEmpty()) {
-            val wordsJson = readRawWordsJson()
-            val wordsFromJson = wordsJsonToList(wordsJson)
-            words.addAll(wordsFromJson)
+            fetchWordsFromJsonAndUpdateCache()
         }
         return words
+    }
+
+    private fun fetchWordsFromJsonAndUpdateCache() {
+        val wordsJson = readRawWordsJson()
+        val wordsFromJson = wordsJsonToList(wordsJson)
+        words.addAll(wordsFromJson)
     }
 
     private fun readRawWordsJson(): String {
@@ -44,5 +49,33 @@ class LocalDataSource @Inject constructor(
         val gson = Gson()
         val type: Type = object : TypeToken<List<Word>>() {}.type
         return gson.fromJson(wordsJson, type)
+    }
+
+    override fun getWordsByCategory(category: String): List<Word> {
+        if (words.isEmpty()) {
+            fetchWordsFromJsonAndUpdateCache()
+        }
+
+        if (category == Constants.TABLES.ALL_WORDS) return words
+
+        if (category == Constants.API_KEYS.CATEGORY_OPPOSITE) {
+            return getOpposites()
+        }
+
+        return words.filter { it.category == category }.sortedBy { it.germanTranslation }
+    }
+
+    private fun getOpposites(): List<Word> {
+        val filteredWords = mutableListOf<Word>()
+        val opposites = mutableSetOf<String>()
+
+        words.forEach {
+            if (it.hasOpposite() && !opposites.contains(it.germanOpposite)) {
+                filteredWords.add(it)
+                opposites.add(it.germanTranslation)
+            }
+        }
+
+        return filteredWords.sortedBy { it.germanTranslation }
     }
 }
