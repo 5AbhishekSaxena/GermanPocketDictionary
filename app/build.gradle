@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -57,9 +56,6 @@ dependencies {
 
     //CardView
     implementation 'androidx.cardview:cardview:1.0.0'
-
-    //Firebase
-    implementation 'com.google.firebase:firebase-database:20.0.6'
 
     //Preference Manager
     implementation "androidx.preference:preference-ktx:1.2.0"

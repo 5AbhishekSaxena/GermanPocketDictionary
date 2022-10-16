@@ -34,7 +34,6 @@ import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.feedback.ui.FeedBackActivity;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.data.WordsRepository;
-import com.abhishek.germanPocketDictionary.firebase.FirebaseHandler;
 import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.ConnectionUtils;
 import com.abhishek.germanPocketDictionary.utilities.Constants;
@@ -42,10 +41,6 @@ import com.abhishek.germanPocketDictionary.utilities.SharedPreferenceManager;
 import com.abhishek.germanPocketDictionary.utilities.Utils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private ViewPager viewPager;
 
     private Bundle savedInstanceState;
-
-    private DatabaseReference wordsReference;
-    private ValueEventListener wordsValueEventListener;
 
     @Inject
     WordsRepository wordsRepository;
@@ -155,8 +147,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void setupInterface() {
         allWordsList = new ArrayList<>();
 
-        attachValueEventListener();
-
         SharedPreferenceManager.getInstance(this).registerOnSharedPreferenceChangeListener(this);
         if (savedInstanceState != null && savedInstanceState.containsKey(Constants.TABLES.ALL_WORDS)) {
             Log.d(LOG_TAG, "fetching json from savedInstanceBundle..");
@@ -199,23 +189,10 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         if (allWordsList == null)
             allWordsList = new ArrayList<>();
 
-        Log.d(LOG_TAG, "fetching words from the firebase...");
         ConnectionUtils connectionUtils = new ConnectionUtils(this);
 
 //        if (!connectionUtils.hasInternetAccess())
 //            noInternetConnection();
-
-        if (wordsReference == null)
-            wordsReference = FirebaseHandler.getInstance().getWordsReference();
-
-        wordsReference.addListenerForSingleValueEvent(getWordsValueEventListener());
-    }
-
-    private void attachValueEventListener() {
-        if (wordsReference == null)
-            wordsReference = FirebaseHandler.getInstance().getWordsReference();
-
-        wordsReference.addValueEventListener(getWordsValueEventListener());
     }
 
     private void updateUI() {
@@ -289,40 +266,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             progressBar = findViewById(R.id.loading_indicator);
 
         progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private ValueEventListener getWordsValueEventListener() {
-        if (wordsValueEventListener == null) {
-            wordsValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    allWordsList.clear();
-                    for (DataSnapshot wordsSnapshot : dataSnapshot.getChildren()) {
-                        Word word = wordsSnapshot.getValue(Word.class);
-                        if (word != null) {
-                            allWordsList.add(word);
-                        }
-                    }
-
-                    if (allWordsList != null && !allWordsList.isEmpty()) {
-                        Log.d(LOG_TAG, "words successfully fetched from the db");
-                        Log.d(LOG_TAG, "updating preferences....");
-                        SharedPreferenceManager prefManager = SharedPreferenceManager
-                                .getInstance(MainActivity.this);
-                        prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
-                        hideProgressbarAndLoadingTextView();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Failed to load data, please try again!", Toast.LENGTH_SHORT).show();
-                    Log.d(LOG_TAG, "Firebase onCancelled - Failed to load data, please try again!");
-                    hideProgressBarAndShowTextView(R.string.error_loading_data);
-                }
-            };
-        }
-        return wordsValueEventListener;
     }
 
     @Override
@@ -410,8 +353,5 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferenceManager.getInstance(this).unregisterOnSharedPreferenceChangeListener(this);
-        if (wordsReference != null && wordsValueEventListener != null) {
-            wordsReference.removeEventListener(wordsValueEventListener);
-        }
     }
 }
