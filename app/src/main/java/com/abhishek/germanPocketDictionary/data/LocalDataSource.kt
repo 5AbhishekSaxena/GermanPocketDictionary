@@ -15,9 +15,15 @@ class LocalDataSource @Inject constructor(
     @ApplicationContext private val context: Context
 ) : WordsDataSource {
 
+    private val words: MutableList<Word> = mutableListOf()
+
     override fun getWords(): List<Word> {
-        val wordsJson = readRawWordsJson()
-        return wordsJsonToList(wordsJson)
+        if (words.isEmpty()) {
+            val wordsJson = readRawWordsJson()
+            val wordsFromJson = wordsJsonToList(wordsJson)
+            words.addAll(wordsFromJson)
+        }
+        return words
     }
 
     private fun readRawWordsJson(): String {
