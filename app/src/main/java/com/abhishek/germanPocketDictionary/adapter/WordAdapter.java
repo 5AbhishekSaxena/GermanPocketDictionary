@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.germanPocketDictionary.R;
-import com.abhishek.germanPocketDictionary.activity.SearchResultActivity;
+import com.abhishek.germanPocketDictionary.activity.search.SearchResultActivity;
 import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
 import com.abhishek.germanPocketDictionary.model.Word;

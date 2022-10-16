@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.feedback.ui.FeedBackActivity;
+import com.abhishek.germanPocketDictionary.activity.search.SearchResultActivity;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
 import com.abhishek.germanPocketDictionary.data.WordsRepository;
 import com.abhishek.germanPocketDictionary.model.Word;
