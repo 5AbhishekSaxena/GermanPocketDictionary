@@ -128,37 +128,37 @@ public class WordsFragment extends Fragment implements OnWordClickListener {
         if (getArguments() != null) {
             fragmentType = getArguments().getString(Constants.API_KEYS.FRAGMENT_TYPE);
 
-            if (fragmentType != null) {
-                switch (fragmentType) {
-                    case Constants.API_KEYS.CATEGORY_NOUNS:
-                        if (getActivity() != null) {
-                            //ViewGroup mainView = rootView.findViewById(R.id.main_view);
-                            ImageView arrowImageView = view.findViewById(R.id.arrow);
-                            TransitionManager.beginDelayedTransition((ViewGroup) view, new ChangeBounds());
-                            if (selectedNoun != position) {
-                                view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+            if (fragmentType == null) return;
 
-                                arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
-                                selectedNoun = position;
-                            } else {
-                                arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
-                                view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
-                                selectedNoun = -1;
-                            }
-                            mAdapter.notifyDataSetChanged();
-                        }
-                        break;
-                    case Constants.API_KEYS.CATEGORY_VERBS:
-                        if (selectedVerb != position) {
+            switch (fragmentType) {
+                case Constants.API_KEYS.CATEGORY_NOUNS:
+                    if (getActivity() != null) {
+                        //ViewGroup mainView = rootView.findViewById(R.id.main_view);
+                        ImageView arrowImageView = view.findViewById(R.id.arrow);
+                        TransitionManager.beginDelayedTransition((ViewGroup) view, new ChangeBounds());
+                        if (selectedNoun != position) {
                             view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
-                            selectedVerb = position;
+
+                            arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
+                            selectedNoun = position;
                         } else {
+                            arrowImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_keyboard_arrow_up_black_18dp));
                             view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
-                            selectedVerb = -1;
+                            selectedNoun = -1;
                         }
                         mAdapter.notifyDataSetChanged();
-                        break;
-                }
+                    }
+                    break;
+                case Constants.API_KEYS.CATEGORY_VERBS:
+                    if (selectedVerb != position) {
+                        view.findViewById(R.id.expandable_view).setVisibility(View.VISIBLE);
+                        selectedVerb = position;
+                    } else {
+                        view.findViewById(R.id.expandable_view).setVisibility(View.GONE);
+                        selectedVerb = -1;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     }
