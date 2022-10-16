@@ -27,11 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abhishek.germanPocketDictionary.R;
 import com.abhishek.germanPocketDictionary.activity.feedback.ui.FeedBackActivity;
 import com.abhishek.germanPocketDictionary.adapter.CategoryPagerAdapter;
+import com.abhishek.germanPocketDictionary.data.WordsRepository;
 import com.abhishek.germanPocketDictionary.firebase.FirebaseHandler;
 import com.abhishek.germanPocketDictionary.model.Word;
 import com.abhishek.germanPocketDictionary.utilities.ConnectionUtils;
@@ -49,7 +51,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public List<Word> allWordsList;
@@ -74,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     private DatabaseReference wordsReference;
     private ValueEventListener wordsValueEventListener;
 
+    @Inject
+    WordsRepository wordsRepository;
+    private HomeViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +91,20 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         setContentView(R.layout.activity_main);
         this.savedInstanceState = savedInstanceState;
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupNavDrawer();
         setupInterface();
+
+        HomeViewModel.HomeViewModelFactory homeViewModelFactory = new HomeViewModel.HomeViewModelFactory(wordsRepository);
+        homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel.class);
+        homeViewModel.getWords();
+
+        homeViewModel.getAllWords().observe(this, words -> {
+            allWordsList.clear();
+            allWordsList.addAll(words);
+            updateUI();
+        });
     }
 
     private void setupNavDrawer() {
@@ -168,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Log.d(LOG_TAG, "Successfully fetched words from the pref.");
                 allWordsList.clear();
                 allWordsList.addAll(words);
+                prefManager.setList(Constants.TABLES.ALL_WORDS, allWordsList);
                 updateUI();
             }
         } else {
