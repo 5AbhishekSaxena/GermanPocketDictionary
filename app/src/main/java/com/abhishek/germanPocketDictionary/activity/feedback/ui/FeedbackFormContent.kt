@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.abhishek.germanPocketDictionary.core.ui.components.GPDButton
 import com.abhishek.germanPocketDictionary.core.ui.components.textfields.GPDOutlinedTextField
+import com.abhishek.germanPocketDictionary.core.ui.getString
 import com.abhishek.germanPocketDictionary.core.ui.theme.GPDTheme
 
 @Composable
@@ -34,9 +37,13 @@ fun FeedbackFormContent(
             onValueChange = onNameChange,
             label = "Name",
             placeholder = "Ex. John Doe",
-            error = viewState.feedbackForm.nameError,
+            error = viewState.feedbackForm.nameError?.getString(),
             required = true,
             modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                capitalization = KeyboardCapitalization.Words,
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -46,9 +53,12 @@ fun FeedbackFormContent(
             onValueChange = onBodyChange,
             label = "Feedback",
             placeholder = "Please enter your feedback.",
-            error = viewState.feedbackForm.bodyError,
+            error = viewState.feedbackForm.bodyError?.getString(),
             required = true,
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                capitalization = KeyboardCapitalization.Sentences,
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -58,6 +68,9 @@ fun FeedbackFormContent(
             onValueChange = onAdditionalInformationChange,
             label = "Additional Information",
             modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                capitalization = KeyboardCapitalization.Sentences,
+            )
         )
 
         Spacer(modifier = Modifier.weight(1f))
