@@ -4,10 +4,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 32
+    namespace 'com.abhishek.germanPocketDictionary'
+    compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.abhishek.germanPocketDictionary"
-        minSdkVersion 21
+        minSdk 21
         targetSdkVersion 32
         versionCode 13
         versionName '1.1.3'
@@ -16,6 +18,10 @@ android {
         //Defining Log debugging
         buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
         buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
     buildTypes {
 
@@ -31,17 +37,22 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
-    productFlavors {
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
     }
 
     dataBinding {
         enabled true
     }
-
-    namespace 'com.abhishek.germanPocketDictionary'
 }
 
 dependencies {
@@ -50,6 +61,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
+    implementation 'androidx.compose.material:material:1.3.1'
 
     //Design
     implementation 'com.google.android.material:material:1.6.1'
@@ -73,6 +89,13 @@ dependencies {
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 }
 repositories {
     mavenCentral()
