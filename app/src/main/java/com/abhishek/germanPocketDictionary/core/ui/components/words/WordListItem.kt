@@ -15,9 +15,7 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +41,10 @@ fun WordListItem(
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            GermanWordAndTranslation(word = word)
+            GermanWordAndTranslation(
+                germanTranslation = word.germanTranslation,
+                englishTranslation = word.englishTranslation
+            )
         }
     }
 }
@@ -72,7 +73,10 @@ fun WordListItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column {
-                GermanWordAndTranslation(word)
+                GermanWordAndTranslation(
+                    germanTranslation = word.germanTranslation,
+                    englishTranslation = word.englishTranslation
+                )
 
                 AnimatedVisibility(visible = showExpandableContent) {
                     Column {
@@ -89,21 +93,6 @@ fun WordListItem(
             Icon(imageVector = icon, contentDescription = null)
         }
     }
-}
-
-@Composable
-private fun GermanWordAndTranslation(word: UIMinWord) {
-    Text(
-        text = word.germanTranslation,
-        style = MaterialTheme.typography.titleMedium,
-    )
-
-    Spacer(modifier = Modifier.height(6.dp))
-
-    Text(
-        text = word.englishTranslation,
-        style = MaterialTheme.typography.bodyMedium,
-    )
 }
 
 @Preview(
