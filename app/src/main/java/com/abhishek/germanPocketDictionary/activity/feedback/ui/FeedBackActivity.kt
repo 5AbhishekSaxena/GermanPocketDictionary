@@ -4,8 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.Surface
 import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
@@ -14,12 +16,13 @@ import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.DeveloperRepository
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.Email
 import com.abhishek.germanPocketDictionary.activity.feedback.domain.ProdDeveloperRepository
+import com.abhishek.germanPocketDictionary.core.ui.theme.GPDTheme
 import com.abhishek.germanPocketDictionary.databinding.ActivityFeedBackBinding
 import com.abhishek.germanPocketDictionary.utilities.Constants
 import com.abhishek.germanPocketDictionary.utilities.EventObserver
 import com.abhishek.germanPocketDictionary.utilities.HideErrorLine
 
-class FeedBackActivity : AppCompatActivity() {
+class FeedBackActivity : ComponentActivity() {
     private var username: String? = null
     private var feedback: String? = null
     private var additionalInformation: String? = null
@@ -40,27 +43,14 @@ class FeedBackActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentAndInitializeDataBinding()
 
-        setSupportActionBar(binding.appBarLayout.toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.title = getString(R.string.feedback_label)
+        setContent {
+            GPDTheme {
+                Surface {
+                    FeedbackFormScreen(viewModel = viewModel)
+                }
+            }
         }
-
-        addTechChangeListenerToInputLayouts()
-
-        if (savedInstanceState != null) {
-            username = savedInstanceState.getString(Constants.API_KEYS.USERNAME)
-            feedback = savedInstanceState.getString(Constants.API_KEYS.FEEDBACK)
-            if (savedInstanceState.getString(Constants.API_KEYS.ADDITIONAL_INFORMATION) != null) additionalInformation =
-                savedInstanceState.getString(
-                    Constants.API_KEYS.ADDITIONAL_INFORMATION
-                )
-        }
-
-        subscribeToObservers()
-        setOnClickListeners()
     }
 
     private fun setContentAndInitializeDataBinding() {
@@ -110,7 +100,7 @@ class FeedBackActivity : AppCompatActivity() {
             val username = binding.usernameEditText.text.toString()
             val feedback = binding.feedbackEditText.text.toString()
             val additionalInformation = binding.additionalInformationEditText.text?.toString()
-            viewModel.onSendFeedback(username, feedback, additionalInformation)
+//            viewModel.onSubmit(username, feedback, additionalInformation)
         }
     }
 
@@ -142,8 +132,7 @@ class FeedBackActivity : AppCompatActivity() {
         outState.putString(Constants.API_KEYS.USERNAME, username)
         outState.putString(Constants.API_KEYS.FEEDBACK, feedback)
         if (additionalInformation != null) outState.putString(
-            Constants.API_KEYS.ADDITIONAL_INFORMATION,
-            additionalInformation
+            Constants.API_KEYS.ADDITIONAL_INFORMATION, additionalInformation
         )
     }
 }
