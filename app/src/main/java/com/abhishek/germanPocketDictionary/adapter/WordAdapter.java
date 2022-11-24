@@ -3,11 +3,9 @@ package com.abhishek.germanPocketDictionary.adapter;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_NOUNS;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_OPPOSITE;
 import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS.CATEGORY_VERBS;
-import static com.abhishek.germanPocketDictionary.utilities.Utils.getWordsUsingCategory;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,7 @@ import java.util.List;
  * @since 22-06-2019 04:14
  */
 
-public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     private Context context;
     private WordsFragment fragment;
@@ -281,12 +279,5 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> im
 
         holder.oppositeTextView.setVisibility(View.VISIBLE);
         holder.oppositeLabelTextView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        words.clear();
-        words.addAll(getWordsUsingCategory(context, mFragmentType));
-        notifyDataSetChanged();
     }
 }
