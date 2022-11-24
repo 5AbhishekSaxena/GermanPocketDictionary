@@ -22,7 +22,7 @@ class LocalDataSource @Inject constructor(
         if (words.isEmpty()) {
             fetchWordsFromJsonAndUpdateCache()
         }
-        return words
+        return words.sortedBy { it.germanTranslationWithoutArticle }
     }
 
     private fun fetchWordsFromJsonAndUpdateCache() {
@@ -62,7 +62,12 @@ class LocalDataSource @Inject constructor(
             return getOpposites()
         }
 
-        return words.filter { it.category == category }.sortedBy { it.germanTranslation }
+        val filteredWords = words.filter { it.category == category }
+
+        return if (category == Constants.API_KEYS.CATEGORY_NUMBERS)
+            filteredWords.sortedBy { it.numberValue }
+        else
+            filteredWords.sortedBy { it.germanTranslationWithoutArticle }
     }
 
     private fun getOpposites(): List<Word> {
@@ -76,6 +81,6 @@ class LocalDataSource @Inject constructor(
             }
         }
 
-        return filteredWords.sortedBy { it.germanTranslation }
+        return filteredWords
     }
 }
