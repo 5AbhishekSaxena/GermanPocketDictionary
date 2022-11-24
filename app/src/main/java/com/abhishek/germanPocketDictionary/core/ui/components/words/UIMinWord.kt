@@ -21,4 +21,12 @@ sealed class UIMinWord(
         val partizip: String,
         val helpingVerb: String,
     ) : UIMinWord(germanTranslation = germanTranslation, englishTranslation = englishTranslation)
+
+    data class Opposites(
+        override val germanTranslation: String,
+        override val englishTranslation: String,
+        val oppositeGermanTranslation: String,
+        val oppositeEnglishTranslation: String,
+    ) : UIMinWord(germanTranslation = germanTranslation, englishTranslation = englishTranslation)
+
 }

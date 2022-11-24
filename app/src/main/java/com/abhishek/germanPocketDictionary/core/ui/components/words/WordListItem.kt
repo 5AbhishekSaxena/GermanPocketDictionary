@@ -120,6 +120,13 @@ private fun WordListItemPreview() {
         helpingVerb = "sein"
     )
 
+    val opposites = UIMinWord.Opposites(
+        germanTranslation = "antworten",
+        englishTranslation = "to answer",
+        oppositeGermanTranslation = "fragen",
+        oppositeEnglishTranslation = "to ask"
+    )
+
     GPDTheme {
         Surface {
             Column(
@@ -142,6 +149,7 @@ private fun WordListItemPreview() {
                         )
                     },
                 )
+                OppositeWordListItem(word = opposites)
             }
         }
     }
