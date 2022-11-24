@@ -58,8 +58,8 @@
     <string name="categories">Categories</string>
     <string name="error_loading_data">Error Loading Data from the server</string>
     <string name="arrow_content_desp">arrow</string>
-    <string name="error_feedback_empty">Feedback field is empty.</string>
-    <string name="error_user_name_empty">Username field is empty</string>
+    <string name="error_feedback_empty">Feedback field is required.</string>
+    <string name="error_name_empty">Name field is required.</string>
     <string name="feedback_label">Feedback</string>
 
 
