@@ -124,6 +124,13 @@ private fun WordListItemPreview() {
         plural = "die Abendessen"
     )
 
+    val verb = UIMinWord.Verb(
+        germanTranslation = "abfahren",
+        englishTranslation = "to leave",
+        partizip = "abgefahren",
+        helpingVerb = "sein"
+    )
+
     GPDTheme {
         Surface {
             Column(
@@ -135,6 +142,15 @@ private fun WordListItemPreview() {
                     word = word,
                     expandableContent = {
                         NounExpandableWordListItemContent(plural = word.plural)
+                    },
+                )
+                WordListItem(
+                    word = verb,
+                    expandableContent = {
+                        VerbExpandableListItemContent(
+                            partizip = verb.partizip,
+                            helpingVerb = verb.helpingVerb
+                        )
                     },
                 )
             }
