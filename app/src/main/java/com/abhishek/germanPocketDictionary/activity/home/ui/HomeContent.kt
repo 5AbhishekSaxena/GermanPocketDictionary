@@ -1,6 +1,8 @@
 package com.abhishek.germanPocketDictionary.activity.home.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
@@ -54,36 +56,40 @@ fun HomeContent(
         mutableStateOf(wordTypes)
     }
 
-    ScrollableTabRow(
-        selectedTabIndex = pagerState.currentPage,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
-        },
-        edgePadding = 0.dp,
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        pages.forEachIndexed { index, title ->
-            Tab(
-                text = { Text(title.getSimplifiedName()) },
-                selected = pagerState.currentPage == index,
-                onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
-            )
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                )
+            },
+            edgePadding = 0.dp,
+        ) {
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(title.getSimplifiedName()) },
+                    selected = pagerState.currentPage == index,
+                    onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                )
+            }
         }
-    }
 
-    HorizontalPager(
-        count = pages.size,
-        state = pagerState,
-    ) { page ->
-        when (pages[page]) {
-            WordType.ALL_WORDS -> WordList(words = viewState.allWords)
-            WordType.NOUNS -> NounWordList(words = viewState.nouns)
-            WordType.VERBS -> VerbWordList(words = viewState.verbs)
-            WordType.NUMBERS -> WordList(words = viewState.numbers)
-            WordType.COLORS -> WordList(words = viewState.colors)
-            WordType.QUESTIONS -> WordList(words = viewState.questions)
-            WordType.OPPOSITE -> OppositesWordList(words = viewState.opposites)
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState,
+        ) { page ->
+            when (pages[page]) {
+                WordType.ALL_WORDS -> WordList(words = viewState.allWords)
+                WordType.NOUNS -> NounWordList(words = viewState.nouns)
+                WordType.VERBS -> VerbWordList(words = viewState.verbs)
+                WordType.NUMBERS -> WordList(words = viewState.numbers)
+                WordType.COLORS -> WordList(words = viewState.colors)
+                WordType.QUESTIONS -> WordList(words = viewState.questions)
+                WordType.OPPOSITE -> OppositesWordList(words = viewState.opposites)
+            }
         }
     }
 }

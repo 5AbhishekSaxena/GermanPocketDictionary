@@ -50,7 +50,8 @@
                 android:value=".activity.MainActivity" />
 
         </activity>
-        <activity android:name=".activity.feedback.ui.FeedBackActivity"
+        <activity
+            android:name=".activity.feedback.ui.FeedBackActivity"
             android:label="Feedback"
             android:screenOrientation="portrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -58,6 +59,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
+
+        <activity android:name=".activity.HomeActivity" />
     </application>
 
 </manifest>
