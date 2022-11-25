@@ -1,8 +1,10 @@
 package com.abhishek.germanPocketDictionary.activity.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,16 +15,11 @@ import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
 import com.abhishek.germanPocketDictionary.core.ui.components.words.VerbExpandableListItemContent
 import com.abhishek.germanPocketDictionary.core.ui.components.words.WordListItem
 
-private val verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(16.dp)
-
 @Composable
 fun WordList(
     words: List<UIMinWord>
 ) {
-    LazyColumn(
-        verticalArrangement = verticalArrangement,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    WordsLazyColumn {
         items(words) { word ->
             WordListItem(word = word)
         }
@@ -33,10 +30,7 @@ fun WordList(
 fun NounWordList(
     words: List<UIMinWord.Noun>
 ) {
-    LazyColumn(
-        verticalArrangement = verticalArrangement,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    WordsLazyColumn {
         items(words) { word ->
             WordListItem(
                 word = word,
@@ -52,10 +46,7 @@ fun NounWordList(
 fun VerbWordList(
     words: List<UIMinWord.Verb>
 ) {
-    LazyColumn(
-        verticalArrangement = verticalArrangement,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    WordsLazyColumn {
         items(words) { word ->
             WordListItem(
                 word = word,
@@ -74,14 +65,21 @@ fun VerbWordList(
 fun OppositesWordList(
     words: List<UIMinWord.Opposites>
 ) {
-    LazyColumn(
-        verticalArrangement = verticalArrangement,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    WordsLazyColumn {
         items(words) { word ->
             OppositeWordListItem(
                 word = word,
             )
         }
     }
+}
+
+@Composable
+private fun WordsLazyColumn(content: LazyListScope.() -> Unit) {
+    LazyColumn(
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxSize(),
+        content = content
+    )
 }
