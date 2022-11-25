@@ -45,6 +45,7 @@ android {
         freeCompilerArgs += [
                 '-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api',
                 '-Xopt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi',
+                '-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi',
         ]
     }
     buildFeatures {
@@ -75,6 +76,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
     implementation "androidx.activity:activity-compose:1.6.1" // to have setContent() method
+    implementation "com.google.accompanist:accompanist-pager:0.27.1"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.27.1"
 
     //Design
     implementation 'com.google.android.material:material:1.6.1'
