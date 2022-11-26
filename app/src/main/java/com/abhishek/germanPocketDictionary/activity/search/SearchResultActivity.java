@@ -75,7 +75,6 @@ public class SearchResultActivity extends AppCompatActivity {
         if (allWordsList == null)
             allWordsList = new ArrayList<>();
 
-        allWordsList = wordsRepository.getWords();
         mAdapter.submitList(allWordsList);
 
         mEmptyStateTextView = findViewById(R.id.empty_view);

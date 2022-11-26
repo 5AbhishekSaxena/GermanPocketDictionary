@@ -4,6 +4,6 @@ import com.abhishek.germanPocketDictionary.model.Word
 
 interface WordsDataSource {
 
-    fun getWords(): List<Word>
-    fun getWordsByCategory(category: String): List<Word>
+    suspend fun getWords(): List<Word>
+    suspend fun getWordsByCategory(category: String): List<Word>
 }

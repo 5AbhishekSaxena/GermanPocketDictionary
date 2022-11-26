@@ -10,13 +10,13 @@ class WordsRepository @Inject constructor(
 
     private val words = mutableListOf<Word>()
 
-    fun getWords(): List<Word> {
+    suspend fun getWords(): List<Word> {
         words.clear()
         words.addAll(wordsDataSource.getWords())
         return words
     }
 
-    fun getWordsByCategory(category: String): List<Word> {
+    suspend fun getWordsByCategory(category: String): List<Word> {
         return wordsDataSource.getWordsByCategory(category)
     }
 

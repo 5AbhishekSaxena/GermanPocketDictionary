@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.abhishek.germanPocketDictionary.data.WordsRepository
 import com.abhishek.germanPocketDictionary.model.Word
+import kotlinx.coroutines.launch
 
 class WordsViewModel(
     private val wordsRepository: WordsRepository,
@@ -16,8 +18,10 @@ class WordsViewModel(
     val words: LiveData<List<Word>> = _words
 
     fun fetchWordsByCategory() {
-        val words = wordsRepository.getWordsByCategory(fragmentType)
-        _words.value = words
+        viewModelScope.launch {
+            val words = wordsRepository.getWordsByCategory(fragmentType)
+            _words.value = words
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

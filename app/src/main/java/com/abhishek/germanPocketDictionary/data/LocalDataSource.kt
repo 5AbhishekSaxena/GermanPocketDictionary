@@ -10,6 +10,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.InputStream
 import java.lang.reflect.Type
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 
 class LocalDataSource @Inject constructor(
@@ -18,7 +21,7 @@ class LocalDataSource @Inject constructor(
 
     private val words: MutableList<Word> = mutableListOf()
 
-    override fun getWords(): List<Word> {
+    override suspend fun getWords(): List<Word> {
         if (words.isEmpty()) {
             fetchWordsFromJsonAndUpdateCache()
         }
@@ -51,20 +54,22 @@ class LocalDataSource @Inject constructor(
         return gson.fromJson(wordsJson, type)
     }
 
-    override fun getWordsByCategory(category: String): List<Word> {
-        if (words.isEmpty()) {
-            fetchWordsFromJsonAndUpdateCache()
-        }
+    override suspend fun getWordsByCategory(category: String): List<Word> =
+        withContext(Dispatchers.IO) {
+            if (words.isEmpty()) {
+                fetchWordsFromJsonAndUpdateCache()
+            }
+            delay(DELAY_TIME)
 
-        if (category == Constants.TABLES.ALL_WORDS) return words
+            if (category == Constants.TABLES.ALL_WORDS) return@withContext words
 
-        if (category == Constants.API_KEYS.CATEGORY_OPPOSITE) {
-            return getOpposites()
-        }
+            if (category == Constants.API_KEYS.CATEGORY_OPPOSITE) {
+                return@withContext getOpposites()
+            }
 
-        val filteredWords = words.filter { it.category == category }
+            val filteredWords = words.filter { it.category == category }
 
-        return if (category == Constants.API_KEYS.CATEGORY_NUMBERS)
+            /*return*/ if (category == Constants.API_KEYS.CATEGORY_NUMBERS)
             filteredWords.sortedBy { it.numberValue }
         else
             filteredWords.sortedBy { it.germanTranslationWithoutArticle }
@@ -82,5 +87,9 @@ class LocalDataSource @Inject constructor(
         }
 
         return filteredWords
+    }
+
+    companion object {
+        private const val DELAY_TIME = 800L
     }
 }

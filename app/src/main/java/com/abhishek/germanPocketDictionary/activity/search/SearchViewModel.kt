@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.abhishek.germanPocketDictionary.data.WordsRepository
 import com.abhishek.germanPocketDictionary.model.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -22,7 +24,9 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun getAllWords() {
-        _words.value = wordsRepository.getWords()
+        viewModelScope.launch {
+            _words.value = wordsRepository.getWords()
+        }
     }
 
     fun filterWords(query: String) {
