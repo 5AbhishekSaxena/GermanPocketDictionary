@@ -157,7 +157,20 @@ private fun LoadedContent(
         }
     }
 
-    WordList(words = viewState.words)
+    if (viewState.words.isNotEmpty())
+        WordList(words = viewState.words)
+    else
+        EmptyResultText()
+}
+
+@Composable
+private fun EmptyResultText() {
+    Text(
+        text = stringResource(id = R.string.no_words),
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center),
+    )
 }
 
 @Composable

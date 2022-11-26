@@ -20,6 +20,10 @@ sealed class SearchViewState {
             override val query: String,
             override val words: List<UIMinWord.Simple>
         ) : Loaded(query, words)
+
+        data class EmptyResult(
+            override val query: String,
+        ) : Loaded(query, emptyList())
     }
 
     data class Error(val error: Exception) : SearchViewState()
