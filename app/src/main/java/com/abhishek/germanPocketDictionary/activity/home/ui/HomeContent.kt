@@ -49,10 +49,40 @@ fun HomeContent(
     onRateThisAppClick: () -> Unit,
 ) {
 
+    Scaffold(
+        topBar = {
+            HomeTopAppBar(
+                onSearchClick = onSearchClick,
+                onRateThisAppClick = onRateThisAppClick
+            )
+        },
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            WordsPagerWithTabs(
+                allWordsPageViewState = allWordsPageViewState,
+                nounsPageViewState = nounsPageViewState,
+                verbsPageViewState = verbsPageViewState,
+                numbersPageViewState = numbersPageViewState,
+                colorsPageViewState = colorsPageViewState,
+                questionsPageViewState = questionsPageViewState,
+                oppositesPageViewState = oppositesPageViewState,
+                onPageChange = onPageChange,
+            )
+        }
+    }
+}
+
+@Composable
+private fun HomeTopAppBar(onSearchClick: () -> Unit, onRateThisAppClick: () -> Unit) {
     var showOptionsMenu by remember { mutableStateOf(false) }
 
-    Scaffold(topBar = {
-        TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) }, actions = {
+    TopAppBar(
+        title = { Text(text = stringResource(id = R.string.app_name)) },
+        actions = {
             IconButton(
                 onClick = onSearchClick, colors = IconButtonDefaults.iconButtonColors(
                     containerColor = Color(0xFFededed)
@@ -71,36 +101,29 @@ fun HomeContent(
                 Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
             }
 
-            DropdownMenu(expanded = showOptionsMenu,
-                onDismissRequest = { showOptionsMenu = false }) {
+            DropdownMenu(
+                expanded = showOptionsMenu,
+                onDismissRequest = { showOptionsMenu = false },
+            ) {
 
-                DropdownMenuItem(onClick = onRateThisAppClick, text = {
-                    Text(text = stringResource(id = R.string.rate_this_app))
-                }, contentPadding = PaddingValues(horizontal = 24.dp), leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.StarRate, contentDescription = null
-                    )
-                })
+                DropdownMenuItem(
+                    onClick = {
+                        showOptionsMenu = !showOptionsMenu
+                        onRateThisAppClick()
+                    },
+                    text = {
+                        Text(text = stringResource(id = R.string.rate_this_app))
+                    },
+                    contentPadding = PaddingValues(horizontal = 24.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.StarRate, contentDescription = null
+                        )
+                    }
+                )
             }
-        })
-    }) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            WordsPagerWithTabs(
-                allWordsPageViewState = allWordsPageViewState,
-                nounsPageViewState = nounsPageViewState,
-                verbsPageViewState = verbsPageViewState,
-                numbersPageViewState = numbersPageViewState,
-                colorsPageViewState = colorsPageViewState,
-                questionsPageViewState = questionsPageViewState,
-                oppositesPageViewState = oppositesPageViewState,
-                onPageChange = onPageChange,
-            )
-        }
-    }
+        },
+    )
 }
 
 @Preview(
