@@ -17,9 +17,12 @@ import com.abhishek.germanPocketDictionary.core.ui.components.words.WordListItem
 
 @Composable
 fun WordList(
-    words: List<UIMinWord>
+    words: List<UIMinWord>,
+    modifier: Modifier = Modifier,
 ) {
-    WordsLazyColumn {
+    WordsLazyColumn(
+        modifier = modifier,
+    ) {
         items(words) { word ->
             WordListItem(word = word)
         }
@@ -28,9 +31,12 @@ fun WordList(
 
 @Composable
 fun NounWordList(
-    words: List<UIMinWord.Noun>
+    words: List<UIMinWord.Noun>,
+    modifier: Modifier = Modifier,
 ) {
-    WordsLazyColumn {
+    WordsLazyColumn(
+        modifier = modifier,
+    ) {
         items(words) { word ->
             WordListItem(
                 word = word,
@@ -44,9 +50,12 @@ fun NounWordList(
 
 @Composable
 fun VerbWordList(
-    words: List<UIMinWord.Verb>
+    words: List<UIMinWord.Verb>,
+    modifier: Modifier = Modifier,
 ) {
-    WordsLazyColumn {
+    WordsLazyColumn(
+        modifier = modifier,
+    ) {
         items(words) { word ->
             WordListItem(
                 word = word,
@@ -63,9 +72,12 @@ fun VerbWordList(
 
 @Composable
 fun OppositesWordList(
-    words: List<UIMinWord.Opposites>
+    words: List<UIMinWord.Opposites>,
+    modifier: Modifier = Modifier,
 ) {
-    WordsLazyColumn {
+    WordsLazyColumn(
+        modifier = modifier
+    ) {
         items(words) { word ->
             OppositeWordListItem(
                 word = word,
@@ -75,11 +87,14 @@ fun OppositesWordList(
 }
 
 @Composable
-private fun WordsLazyColumn(content: LazyListScope.() -> Unit) {
+private fun WordsLazyColumn(
+    modifier: Modifier = Modifier,
+    content: LazyListScope.() -> Unit,
+) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         content = content
     )
 }
