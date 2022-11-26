@@ -7,6 +7,8 @@ import com.abhishek.germanPocketDictionary.data.WordsRepository
 import com.abhishek.germanPocketDictionary.utilities.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -14,7 +16,33 @@ class HomeViewModel @Inject constructor(
     private val wordsRepository: WordsRepository
 ) : ViewModel() {
 
-    val viewState = HomeViewState()
+    private val _allWordsPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Simple>>(WordPageViewState.Initial())
+    val allWordsPageViewState = _allWordsPageViewState.asStateFlow()
+
+    private val _nounsPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Noun>>(WordPageViewState.Initial())
+    val nounsPageViewState = _nounsPageViewState.asStateFlow()
+
+    private val _verbsPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Verb>>(WordPageViewState.Initial())
+    val verbsPageViewState = _verbsPageViewState.asStateFlow()
+
+    private val _numbersPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Simple>>(WordPageViewState.Initial())
+    val numbersPageViewState = _numbersPageViewState.asStateFlow()
+
+    private val _colorsPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Simple>>(WordPageViewState.Initial())
+    val colorsPageViewState = _colorsPageViewState.asStateFlow()
+
+    private val _questionsPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Simple>>(WordPageViewState.Initial())
+    val questionsPageViewState = _questionsPageViewState.asStateFlow()
+
+    private val _oppositesPageViewState =
+        MutableStateFlow<WordPageViewState<UIMinWord.Opposites>>(WordPageViewState.Initial())
+    val oppositesPageViewState = _oppositesPageViewState.asStateFlow()
 
     init {
         updateAllWords()
@@ -22,15 +50,15 @@ class HomeViewModel @Inject constructor(
 
     private fun updateAllWords() {
         viewModelScope.launch {
-            viewState.allWords = WordPageViewState.Loading()
+            _allWordsPageViewState.value = WordPageViewState.Loading()
             val words = getSimpleWords(Constants.TABLES.ALL_WORDS)
-            viewState.allWords = WordPageViewState.Loaded(words)
+            _allWordsPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateNouns() {
         viewModelScope.launch {
-            viewState.nouns = WordPageViewState.Loading()
+            _nounsPageViewState.value = WordPageViewState.Loading()
             val words = wordsRepository
                 .getWordsByCategory(Constants.API_KEYS.CATEGORY_NOUNS)
                 .map {
@@ -41,13 +69,13 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-            viewState.nouns = WordPageViewState.Loaded(words)
+            _nounsPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateVerbs() {
         viewModelScope.launch {
-            viewState.verbs = WordPageViewState.Loading()
+            _verbsPageViewState.value = WordPageViewState.Loading()
             val words = wordsRepository
                 .getWordsByCategory(Constants.API_KEYS.CATEGORY_VERBS)
                 .map {
@@ -59,39 +87,39 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-            viewState.verbs = WordPageViewState.Loaded(words)
+            _verbsPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateNumbers() {
         viewModelScope.launch {
-            viewState.numbers = WordPageViewState.Loading()
+            _numbersPageViewState.value = WordPageViewState.Loading()
             val words = getSimpleWords(Constants.API_KEYS.CATEGORY_NUMBERS)
 
-            viewState.numbers = WordPageViewState.Loaded(words)
+            _numbersPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateColors() {
         viewModelScope.launch {
-            viewState.colors = WordPageViewState.Loading()
+            _colorsPageViewState.value = WordPageViewState.Loading()
             val words = getSimpleWords(Constants.API_KEYS.CATEGORY_COLORS)
 
-            viewState.colors = WordPageViewState.Loaded(words)
+            _colorsPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateQuestions() {
         viewModelScope.launch {
-            viewState.questions = WordPageViewState.Loading()
+            _questionsPageViewState.value = WordPageViewState.Loading()
             val words = getSimpleWords(Constants.API_KEYS.CATEGORY_QUESTIONS)
-            viewState.questions = WordPageViewState.Loaded(words)
+            _questionsPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
     private fun updateOpposites() {
         viewModelScope.launch {
-            viewState.opposites = WordPageViewState.Loading()
+            _oppositesPageViewState.value = WordPageViewState.Loading()
             val words = wordsRepository
                 .getWordsByCategory(Constants.API_KEYS.CATEGORY_OPPOSITE)
                 .map {
@@ -103,7 +131,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-            viewState.opposites = WordPageViewState.Loaded(words)
+            _oppositesPageViewState.value = WordPageViewState.Loaded(words)
         }
     }
 
@@ -118,27 +146,26 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onPageChange(wordType: WordType) {
-        val currentState = viewState
         when (wordType) {
-            WordType.ALL_WORDS -> if (doesWordsNeedsToBeUpdated(currentState.allWords)) {
+            WordType.ALL_WORDS -> if (doesWordsNeedsToBeUpdated(_allWordsPageViewState.value)) {
                 updateAllWords()
             }
-            WordType.NOUNS -> if (doesWordsNeedsToBeUpdated(currentState.nouns)) {
+            WordType.NOUNS -> if (doesWordsNeedsToBeUpdated(_nounsPageViewState.value)) {
                 updateNouns()
             }
-            WordType.VERBS -> if (doesWordsNeedsToBeUpdated(currentState.verbs)) {
+            WordType.VERBS -> if (doesWordsNeedsToBeUpdated(_verbsPageViewState.value)) {
                 updateVerbs()
             }
-            WordType.NUMBERS -> if (doesWordsNeedsToBeUpdated(currentState.numbers)) {
+            WordType.NUMBERS -> if (doesWordsNeedsToBeUpdated(_numbersPageViewState.value)) {
                 updateNumbers()
             }
-            WordType.COLORS -> if (doesWordsNeedsToBeUpdated(currentState.colors)) {
+            WordType.COLORS -> if (doesWordsNeedsToBeUpdated(_colorsPageViewState.value)) {
                 updateColors()
             }
-            WordType.QUESTIONS -> if (doesWordsNeedsToBeUpdated(currentState.questions)) {
+            WordType.QUESTIONS -> if (doesWordsNeedsToBeUpdated(_questionsPageViewState.value)) {
                 updateQuestions()
             }
-            WordType.OPPOSITE -> if (doesWordsNeedsToBeUpdated(currentState.opposites)) {
+            WordType.OPPOSITE -> if (doesWordsNeedsToBeUpdated(_oppositesPageViewState.value)) {
                 updateOpposites()
             }
         }

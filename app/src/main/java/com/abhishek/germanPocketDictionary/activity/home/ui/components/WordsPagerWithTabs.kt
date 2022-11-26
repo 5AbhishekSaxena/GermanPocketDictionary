@@ -19,7 +19,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.abhishek.germanPocketDictionary.activity.home.ui.HomeViewState
 import com.abhishek.germanPocketDictionary.activity.home.ui.NounWordList
 import com.abhishek.germanPocketDictionary.activity.home.ui.OppositesWordList
 import com.abhishek.germanPocketDictionary.activity.home.ui.VerbWordList
@@ -27,6 +26,7 @@ import com.abhishek.germanPocketDictionary.activity.home.ui.WordList
 import com.abhishek.germanPocketDictionary.activity.home.ui.WordPageViewState
 import com.abhishek.germanPocketDictionary.activity.home.ui.WordType
 import com.abhishek.germanPocketDictionary.core.ui.components.pager.pagerTabIndicatorOffset
+import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
@@ -34,7 +34,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WordsPagerWithTabs(
-    viewState: HomeViewState,
+    allWordsPageViewState: WordPageViewState<UIMinWord.Simple>,
+    nounsPageViewState: WordPageViewState<UIMinWord.Noun>,
+    verbsPageViewState: WordPageViewState<UIMinWord.Verb>,
+    numbersPageViewState: WordPageViewState<UIMinWord.Simple>,
+    colorsPageViewState: WordPageViewState<UIMinWord.Simple>,
+    questionsPageViewState: WordPageViewState<UIMinWord.Simple>,
+    oppositesPageViewState: WordPageViewState<UIMinWord.Opposites>,
     onPageChange: (WordType) -> Unit,
 ) {
 
@@ -82,43 +88,43 @@ fun WordsPagerWithTabs(
     ) { page ->
         when (pages[page]) {
             WordType.ALL_WORDS -> WordListPageContent(
-                state = viewState.allWords,
+                state = allWordsPageViewState,
                 onLoaded = {
                     WordList(words = it)
                 },
             )
             WordType.NOUNS -> WordListPageContent(
-                state = viewState.nouns,
+                state = nounsPageViewState,
                 onLoaded = {
                     NounWordList(words = it)
                 },
             )
             WordType.VERBS -> WordListPageContent(
-                state = viewState.verbs,
+                state = verbsPageViewState,
                 onLoaded = {
                     VerbWordList(words = it)
                 },
             )
             WordType.NUMBERS -> WordListPageContent(
-                state = viewState.numbers,
+                state = numbersPageViewState,
                 onLoaded = {
                     WordList(words = it)
                 },
             )
             WordType.COLORS -> WordListPageContent(
-                state = viewState.colors,
+                state = colorsPageViewState,
                 onLoaded = {
                     WordList(words = it)
                 },
             )
             WordType.QUESTIONS -> WordListPageContent(
-                state = viewState.questions,
+                state = questionsPageViewState,
                 onLoaded = {
                     WordList(words = it)
                 },
             )
             WordType.OPPOSITE -> WordListPageContent(
-                state = viewState.opposites,
+                state = oppositesPageViewState,
                 onLoaded = {
                     OppositesWordList(
                         words = it,
