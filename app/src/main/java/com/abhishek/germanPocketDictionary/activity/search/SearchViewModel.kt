@@ -1,14 +1,15 @@
 package com.abhishek.germanPocketDictionary.activity.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
 import com.abhishek.germanPocketDictionary.data.WordsRepository
-import com.abhishek.germanPocketDictionary.model.Word
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -16,8 +17,9 @@ class SearchViewModel @Inject constructor(
     private val wordsRepository: WordsRepository,
 ) : ViewModel() {
 
-    private val _words = MutableLiveData<List<Word>>()
-    val words: LiveData<List<Word>> = _words
+    private val _viewState =
+        MutableStateFlow<SearchViewState>(SearchViewState.Initial)
+    val viewState = _viewState.asStateFlow()
 
     init {
         getAllWords()
@@ -25,12 +27,42 @@ class SearchViewModel @Inject constructor(
 
     private fun getAllWords() {
         viewModelScope.launch {
-            _words.value = wordsRepository.getWords()
+            _viewState.value = SearchViewState.Loading
+            val words = wordsRepository.getWords()
+                .map {
+                    UIMinWord.Simple(
+                        germanTranslation = it.germanTranslation,
+                        englishTranslation = it.englishTranslation
+                    )
+                }
+            _viewState.value = SearchViewState.Loaded.Idle("", words)
         }
     }
 
     fun filterWords(query: String) {
-        _words.value = wordsRepository.filterWords(query)
+        _viewState.update {
+            when (it) {
+                is SearchViewState.Loaded -> SearchViewState.Loaded.Searching(
+                    query = query,
+                    words = it.words
+                )
+                else -> SearchViewState.Loaded.Searching(query, emptyList())
+            }
+        }
+
+        val words = wordsRepository.filterWords(query)
+            .map {
+                UIMinWord.Simple(
+                    germanTranslation = it.germanTranslation,
+                    englishTranslation = it.englishTranslation,
+                )
+            }
+        _viewState.update {
+            if (words.isEmpty())
+                SearchViewState.Loaded.EmptyResult(query)
+            else
+                SearchViewState.Loaded.Idle(query = query, words = words)
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

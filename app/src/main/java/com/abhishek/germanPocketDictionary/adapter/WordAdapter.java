@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abhishek.germanPocketDictionary.R;
-import com.abhishek.germanPocketDictionary.activity.search.SearchResultActivity;
 import com.abhishek.germanPocketDictionary.fragments.WordsFragment;
 import com.abhishek.germanPocketDictionary.interfaces.OnWordClickListener;
 import com.abhishek.germanPocketDictionary.model.Word;
@@ -138,7 +137,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                 holder.expandableView.setVisibility(View.GONE);
 
                 if (holder.expandableView != null) {
-                    if (!SearchResultActivity.searchState) {
+                    if (true/*!SearchResultActivity.searchState*/) {
                         if (currentWord.getCategory().equals(CATEGORY_NOUNS)) {
                             holder.expandableView.setVisibility(View.VISIBLE);
 
