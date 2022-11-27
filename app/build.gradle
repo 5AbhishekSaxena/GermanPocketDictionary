@@ -60,9 +60,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.3.2'
     }
-
-    dataBinding {
-        enabled true
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 
     applicationVariants.all { variant ->
@@ -76,20 +77,16 @@ android {
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Compose
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation 'androidx.compose.material:material:1.3.1'
     implementation "androidx.compose.material:material-icons-extended:1.3.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
-    implementation "androidx.activity:activity-compose:1.6.1" // to have setContent() method
+    implementation "androidx.activity:activity-compose:1.6.1"
+    implementation "androidx.compose.material3:material3:1.0.1"
 
     implementation "com.google.accompanist:accompanist-pager:0.27.1"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.27.1"
@@ -98,13 +95,6 @@ dependencies {
     // Compose Destinations
     implementation 'io.github.raamcosta.compose-destinations:animations-core:1.7.27-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.27-beta'
-
-    //Design
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation "androidx.compose.material3:material3:1.0.1"
-
-    //CardView
-    implementation 'androidx.cardview:cardview:1.0.0'
 
     //Preference Manager
     implementation "androidx.preference:preference-ktx:1.2.0"
@@ -116,13 +106,6 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.43.2"
     kapt "com.google.dagger:hilt-compiler:2.43.2"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
-
-    def lifecycle_version = "2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation "android.arch.lifecycle:viewmodel:1.1.1"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
