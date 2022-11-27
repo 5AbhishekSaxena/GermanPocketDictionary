@@ -16,6 +16,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -92,7 +92,7 @@ private fun HomeTopAppBar(
         actions = {
             IconButton(
                 onClick = onSearchClick, colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color(0xFFededed)
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
                 ), modifier = Modifier.clip(CircleShape)
             ) {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
@@ -101,7 +101,7 @@ private fun HomeTopAppBar(
             IconButton(
                 onClick = { showOptionsMenu = !showOptionsMenu },
                 colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color(0xFFededed)
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
                 ),
                 modifier = Modifier.clip(CircleShape)
             ) {
