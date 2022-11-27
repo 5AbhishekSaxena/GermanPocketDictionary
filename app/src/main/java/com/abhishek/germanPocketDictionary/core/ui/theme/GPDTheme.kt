@@ -2,6 +2,7 @@ package com.abhishek.germanPocketDictionary.core.ui.theme
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -18,11 +19,11 @@ private val LightColorScheme = lightColorScheme(
     onPrimaryContainer = lightOnPrimaryContainer,
     secondary = lightSecondary,
     onSecondary = lightOnSecondary,
-    secondaryContainer = lightOnSecondaryContainer,
+    secondaryContainer = lightSecondaryContainer,
     onSecondaryContainer = lightOnSecondaryContainer,
     tertiary = lightTertiary,
     onTertiary = lightOnTertiary,
-    tertiaryContainer = lightOnTertiaryContainer,
+    tertiaryContainer = lightTertiaryContainer,
     onTertiaryContainer = lightOnTertiaryContainer,
     error = lightError,
     errorContainer = lightErrorContainer,
@@ -32,12 +33,12 @@ private val LightColorScheme = lightColorScheme(
     onBackground = lightOnBackground,
     surface = lightSurface,
     onSurface = lightOnSurface,
-    surfaceVariant = lightOnSurfaceVariant,
+    surfaceVariant = lightSurfaceVariant,
     onSurfaceVariant = lightOnSurfaceVariant,
     outline = lightOutline,
     inverseOnSurface = lightInverseOnSurface,
     inverseSurface = lightInverseSurface,
-    inversePrimary = lightPrimary,
+    inversePrimary = lightInversePrimary,
     surfaceTint = lightSurfaceTint,
     outlineVariant = lightOutlineVariant,
     scrim = lightScrim,
@@ -84,6 +85,10 @@ fun GPDTheme(
     content: @Composable () -> Unit
 ) {
     val isAndroid12OrAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    Log.e(
+        "GPDTheme",
+        "GPDTheme, dynamicColor: $dynamicColor, isAndroid12OrAbove: $isAndroid12OrAbove, isSystemDarkTheme: ${isSystemInDarkTheme()}"
+    )
     val colorScheme = when {
         dynamicColor && isAndroid12OrAbove -> {
             val context = LocalContext.current
