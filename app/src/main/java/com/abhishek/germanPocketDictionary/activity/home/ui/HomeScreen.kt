@@ -1,14 +1,14 @@
 package com.abhishek.germanPocketDictionary.activity.home.ui
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abhishek.germanPocketDictionary.activity.destinations.SearchScreenDestination
+import com.abhishek.germanPocketDictionary.core.utils.inbtent.openWebPage
+import com.abhishek.germanPocketDictionary.core.utils.inbtent.shareSimpleText
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -44,15 +44,35 @@ fun HomeScreen(
         onRateThisAppClick = {
             onRateThisAppClick(context)
         },
+        onShareClick = {
+            onShareClick(context)
+        },
     )
 }
 
-
 private fun onRateThisAppClick(context: Context) {
-    val playStoreAppUri =
-        Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
-    val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreAppUri)
-    Intent.createChooser(playStoreIntent, "Please select to rate the app.").also {
-        context.startActivity(it)
-    }
+//    val playStoreAppUri =
+//        Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+//    val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreAppUri)
+//    Intent.createChooser(playStoreIntent, "Rate the app using").also {
+//        context.startActivity(it)
+//    }
+
+    val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
+
+    openWebPage(
+        context = context,
+        url = url,
+        chooserTitle = "Rate the app using"
+    )
+}
+
+private fun onShareClick(context: Context) {
+    val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
+    val message = """
+        |Are you looking for an amazing yet so simple dictionary to help you with German-English translations?
+        |Get it at $url 
+    """.trimMargin()
+
+    shareSimpleText(context = context, text = message)
 }
