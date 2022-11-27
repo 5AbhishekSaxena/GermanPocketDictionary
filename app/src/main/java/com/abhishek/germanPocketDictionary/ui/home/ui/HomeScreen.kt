@@ -51,13 +51,6 @@ fun HomeScreen(
 }
 
 private fun onRateThisAppClick(context: Context) {
-//    val playStoreAppUri =
-//        Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
-//    val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreAppUri)
-//    Intent.createChooser(playStoreIntent, "Rate the app using").also {
-//        context.startActivity(it)
-//    }
-
     val url = "https://play.google.com/store/apps/details?id=${context.packageName}"
 
     openWebPage(
