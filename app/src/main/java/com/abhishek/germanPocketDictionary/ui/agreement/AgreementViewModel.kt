@@ -54,7 +54,7 @@ class AgreementViewModel @Inject constructor(
 
     fun onDialogDismissButtonClick() {
         val currentViewState = _viewState.value
-        if (currentViewState !is AgreementViewState.Loaded.Active || !currentViewState.termsAccepted) return
+        if (currentViewState !is AgreementViewState.Loaded.Active) return
 
         onAgreementAcceptanceStatusUpdate(currentViewState, false)
 
