@@ -3,7 +3,7 @@ package com.abhishek.germanPocketDictionary.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.abhishek.germanPocketDictionary.core.data.WordsRepository
+import com.abhishek.germanPocketDictionary.core.domain.repository.WordsRepository
 import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

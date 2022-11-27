@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.abhishek.germanPocketDictionary.core.data.WordsRepository
+import com.abhishek.germanPocketDictionary.core.domain.model.Word
+import com.abhishek.germanPocketDictionary.core.domain.repository.WordsRepository
 import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
-import com.abhishek.germanPocketDictionary.model.Word
-import com.abhishek.germanPocketDictionary.utilities.Constants
+import com.abhishek.germanPocketDictionary.core.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.utilities;
+package com.abhishek.germanPocketDictionary.core.utils;
 
 /**
  * @author Abhishek Saxena

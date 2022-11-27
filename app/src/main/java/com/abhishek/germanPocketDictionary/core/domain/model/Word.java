@@ -1,10 +1,10 @@
-package com.abhishek.germanPocketDictionary.model;
+package com.abhishek.germanPocketDictionary.core.domain.model;
+
+import static com.abhishek.germanPocketDictionary.core.utils.Constants.API_KEYS;
 
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
-
-import static com.abhishek.germanPocketDictionary.utilities.Constants.API_KEYS;
 
 /**
  * Created by Abhishek Saxena on 12/15/2017.

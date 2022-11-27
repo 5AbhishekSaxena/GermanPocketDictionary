@@ -1,6 +1,6 @@
-package com.abhishek.germanPocketDictionary.core.data
+package com.abhishek.germanPocketDictionary.core.domain.repository
 
-import com.abhishek.germanPocketDictionary.model.Word
+import com.abhishek.germanPocketDictionary.core.domain.model.Word
 
 interface WordsDataSource {
 

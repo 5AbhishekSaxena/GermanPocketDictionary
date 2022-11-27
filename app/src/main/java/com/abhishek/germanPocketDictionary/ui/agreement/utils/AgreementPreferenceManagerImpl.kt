@@ -1,7 +1,7 @@
 package com.abhishek.germanPocketDictionary.ui.agreement.utils
 
+import com.abhishek.germanPocketDictionary.core.utils.Constants
 import com.abhishek.germanPocketDictionary.core.utils.SharedPreferenceManager
-import com.abhishek.germanPocketDictionary.utilities.Constants
 import javax.inject.Inject
 
 class AgreementPreferenceManagerImpl @Inject constructor(

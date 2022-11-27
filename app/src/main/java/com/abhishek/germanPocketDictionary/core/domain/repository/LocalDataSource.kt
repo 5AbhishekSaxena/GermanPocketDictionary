@@ -1,9 +1,9 @@
-package com.abhishek.germanPocketDictionary.core.data
+package com.abhishek.germanPocketDictionary.core.domain.repository
 
 import android.content.Context
 import com.abhishek.germanPocketDictionary.R
-import com.abhishek.germanPocketDictionary.model.Word
-import com.abhishek.germanPocketDictionary.utilities.Constants
+import com.abhishek.germanPocketDictionary.core.domain.model.Word
+import com.abhishek.germanPocketDictionary.core.utils.Constants
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
