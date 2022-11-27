@@ -1,16 +1,25 @@
 package com.abhishek.germanPocketDictionary.activity.home.ui
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.abhishek.germanPocketDictionary.activity.destinations.SearchScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
+@Destination
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
-    onSearchClick: () -> Unit,
-    onRateThisAppClick: () -> Unit,
+    navigator: DestinationsNavigator,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
+
+    val context = LocalContext.current
 
     val allWordsPageViewState by viewModel.allWordsPageViewState.collectAsStateWithLifecycle()
     val nounsPageViewState by viewModel.nounsPageViewState.collectAsStateWithLifecycle()
@@ -29,7 +38,21 @@ fun HomeScreen(
         questionsPageViewState = questionsPageViewState,
         oppositesPageViewState = oppositesPageViewState,
         onPageChange = viewModel::onPageChange,
-        onSearchClick = onSearchClick,
-        onRateThisAppClick = onRateThisAppClick,
+        onSearchClick = {
+            navigator.navigate(SearchScreenDestination)
+        },
+        onRateThisAppClick = {
+            onRateThisAppClick(context)
+        },
     )
+}
+
+
+private fun onRateThisAppClick(context: Context) {
+    val playStoreAppUri =
+        Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+    val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreAppUri)
+    Intent.createChooser(playStoreIntent, "Please select to rate the app.").also {
+        context.startActivity(it)
+    }
 }
