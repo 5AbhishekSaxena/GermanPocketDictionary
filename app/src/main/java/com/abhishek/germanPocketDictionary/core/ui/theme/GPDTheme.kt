@@ -1,5 +1,6 @@
 package com.abhishek.germanPocketDictionary.core.ui.theme
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -76,6 +77,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
+@SuppressLint("NewApi")
 fun GPDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
