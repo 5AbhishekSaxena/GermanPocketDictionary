@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -47,13 +48,15 @@ fun HomeContent(
     onPageChange: (WordType) -> Unit,
     onSearchClick: () -> Unit,
     onRateThisAppClick: () -> Unit,
+    onShareClick: () -> Unit,
 ) {
 
     Scaffold(
         topBar = {
             HomeTopAppBar(
                 onSearchClick = onSearchClick,
-                onRateThisAppClick = onRateThisAppClick
+                onRateThisAppClick = onRateThisAppClick,
+                onShareClick = onShareClick,
             )
         },
     ) { paddingValues ->
@@ -77,7 +80,11 @@ fun HomeContent(
 }
 
 @Composable
-private fun HomeTopAppBar(onSearchClick: () -> Unit, onRateThisAppClick: () -> Unit) {
+private fun HomeTopAppBar(
+    onSearchClick: () -> Unit,
+    onRateThisAppClick: () -> Unit,
+    onShareClick: () -> Unit,
+) {
     var showOptionsMenu by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -118,6 +125,22 @@ private fun HomeTopAppBar(onSearchClick: () -> Unit, onRateThisAppClick: () -> U
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Outlined.StarRate, contentDescription = null
+                        )
+                    }
+                )
+
+                DropdownMenuItem(
+                    onClick = {
+                        showOptionsMenu = !showOptionsMenu
+                        onShareClick()
+                    },
+                    text = {
+                        Text(text = stringResource(id = R.string.share))
+                    },
+                    contentPadding = PaddingValues(horizontal = 24.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Share, contentDescription = null
                         )
                     }
                 )
@@ -174,7 +197,8 @@ private fun HomeContentPreview() {
 
     GPDTheme {
         Surface {
-            HomeContent(allWordsPageViewState = allWordsPageViewState,
+            HomeContent(
+                allWordsPageViewState = allWordsPageViewState,
                 nounsPageViewState = nounsPageViewState,
                 verbsPageViewState = verbsPageViewState,
                 numbersPageViewState = numbersPageViewState,
@@ -183,7 +207,9 @@ private fun HomeContentPreview() {
                 oppositesPageViewState = oppositesPageViewState,
                 onPageChange = {},
                 onSearchClick = {},
-                onRateThisAppClick = {})
+                onRateThisAppClick = {},
+                onShareClick = {},
+            )
         }
     }
 }
