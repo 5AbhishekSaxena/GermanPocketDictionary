@@ -1,82 +1,96 @@
 package com.abhishek.germanPocketDictionary.activity.agreement
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.lifecycle.AndroidViewModel
-import androidx.preference.PreferenceManager
-import com.abhishek.germanPocketDictionary.R
-import com.abhishek.germanPocketDictionary.utilities.Constants
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
+import androidx.lifecycle.ViewModel
+import com.abhishek.germanPocketDictionary.activity.agreement.domain.repository.AgreementRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class AgreementViewModel(
-    application: Application
-) : AndroidViewModel(application) {
+@HiltViewModel
+class AgreementViewModel @Inject constructor(
+    private val agreementRepository: AgreementRepository
+) : ViewModel() {
 
-    private val context: Context
-        get() = getApplication<Application>().applicationContext
+    private val _viewState = MutableStateFlow<AgreementViewState>(AgreementViewState.Initial)
+    val viewState = _viewState.asStateFlow()
 
-    private val sharedPreferences: SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
+    init {
+        loadAgreement()
+    }
 
-    private val sharedPreferenceEditor: SharedPreferences.Editor = sharedPreferences.edit()
-
-    private var agreement: String? = null
-
-    fun getAgreement(): String {
-        return agreement ?: loadAgreement().also {
-            agreement = it
+    private fun loadAgreement() {
+        try {
+            _viewState.value = AgreementViewState.Loading
+            val agreement = agreementRepository.getAgreement()
+            _viewState.value = AgreementViewState.Loaded.Active(
+                showDialog = true,
+                status = false,
+                agreement = agreement,
+                termsAccepted = false,
+            )
+        } catch (exception: Exception) {
+            _viewState.value = AgreementViewState.Error(exception)
         }
     }
 
-    private fun loadAgreement(): String {
-        val agreement = StringBuilder()
-        return try {
-            val inputStream =
-                context.resources.openRawResource(R.raw.terms_of_use_warranties_and_release_agreement)
-
-            val inputStreamReader = InputStreamReader(inputStream, StandardCharsets.UTF_8)
-            val bufferedReader = BufferedReader(inputStreamReader)
-            var line = bufferedReader.readLine()
-            while (line != null) {
-                agreement.append("\n")
-                agreement.append(line)
-                line = bufferedReader.readLine()
-            }
-            agreement.toString()
-        } catch (e: Exception) {
-            throw IOException()
-        }
+    fun onShowAgreementButtonClick() {
+        val currentViewState = _viewState.value
+        if (currentViewState is AgreementViewState.Loaded.Active)
+            _viewState.value = currentViewState.copy(showDialog = true)
     }
 
-    fun onAgreementAccepted() {
-        updateAgreementAcceptanceStatus(true)
+    fun onDialogConfirmButtonClick() {
+        val currentViewState = _viewState.value
+        if (currentViewState !is AgreementViewState.Loaded.Active || !currentViewState.termsAccepted) return
+
+        onAgreementAcceptanceStatusUpdate(currentViewState, true)
+
+        _viewState.value = AgreementViewState.Loaded.Accepted(
+            currentViewState.status,
+            currentViewState.agreement,
+        )
     }
 
-    fun onAgreementDenied() {
-        updateAgreementAcceptanceStatus(false)
+    fun onDialogDismissButtonClick() {
+        val currentViewState = _viewState.value
+        if (currentViewState !is AgreementViewState.Loaded.Active || !currentViewState.termsAccepted) return
+
+        onAgreementAcceptanceStatusUpdate(currentViewState, false)
+
+        _viewState.value = AgreementViewState.Loaded.Active(
+            showDialog = false,
+            status = currentViewState.status,
+            agreement = currentViewState.agreement,
+            termsAccepted = false,
+        )
+    }
+
+    private fun onAgreementAcceptanceStatusUpdate(
+        currentViewState: AgreementViewState.Loaded.Active,
+        status: Boolean
+    ) {
+        if (!currentViewState.termsAccepted) return
+
+        _viewState.value = AgreementViewState.Loaded.Submitting(
+            status = status,
+            currentViewState.agreement,
+        )
+
+        updateAgreementAcceptanceStatus(status)
+
     }
 
     private fun updateAgreementAcceptanceStatus(status: Boolean) {
-        sharedPreferenceEditor.apply {
-            putBoolean(Constants.API_KEYS.PREF_AGREEMENT_KEY, status)
-            apply()
-        }
+        val currentViewState = _viewState.value
+        if (currentViewState !is AgreementViewState.Loaded.Submitting || !currentViewState.termsAccepted) return
+        agreementRepository.updateAgreementAcceptanceStatus(status)
     }
 
-    fun checkIfAgreementIsAccepted(): Boolean {
-        return sharedPreferences.getBoolean(Constants.API_KEYS.PREF_AGREEMENT_KEY, false)
-    }
+    fun onTermsAcceptedCheckedChange(checked: Boolean) {
+        val currentViewState = _viewState.value
+        if (currentViewState !is AgreementViewState.Loaded.Active) return
 
-    fun migrateOldAgreementStatusKeyToNewOneIfPresent() {
-        if (sharedPreferences.contains("agreed")) {
-            sharedPreferenceEditor.apply {
-                remove("agreed")
-                apply()
-            }
-        }
+        _viewState.value = currentViewState.copy(termsAccepted = checked)
     }
 }
