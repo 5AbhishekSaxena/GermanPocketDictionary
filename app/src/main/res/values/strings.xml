@@ -37,30 +37,6 @@
 
     <!--Menu Items labels -->
     <string name="rate_this_app">Rate This App</string>
-    <string name="send_feedback">Feedback</string>
     <string name="share">Share</string>
-
-    <!-- Feedback Activity Texts Labels -->
-    <string name="feedback_name_label">Name:\u0020</string>
-    <string name="feedback_email_label">Email:\u0020</string>
-    <string name="feedback_feedback_label">Feedback:\u0020</string>
-    <string name="feedback_additional_information_label">Additional Information:\u0020</string>
-
-    <!-- Hints for the Feedback Activity -->
-    <string name="hint_user_name">User Name*</string>
-    <string name="hint_email">Email*</string>
-    <string name="hint_feedback">Feedback*</string>
-    <string name="hint_additional_information">Additional Information (Optional)</string>
-
-    <!-- Feedback Menu Item -->
-    <string name="action_save">Save</string>
-    <string name="category_opposite">Opposite</string>
-    <string name="categories">Categories</string>
-    <string name="error_loading_data">Error Loading Data from the server</string>
-    <string name="arrow_content_desp">arrow</string>
-    <string name="error_feedback_empty">Feedback field is required.</string>
-    <string name="error_name_empty">Name field is required.</string>
-    <string name="feedback_label">Feedback</string>
-
 
 </resources>
