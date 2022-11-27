@@ -1,11 +1,7 @@
 package com.abhishek.germanPocketDictionary.ui.home.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.abhishek.germanPocketDictionary.core.domain.model.Word
 import com.abhishek.germanPocketDictionary.core.domain.repository.WordsRepository
 import com.abhishek.germanPocketDictionary.core.ui.components.words.UIMinWord
 import com.abhishek.germanPocketDictionary.core.utils.Constants
@@ -177,28 +173,5 @@ class HomeViewModel @Inject constructor(
 
     private fun doesWordsNeedsToBeUpdated(state: WordPageViewState<*>): Boolean {
         return state !is WordPageViewState.Loaded<*> && state !is WordPageViewState.Error<*>
-    }
-}
-
-class HomeViewModel(
-    private val wordsRepository: WordsRepository
-) : ViewModel() {
-
-    private val _allWords = MutableLiveData<List<Word>>()
-    val allWords: LiveData<List<Word>> = _allWords
-
-    fun getWords() {
-        viewModelScope.launch {
-            _allWords.value = wordsRepository.getWords()
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    class HomeViewModelFactory(
-        private val wordsRepository: WordsRepository,
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return HomeViewModel(wordsRepository) as T
-        }
     }
 }
