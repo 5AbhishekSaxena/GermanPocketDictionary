@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.abhishek.germanPocketDictionary.R
 import com.abhishek.germanPocketDictionary.core.ui.components.ErrorText
@@ -84,12 +85,14 @@ private fun LoadedContent(
             Text(
                 text = "Please accept the terms and conditions of the application.",
                 style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Please accept the agreement in order to use the application."
+                text = "Please accept the agreement in order to use the application.",
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
