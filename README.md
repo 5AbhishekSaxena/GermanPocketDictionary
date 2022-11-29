@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/19958130/204669252-c3dad036-5970-46d5-84dd-fece5c262ab7.png" width="100%"/>
+
 # German Pocket Dictionary
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/5AbhishekSaxena/GermanPocketDictionary)
 ![GitHub](https://img.shields.io/github/license/5AbhishekSaxena/GermanPocketDictionary)
@@ -11,6 +13,7 @@ All this with a universal search bar for fast results.
 
 #### Play Store Link: 
 <a href="https://play.google.com/store/apps/details?id=com.abhishek.germanPocketDictionary&hl=en" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="100px" /></a>
+
 
 ### Why contribute to this repository
 - Beginner-friendly
