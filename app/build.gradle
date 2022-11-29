@@ -39,6 +39,8 @@ android {
             useSupportLibrary true
         }
         signingConfig signingConfigs.release
+
+        archivesBaseName = "$applicationName-v$versionName"
     }
     buildTypes {
 
