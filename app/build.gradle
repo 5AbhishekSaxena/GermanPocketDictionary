@@ -1,21 +1,46 @@
-apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp' version '1.7.20-1.0.8'
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 32
+    namespace 'com.abhishek.germanPocketDictionary'
+    compileSdkVersion 33
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     defaultConfig {
         applicationId "com.abhishek.germanPocketDictionary"
-        minSdkVersion 21
+        minSdk 21
         targetSdkVersion 32
-        versionCode 13
-        versionName '1.1.3'
+        versionCode 2
+        versionName '2.0.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //Defining Log debugging
         buildConfigField "boolean", "LOG_DEBUG_MODE", "false"
         buildConfigField "boolean", "LOG_DEBUG_WITH_STACKTRACE_MODE", "false"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
+        signingConfig signingConfigs.release
+
+        archivesBaseName = "$applicationName-v$versionName"
     }
     buildTypes {
 
@@ -26,36 +51,67 @@ android {
         }
 
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
-    productFlavors {
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += [
+                '-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api',
+                '-Xopt-in=androidx.lifecycle.compose.ExperimentalLifecycleComposeApi',
+                '-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi',
+                '-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi',
+                '-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi',
+        ]
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 
-    dataBinding {
-        enabled true
+    applicationVariants.all { variant ->
+        kotlin.sourceSets {
+            getByName(variant.name) {
+                kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
+        }
     }
-
-    namespace 'com.abhishek.germanPocketDictionary'
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.core:core-ktx:1.9.0'
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // Compose
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
+    implementation "androidx.compose.material:material-icons-extended:1.3.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha03"
+    implementation "androidx.activity:activity-compose:1.6.1"
+    implementation "androidx.compose.material3:material3:1.0.1"
 
-    //Design
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation "com.google.accompanist:accompanist-pager:0.27.1"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.27.1"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.1"
 
-    //CardView
-    implementation 'androidx.cardview:cardview:1.0.0'
+    // Compose Destinations
+    implementation 'io.github.raamcosta.compose-destinations:animations-core:1.7.27-beta'
+    ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.27-beta'
 
     //Preference Manager
     implementation "androidx.preference:preference-ktx:1.2.0"
@@ -66,13 +122,14 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:2.43.2"
     kapt "com.google.dagger:hilt-compiler:2.43.2"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
-    def lifecycle_version = "2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation "android.arch.lifecycle:viewmodel:1.1.1"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 }
 repositories {
     mavenCentral()

@@ -1,7 +1,7 @@
 package com.abhishek.germanPocketDictionary.di
 
-import com.abhishek.germanPocketDictionary.data.LocalDataSource
-import com.abhishek.germanPocketDictionary.data.WordsDataSource
+import com.abhishek.germanPocketDictionary.core.domain.repository.LocalDataSource
+import com.abhishek.germanPocketDictionary.core.domain.repository.WordsDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
