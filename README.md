@@ -10,7 +10,7 @@ Also for tourists and people who want to search for frequently used words in ger
 All this with a universal search bar for fast results.
 
 #### Play Store Link: 
-https://play.google.com/store/apps/details?id=com.abhishek.germanPocketDictionary&hl=en
+<a href="https://play.google.com/store/apps/details?id=com.abhishek.germanPocketDictionary&hl=en" target="_blank"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="100px" /></a>
 
 ### Why contribute to this repository
 - Beginner-friendly
