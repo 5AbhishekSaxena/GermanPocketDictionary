@@ -59,7 +59,7 @@ public class Word implements Serializable {
 
         this.category = category;
 
-        this.numberValue = category.equals("2") ? Integer.valueOf(numberValue) : -1;
+        this.numberValue = category.equals("2") ? Integer.parseInt(numberValue) : -1;
 
         if (germanOpposite.equals("0")) {
             this.germanOpposite = null;
