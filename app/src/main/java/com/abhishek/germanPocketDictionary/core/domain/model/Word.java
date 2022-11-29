@@ -2,6 +2,7 @@ package com.abhishek.germanPocketDictionary.core.domain.model;
 
 import static com.abhishek.germanPocketDictionary.core.utils.Constants.API_KEYS;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * Created by Abhishek Saxena on 12/15/2017.
  */
 
+@Keep
 public class Word implements Serializable {
 
     private String id;
