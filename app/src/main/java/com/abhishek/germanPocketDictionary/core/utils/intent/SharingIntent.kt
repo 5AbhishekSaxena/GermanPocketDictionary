@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.core.utils.inbtent
+package com.abhishek.germanPocketDictionary.core.utils.intent
 
 import android.content.Intent
 

@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.abhishek.germanPocketDictionary.core.utils.inbtent.openWebPage
-import com.abhishek.germanPocketDictionary.core.utils.inbtent.shareSimpleText
+import com.abhishek.germanPocketDictionary.core.utils.intent.openWebPage
+import com.abhishek.germanPocketDictionary.core.utils.intent.shareSimpleText
 import com.abhishek.germanPocketDictionary.ui.destinations.SearchScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator

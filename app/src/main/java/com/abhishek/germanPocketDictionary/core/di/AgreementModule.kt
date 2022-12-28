@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.di
+package com.abhishek.germanPocketDictionary.core.di
 
 import com.abhishek.germanPocketDictionary.ui.agreement.domain.repository.AgreementRepository
 import com.abhishek.germanPocketDictionary.ui.agreement.domain.repository.AgreementRepositoryImpl
