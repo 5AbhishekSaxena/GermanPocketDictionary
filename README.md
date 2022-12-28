@@ -5,9 +5,9 @@
 ![GitHub](https://img.shields.io/github/license/5AbhishekSaxena/GermanPocketDictionary)
 ![https://github.com/5AbhishekSaxena](https://img.shields.io/badge/GitHub-5AbhishekSaxena-%23a03bed)
 
-An app designed to help the students who want to search for meanings and translations. This greatly helps them to learn german at a faster pace having the translations and meanings at their fingertips through a clean and self explanatory UI designed keeping in mind the usage patterns of beginners in language learning.
+An app designed to help students who want to search for meanings and translations. This greatly helps them to learn german at a faster pace having the translations and meanings at their fingertips through a clean and self-explanatory UI designed keeping in mind the usage patterns of beginners in language learning.
 
-Also for tourists and people who want to search for frequently used words in german language with words divided into categories such as nouns ,verbs, numbers, colours and questions for easy navigation and quick access of most commonly used vocabulary in daily life.
+Also for tourists and people who want to search for frequently used words in the German language with words divided into categories such as nouns, verbs, numbers, colours, and questions for easy navigation and quick access to the most commonly used vocabulary in daily life.
 
 All this with a universal search bar for fast results.
 
