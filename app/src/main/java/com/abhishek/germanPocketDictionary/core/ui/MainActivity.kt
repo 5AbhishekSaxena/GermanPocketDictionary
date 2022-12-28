@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import com.abhishek.germanPocketDictionary.NavGraphs
 import com.abhishek.germanPocketDictionary.core.ui.theme.GPDTheme
-import com.abhishek.germanPocketDictionary.ui.NavGraphs
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
