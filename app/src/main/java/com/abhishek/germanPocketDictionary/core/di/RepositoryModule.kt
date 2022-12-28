@@ -1,4 +1,4 @@
-package com.abhishek.germanPocketDictionary.di
+package com.abhishek.germanPocketDictionary.core.di
 
 import com.abhishek.germanPocketDictionary.core.domain.repository.LocalDataSource
 import com.abhishek.germanPocketDictionary.core.domain.repository.WordsDataSource
