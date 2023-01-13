@@ -23,19 +23,6 @@
             </intent-filter>
 
         </activity>
-
-        <!--        <activity-->
-        <!--            android:name=".activity.MainActivity"-->
-        <!--            android:screenOrientation="portrait"-->
-        <!--            android:hardwareAccelerated="true"-->
-        <!--            android:launchMode="singleTop"-->
-        <!--            android:exported="true">-->
-
-        <!--            <meta-data-->
-        <!--                android:name="android.app.default_searchable"-->
-        <!--                android:value=".SearchResultsActivity" />-->
-
-        <!--        </activity>-->
     </application>
 
 </manifest>
