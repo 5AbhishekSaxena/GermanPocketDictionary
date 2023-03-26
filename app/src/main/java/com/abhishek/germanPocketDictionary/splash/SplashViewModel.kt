@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val agreementRepository: AgreementRepository
+    private val agreementRepository: AgreementRepository,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<SplashViewState>(SplashViewState.Initial)
@@ -22,10 +22,11 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             val accepted = agreementRepository.getAgreementAcceptanceStatus()
             delay(500L)
-            _viewState.value = if (accepted)
+            _viewState.value = if (accepted) {
                 SplashViewState.Accepted
-            else
+            } else {
                 SplashViewState.Pending
+            }
         }
     }
 }

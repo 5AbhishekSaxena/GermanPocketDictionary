@@ -10,7 +10,7 @@ sealed class AgreementViewState {
         open val status: Boolean,
         open val agreement: String,
         open val termsAccepted: Boolean = false,
-        val inputEnabled: Boolean = false
+        val inputEnabled: Boolean = false,
     ) : AgreementViewState() {
 
         data class Active(
@@ -35,21 +35,20 @@ sealed class AgreementViewState {
             status = status,
             agreement = agreement,
             termsAccepted = true,
-            inputEnabled = false
+            inputEnabled = false,
         )
 
         data class Accepted(
             override val status: Boolean,
-            override val agreement: String
+            override val agreement: String,
         ) : Loaded(
             showDialog = false,
             status = status,
             agreement = agreement,
             termsAccepted = true,
-            inputEnabled = true
+            inputEnabled = true,
         )
     }
 
     data class Error(val error: Exception) : AgreementViewState()
-
 }

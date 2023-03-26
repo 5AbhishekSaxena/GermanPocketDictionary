@@ -24,7 +24,7 @@ fun GPDButton(
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     Button(
         onClick = onClick,
@@ -38,6 +38,6 @@ fun GPDButton(
         interactionSource = interactionSource,
         content = {
             Text(text = text)
-        }
+        },
     )
 }

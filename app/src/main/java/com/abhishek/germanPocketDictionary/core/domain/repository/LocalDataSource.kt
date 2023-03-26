@@ -14,9 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-
 class LocalDataSource @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : WordsDataSource {
 
     private val words: MutableList<Word> = mutableListOf()
@@ -69,11 +68,12 @@ class LocalDataSource @Inject constructor(
 
             val filteredWords = words.filter { it.category == category }
 
-            /*return*/ if (category == Constants.API_KEYS.CATEGORY_NUMBERS)
+            /*return*/ if (category == Constants.API_KEYS.CATEGORY_NUMBERS) {
             filteredWords.sortedBy { it.numberValue }
-        else
+        } else {
             filteredWords.sortedBy { it.germanTranslationWithoutArticle }
-    }
+        }
+        }
 
     private fun getOpposites(): List<Word> {
         val filteredWords = mutableListOf<Word>()

@@ -33,8 +33,8 @@ class MainActivity : ComponentActivity() {
                     enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
                     exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) },
                     popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) },
-                    popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) }
-                )
+                    popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) },
+                ),
             )
 
             GPDTheme {
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,
-                        engine = navHostEngine
+                        engine = navHostEngine,
                     )
                 }
             }
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         SideEffect {
             systemUiController.setSystemBarsColor(
                 color = backgroundColor,
-                darkIcons = useDarkIcons
+                darkIcons = useDarkIcons,
             )
         }
     }

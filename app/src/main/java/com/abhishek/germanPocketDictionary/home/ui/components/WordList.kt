@@ -76,7 +76,7 @@ fun OppositesWordList(
     modifier: Modifier = Modifier,
 ) {
     WordsLazyColumn(
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(words) { word ->
             OppositeWordListItem(
@@ -95,6 +95,6 @@ private fun WordsLazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier.fillMaxSize(),
-        content = content
+        content = content,
     )
 }

@@ -34,6 +34,6 @@ fun AgreementScreen(
         onShowAgreementButtonClick = viewModel::onShowAgreementButtonClick,
         onDialogConfirmButtonClick = viewModel::onDialogConfirmButtonClick,
         onDialogDismissButtonClick = viewModel::onDialogDismissButtonClick,
-        onTermsAcceptedCheckedChange = viewModel::onTermsAcceptedCheckedChange
+        onTermsAcceptedCheckedChange = viewModel::onTermsAcceptedCheckedChange,
     )
 }

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AgreementRepositoryImpl @Inject constructor(
     private val agreementLoader: AgreementLoader,
-    private val agreementPreferenceManager: AgreementPreferenceManager
+    private val agreementPreferenceManager: AgreementPreferenceManager,
 ) : AgreementRepository {
 
     private var agreement: String? = null

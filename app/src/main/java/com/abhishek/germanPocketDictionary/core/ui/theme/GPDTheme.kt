@@ -44,7 +44,6 @@ private val LightColorScheme = lightColorScheme(
     scrim = lightScrim,
 )
 
-
 private val DarkColorScheme = darkColorScheme(
     primary = darkPrimary,
     onPrimary = darkOnPrimary,
@@ -82,18 +81,21 @@ private val DarkColorScheme = darkColorScheme(
 fun GPDTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val isAndroid12OrAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     Log.e(
         "GPDTheme",
-        "GPDTheme, dynamicColor: $dynamicColor, isAndroid12OrAbove: $isAndroid12OrAbove, isSystemDarkTheme: ${isSystemInDarkTheme()}"
+        "GPDTheme, dynamicColor: $dynamicColor, isAndroid12OrAbove: $isAndroid12OrAbove, isSystemDarkTheme: ${isSystemInDarkTheme()}",
     )
     val colorScheme = when {
         dynamicColor && isAndroid12OrAbove -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context)
-            else dynamicLightColorScheme(context)
+            if (darkTheme) {
+                dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -102,6 +104,6 @@ fun GPDTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

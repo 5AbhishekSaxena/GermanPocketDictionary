@@ -35,7 +35,6 @@ fun AgreementContent(
     onDialogDismissButtonClick: () -> Unit,
     onTermsAcceptedCheckedChange: (Boolean) -> Unit,
 ) {
-
     if (viewState is AgreementViewState.Loading) {
         LoadingContent()
     } else if (viewState is AgreementViewState.Error) {
@@ -46,7 +45,7 @@ fun AgreementContent(
             onShowAgreementButtonClick = onShowAgreementButtonClick,
             onDialogConfirmButtonClick = onDialogConfirmButtonClick,
             onDialogDismissButtonClick = onDialogDismissButtonClick,
-            onTermsAcceptedCheckedChange = onTermsAcceptedCheckedChange
+            onTermsAcceptedCheckedChange = onTermsAcceptedCheckedChange,
         )
     }
 }
@@ -56,9 +55,8 @@ private fun LoadingContent() {
     CircularProgressIndicator(
         modifier = Modifier
             .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
+            .wrapContentSize(Alignment.Center),
     )
-
 }
 
 @Composable
@@ -72,7 +70,7 @@ private fun LoadedContent(
     onShowAgreementButtonClick: () -> Unit,
     onDialogConfirmButtonClick: () -> Unit,
     onDialogDismissButtonClick: () -> Unit,
-    onTermsAcceptedCheckedChange: (Boolean) -> Unit
+    onTermsAcceptedCheckedChange: (Boolean) -> Unit,
 ) {
     if (!viewState.status && !viewState.showDialog) {
         Column(
@@ -80,7 +78,7 @@ private fun LoadedContent(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Text(
                 text = "Please accept the terms and conditions of the application.",
@@ -108,7 +106,7 @@ private fun LoadedContent(
             viewState = viewState,
             onDialogConfirmButtonClick = onDialogConfirmButtonClick,
             onDialogDismissButtonClick = onDialogDismissButtonClick,
-            onTermsAcceptedCheckedChange = onTermsAcceptedCheckedChange
+            onTermsAcceptedCheckedChange = onTermsAcceptedCheckedChange,
         )
     }
 }
@@ -118,9 +116,10 @@ private fun AgreementDialog(
     viewState: AgreementViewState.Loaded,
     onDialogConfirmButtonClick: () -> Unit,
     onDialogDismissButtonClick: () -> Unit,
-    onTermsAcceptedCheckedChange: (Boolean) -> Unit
+    onTermsAcceptedCheckedChange: (Boolean) -> Unit,
 ) {
-    AlertDialog(onDismissRequest = { },
+    AlertDialog(
+        onDismissRequest = { },
         title = { Text(text = stringResource(id = R.string.agreement_title)) },
         confirmButton = {
             TextButton(
@@ -141,13 +140,13 @@ private fun AgreementDialog(
         text = {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
                 ) {
                     Text(text = viewState.agreement)
                 }
@@ -170,9 +169,10 @@ private fun AgreementDialog(
 
                     Text(
                         text = stringResource(id = R.string.declaration),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
-        })
+        },
+    )
 }

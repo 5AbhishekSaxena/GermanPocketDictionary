@@ -12,7 +12,7 @@ import com.abhishek.germanPocketDictionary.core.ui.theme.GPDTheme
 @Composable
 fun VerbExpandableListItemContent(partizip: String, helpingVerb: String) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         LabelAndText(label = "Partizip II", text = partizip)
         LabelAndText(label = "Helping Verb", text = helpingVerb)
@@ -30,12 +30,11 @@ fun VerbExpandableListItemContent(partizip: String, helpingVerb: String) {
 @Composable
 @Suppress("UnusedPrivateMember", "MagicNumber")
 private fun VerbExpandableListItemContentPreview() {
-
     GPDTheme {
         Surface {
             VerbExpandableListItemContent(
                 partizip = "abgeflogen",
-                helpingVerb = "sein"
+                helpingVerb = "sein",
             )
         }
     }
