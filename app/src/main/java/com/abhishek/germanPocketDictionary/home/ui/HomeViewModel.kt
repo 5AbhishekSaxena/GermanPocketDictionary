@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val wordsRepository: WordsRepository
+    private val wordsRepository: WordsRepository,
 ) : ViewModel() {
 
     private val _allWordsPageViewState =
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
                     UIMinWord.Noun(
                         germanTranslation = it.germanTranslation,
                         englishTranslation = it.englishTranslation,
-                        plural = it.germanPlural
+                        plural = it.germanPlural,
                     )
                 }
 
@@ -127,7 +127,7 @@ class HomeViewModel @Inject constructor(
                         germanTranslation = it.germanTranslation,
                         englishTranslation = it.englishTranslation,
                         oppositeGermanTranslation = it.germanOpposite,
-                        oppositeEnglishTranslation = it.germanOppositeMeaning
+                        oppositeEnglishTranslation = it.germanOppositeMeaning,
                     )
                 }
 

@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 import javax.inject.Inject
 
 class WordsRepository @Inject constructor(
-    private val wordsDataSource: WordsDataSource
+    private val wordsDataSource: WordsDataSource,
 ) {
 
     private val words = mutableListOf<Word>()

@@ -13,7 +13,6 @@ fun SearchScreen(
     navigator: DestinationsNavigator,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
-
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     SearchContent(

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class SharedPreferenceManager @Inject constructor(
     @ApplicationContext
-    context: Context
+    context: Context,
 ) {
 
     private val sharedPreferences: SharedPreferences? =

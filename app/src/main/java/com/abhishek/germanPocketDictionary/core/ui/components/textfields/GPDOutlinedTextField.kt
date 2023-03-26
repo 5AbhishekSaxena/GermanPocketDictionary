@@ -47,7 +47,6 @@ fun GPDOutlinedTextField(
     error: String? = null,
     required: Boolean = false,
 ) {
-
     val labelContent: @Composable (() -> Unit)? =
         if (label != null) {
             {
@@ -64,12 +63,16 @@ fun GPDOutlinedTextField(
                     Text(text = label)
                 }
             }
-        } else null
+        } else {
+            null
+        }
 
     val placeholderContent: @Composable (() -> Unit)? =
         if (placeholder != null) {
             { Text(text = placeholder) }
-        } else null
+        } else {
+            null
+        }
 
     Column {
         OutlinedTextField(
@@ -92,7 +95,7 @@ fun GPDOutlinedTextField(
             maxLines = maxLines,
             interactionSource = interactionSource,
             shape = shape,
-            colors = colors
+            colors = colors,
         )
 
         if (error != null) {

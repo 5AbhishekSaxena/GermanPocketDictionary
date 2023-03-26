@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun GermanWordAndTranslation(
     germanTranslation: String,
@@ -17,7 +16,7 @@ fun GermanWordAndTranslation(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = germanTranslation,

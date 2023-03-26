@@ -32,7 +32,7 @@ class SearchViewModel @Inject constructor(
                 .map {
                     UIMinWord.Simple(
                         germanTranslation = it.germanTranslation,
-                        englishTranslation = it.englishTranslation
+                        englishTranslation = it.englishTranslation,
                     )
                 }
             _viewState.value = SearchViewState.Loaded.Idle("", words)
@@ -44,7 +44,7 @@ class SearchViewModel @Inject constructor(
             when (it) {
                 is SearchViewState.Loaded -> SearchViewState.Loaded.Searching(
                     query = query,
-                    words = it.words
+                    words = it.words,
                 )
                 else -> SearchViewState.Loaded.Searching(query, emptyList())
             }
@@ -58,16 +58,17 @@ class SearchViewModel @Inject constructor(
                 )
             }
         _viewState.update {
-            if (words.isEmpty())
+            if (words.isEmpty()) {
                 SearchViewState.Loaded.EmptyResult(query)
-            else
+            } else {
                 SearchViewState.Loaded.Idle(query = query, words = words)
+            }
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-        private val wordsRepository: WordsRepository
+        private val wordsRepository: WordsRepository,
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return SearchViewModel(wordsRepository) as T

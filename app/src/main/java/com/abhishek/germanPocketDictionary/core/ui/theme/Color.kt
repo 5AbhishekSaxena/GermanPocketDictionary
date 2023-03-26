@@ -2,7 +2,6 @@ package com.abhishek.germanPocketDictionary.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-
 val lightPrimary = Color(0xFF005FAF)
 val lightOnPrimary = Color(0xFFFFFFFF)
 val lightPrimaryContainer = Color(0xFFD4E3FF)
@@ -64,6 +63,5 @@ val darkShadow = Color(0xFF000000)
 val darkSurfaceTint = Color(0xFFA5C8FF)
 val darkOutlineVariant = Color(0xFF43474E)
 val darkScrim = Color(0xFF000000)
-
 
 val seed = Color(0xFF1976D2)

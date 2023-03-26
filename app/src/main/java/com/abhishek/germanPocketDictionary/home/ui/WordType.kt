@@ -7,7 +7,8 @@ enum class WordType(private val simplifiedName: String? = null) {
     NUMBERS,
     COLORS,
     QUESTIONS,
-    OPPOSITE;
+    OPPOSITE,
+    ;
 
     fun getSimplifiedName(): String {
         return simplifiedName ?: name

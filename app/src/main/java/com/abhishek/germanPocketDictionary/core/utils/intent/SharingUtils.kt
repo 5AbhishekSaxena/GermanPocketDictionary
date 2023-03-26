@@ -18,7 +18,7 @@ fun shareSimpleText(context: Context, text: String) {
 fun openWebPage(
     context: Context,
     url: String,
-    chooserTitle: String = "Open url using"
+    chooserTitle: String = "Open url using",
 ) {
     val webBrowserSharingIntent = WebBrowserSharingIntent(url, chooserTitle)
     shareIntent(context, webBrowserSharingIntent)

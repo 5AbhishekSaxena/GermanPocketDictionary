@@ -58,11 +58,13 @@ fun SearchContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
-
-            if (viewState is SearchViewState.Loaded.Searching) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            else Spacer(modifier = Modifier.height(4.dp))
+            if (viewState is SearchViewState.Loaded.Searching) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            } else {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
             when (viewState) {
                 is SearchViewState.Loading -> LoadingContent()
@@ -100,7 +102,7 @@ private fun LoadingContent() {
 @Composable
 private fun LoadedContent(
     viewState: SearchViewState.Loaded,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
 ) {
     val searchCardColors = CardDefaults.cardColors(
         containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
@@ -138,7 +140,7 @@ private fun LoadedContent(
                 onValueChange = onQueryChange,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Search
+                    imeAction = ImeAction.Search,
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
@@ -157,10 +159,11 @@ private fun LoadedContent(
         }
     }
 
-    if (viewState.words.isNotEmpty())
+    if (viewState.words.isNotEmpty()) {
         WordList(words = viewState.words)
-    else
+    } else {
         EmptyResultText()
+    }
 }
 
 @Composable
@@ -189,10 +192,10 @@ private fun ErrorContent(viewState: SearchViewState.Error) {
 @Composable
 @Suppress("UnusedPrivateMember", "MagicNumber")
 private fun SearchContentPreview() {
-
     val words = (1..10).map {
         UIMinWord.Simple(
-            germanTranslation = "Test", englishTranslation = "Test"
+            germanTranslation = "Test",
+            englishTranslation = "Test",
         )
     }
 
