@@ -18,7 +18,6 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-
     val context = LocalContext.current
 
     val allWordsPageViewState by viewModel.allWordsPageViewState.collectAsStateWithLifecycle()
@@ -56,7 +55,7 @@ private fun onRateThisAppClick(context: Context) {
     openWebPage(
         context = context,
         url = url,
-        chooserTitle = "Rate the app using"
+        chooserTitle = "Rate the app using",
     )
 }
 

@@ -50,7 +50,6 @@ fun HomeContent(
     onRateThisAppClick: () -> Unit,
     onShareClick: () -> Unit,
 ) {
-
     Scaffold(
         topBar = {
             HomeTopAppBar(
@@ -63,7 +62,7 @@ fun HomeContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             WordsPagerWithTabs(
                 allWordsPageViewState = allWordsPageViewState,
@@ -91,9 +90,11 @@ private fun HomeTopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
             IconButton(
-                onClick = onSearchClick, colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
-                ), modifier = Modifier.clip(CircleShape)
+                onClick = onSearchClick,
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                ),
+                modifier = Modifier.clip(CircleShape),
             ) {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
             }
@@ -101,9 +102,9 @@ private fun HomeTopAppBar(
             IconButton(
                 onClick = { showOptionsMenu = !showOptionsMenu },
                 colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
                 ),
-                modifier = Modifier.clip(CircleShape)
+                modifier = Modifier.clip(CircleShape),
             ) {
                 Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
             }
@@ -112,7 +113,6 @@ private fun HomeTopAppBar(
                 expanded = showOptionsMenu,
                 onDismissRequest = { showOptionsMenu = false },
             ) {
-
                 DropdownMenuItem(
                     onClick = {
                         showOptionsMenu = !showOptionsMenu
@@ -124,9 +124,10 @@ private fun HomeTopAppBar(
                     contentPadding = PaddingValues(horizontal = 24.dp),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.StarRate, contentDescription = null
+                            imageVector = Icons.Outlined.StarRate,
+                            contentDescription = null,
                         )
-                    }
+                    },
                 )
 
                 DropdownMenuItem(
@@ -140,9 +141,10 @@ private fun HomeTopAppBar(
                     contentPadding = PaddingValues(horizontal = 24.dp),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Outlined.Share, contentDescription = null
+                            imageVector = Icons.Outlined.Share,
+                            contentDescription = null,
                         )
-                    }
+                    },
                 )
             }
         },
@@ -160,9 +162,10 @@ private fun HomeTopAppBar(
 @Composable
 @Suppress("UnusedPrivateMember", "MagicNumber")
 private fun HomeContentPreview() {
-
     val noun = UIMinWord.Noun(
-        "test", "test", "test"
+        "test",
+        "test",
+        "test",
     )
 
     val verb = UIMinWord.Verb(

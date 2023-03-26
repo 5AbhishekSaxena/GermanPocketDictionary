@@ -19,18 +19,18 @@ interface AgreementModule {
     @Binds
     @Singleton
     fun bindAgreementLoader(
-        agreementLoader: RawResourceAgreementLoader
+        agreementLoader: RawResourceAgreementLoader,
     ): AgreementLoader
 
     @Binds
     @Singleton
     fun bindAgreementRepository(
-        agreementRepository: AgreementRepositoryImpl
+        agreementRepository: AgreementRepositoryImpl,
     ): AgreementRepository
 
     @Binds
     @Singleton
     fun bindAgreementSharedPreferenceManager(
-        agreementPreferenceManager: AgreementPreferenceManagerImpl
+        agreementPreferenceManager: AgreementPreferenceManagerImpl,
     ): AgreementPreferenceManager
 }

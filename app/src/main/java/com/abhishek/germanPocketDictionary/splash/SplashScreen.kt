@@ -21,7 +21,6 @@ fun SplashScreen(
     navigator: DestinationsNavigator,
     viewModel: SplashViewModel = hiltViewModel(),
 ) {
-
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = viewState) {
@@ -31,12 +30,12 @@ fun SplashScreen(
             }
         }
 
-        if (viewState is SplashViewState.Pending)
+        if (viewState is SplashViewState.Pending) {
             navigator.navigate(AgreementScreenDestination, builder = builder)
-        else if (viewState is SplashViewState.Accepted)
+        } else if (viewState is SplashViewState.Accepted) {
             navigator.navigate(HomeScreenDestination, builder = builder)
+        }
     }
 
     SplashContent()
-
 }

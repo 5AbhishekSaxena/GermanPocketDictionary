@@ -31,7 +31,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun WordsPagerWithTabs(
     allWordsPageViewState: WordPageViewState<UIMinWord.Simple>,
@@ -43,7 +42,6 @@ fun WordsPagerWithTabs(
     oppositesPageViewState: WordPageViewState<UIMinWord.Opposites>,
     onPageChange: (WordType) -> Unit,
 ) {
-
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -54,7 +52,7 @@ fun WordsPagerWithTabs(
             WordType.VERBS,
             WordType.COLORS,
             WordType.QUESTIONS,
-            WordType.OPPOSITE
+            WordType.OPPOSITE,
         )
 
         mutableStateOf(wordTypes)
@@ -68,7 +66,7 @@ fun WordsPagerWithTabs(
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
             )
         },
         edgePadding = 0.dp,
@@ -128,7 +126,7 @@ fun WordsPagerWithTabs(
                 onLoaded = {
                     OppositesWordList(
                         words = it,
-                        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+                        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                     )
                 },
             )
@@ -139,7 +137,7 @@ fun WordsPagerWithTabs(
 @Composable
 private fun <T> WordListPageContent(
     state: WordPageViewState<T>,
-    onLoaded: @Composable (List<T>) -> Unit
+    onLoaded: @Composable (List<T>) -> Unit,
 ) {
     when (state) {
         is WordPageViewState.Initial -> Unit
@@ -148,7 +146,7 @@ private fun <T> WordListPageContent(
         is WordPageViewState.Loading -> CircularProgressIndicator(
             modifier = Modifier
                 .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
+                .wrapContentSize(Alignment.Center),
         )
     }
 }

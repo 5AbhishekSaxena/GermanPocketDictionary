@@ -7,22 +7,22 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun OppositeWordListItem(
-    word: UIMinWord.Opposites
+    word: UIMinWord.Opposites,
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         GermanWordAndTranslation(
             germanTranslation = word.germanTranslation,
             englishTranslation = word.englishTranslation,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
 
         GermanWordAndTranslation(
             germanTranslation = word.oppositeGermanTranslation,
             englishTranslation = word.oppositeEnglishTranslation,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
     }
 }

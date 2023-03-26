@@ -2,7 +2,7 @@ package com.abhishek.germanPocketDictionary.core.ui.components.words
 
 sealed class UIMinWord(
     open val germanTranslation: String,
-    open val englishTranslation: String
+    open val englishTranslation: String,
 ) {
     data class Simple(
         override val germanTranslation: String,
@@ -28,5 +28,4 @@ sealed class UIMinWord(
         val oppositeGermanTranslation: String,
         val oppositeEnglishTranslation: String,
     ) : UIMinWord(germanTranslation = germanTranslation, englishTranslation = englishTranslation)
-
 }

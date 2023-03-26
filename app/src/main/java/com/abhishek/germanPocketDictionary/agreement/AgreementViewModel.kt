@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class AgreementViewModel @Inject constructor(
-    private val agreementRepository: AgreementRepository
+    private val agreementRepository: AgreementRepository,
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow<AgreementViewState>(AgreementViewState.Initial)
@@ -36,8 +36,9 @@ class AgreementViewModel @Inject constructor(
 
     fun onShowAgreementButtonClick() {
         val currentViewState = _viewState.value
-        if (currentViewState is AgreementViewState.Loaded.Active)
+        if (currentViewState is AgreementViewState.Loaded.Active) {
             _viewState.value = currentViewState.copy(showDialog = true)
+        }
     }
 
     fun onDialogConfirmButtonClick() {
@@ -68,7 +69,7 @@ class AgreementViewModel @Inject constructor(
 
     private fun onAgreementAcceptanceStatusUpdate(
         currentViewState: AgreementViewState.Loaded.Active,
-        status: Boolean
+        status: Boolean,
     ) {
         if (!currentViewState.termsAccepted) return
 
@@ -78,7 +79,6 @@ class AgreementViewModel @Inject constructor(
         )
 
         updateAgreementAcceptanceStatus(status)
-
     }
 
     private fun updateAgreementAcceptanceStatus(status: Boolean) {

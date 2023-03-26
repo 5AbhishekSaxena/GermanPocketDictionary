@@ -9,16 +9,16 @@ sealed class SearchViewState {
 
     sealed class Loaded(
         open val query: String,
-        open val words: List<UIMinWord.Simple>
+        open val words: List<UIMinWord.Simple>,
     ) : SearchViewState() {
         data class Idle(
             override val query: String,
-            override val words: List<UIMinWord.Simple>
+            override val words: List<UIMinWord.Simple>,
         ) : Loaded(query, words)
 
         data class Searching(
             override val query: String,
-            override val words: List<UIMinWord.Simple>
+            override val words: List<UIMinWord.Simple>,
         ) : Loaded(query, words)
 
         data class EmptyResult(

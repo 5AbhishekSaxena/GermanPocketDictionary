@@ -33,7 +33,7 @@ fun WordListItem(
 ) {
     Card(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 6.dp,
         ),
     ) {
         Column(
@@ -43,7 +43,7 @@ fun WordListItem(
         ) {
             GermanWordAndTranslation(
                 germanTranslation = word.germanTranslation,
-                englishTranslation = word.englishTranslation
+                englishTranslation = word.englishTranslation,
             )
         }
     }
@@ -54,16 +54,15 @@ fun WordListItem(
     word: UIMinWord,
     expandableContent: @Composable () -> Unit,
 ) {
-
     var showExpandableContent by remember { mutableStateOf(false) }
 
     Card(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 6.dp,
         ),
         onClick = {
             showExpandableContent = !showExpandableContent
-        }
+        },
     ) {
         Row(
             modifier = Modifier
@@ -75,7 +74,7 @@ fun WordListItem(
             Column {
                 GermanWordAndTranslation(
                     germanTranslation = word.germanTranslation,
-                    englishTranslation = word.englishTranslation
+                    englishTranslation = word.englishTranslation,
                 )
 
                 AnimatedVisibility(visible = showExpandableContent) {
@@ -87,8 +86,11 @@ fun WordListItem(
             }
 
             val icon =
-                if (showExpandableContent) Icons.Default.ExpandLess
-                else Icons.Default.ExpandMore
+                if (showExpandableContent) {
+                    Icons.Default.ExpandLess
+                } else {
+                    Icons.Default.ExpandMore
+                }
 
             Icon(imageVector = icon, contentDescription = null)
         }
@@ -106,32 +108,31 @@ fun WordListItem(
 @Composable
 @Suppress("UnusedPrivateMember", "MagicNumber")
 private fun WordListItemPreview() {
-
     val word = UIMinWord.Noun(
         germanTranslation = "das Abendessen",
         englishTranslation = "Dinner",
-        plural = "die Abendessen"
+        plural = "die Abendessen",
     )
 
     val verb = UIMinWord.Verb(
         germanTranslation = "abfahren",
         englishTranslation = "to leave",
         partizip = "abgefahren",
-        helpingVerb = "sein"
+        helpingVerb = "sein",
     )
 
     val opposites = UIMinWord.Opposites(
         germanTranslation = "antworten",
         englishTranslation = "to answer",
         oppositeGermanTranslation = "fragen",
-        oppositeEnglishTranslation = "to ask"
+        oppositeEnglishTranslation = "to ask",
     )
 
     GPDTheme {
         Surface {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 WordListItem(word)
                 WordListItem(
@@ -145,7 +146,7 @@ private fun WordListItemPreview() {
                     expandableContent = {
                         VerbExpandableListItemContent(
                             partizip = verb.partizip,
-                            helpingVerb = verb.helpingVerb
+                            helpingVerb = verb.helpingVerb,
                         )
                     },
                 )

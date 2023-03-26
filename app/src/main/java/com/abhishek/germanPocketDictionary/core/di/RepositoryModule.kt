@@ -13,7 +13,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindWordsDataSource(
-        localDataSource: LocalDataSource
+        localDataSource: LocalDataSource,
     ): WordsDataSource
-
 }
