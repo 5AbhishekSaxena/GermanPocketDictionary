@@ -46,17 +46,9 @@ fun WordsPagerWithTabs(
     val coroutineScope = rememberCoroutineScope()
 
     val pages by remember {
-        val wordTypes = arrayOf(
-            WordType.ALL_WORDS,
-            WordType.NOUNS,
-            WordType.VERBS,
-            WordType.COLORS,
-            WordType.QUESTIONS,
-            WordType.OPPOSITE,
-        )
-
-        mutableStateOf(wordTypes)
+        mutableStateOf(WordType.values())
     }
+
     LaunchedEffect(key1 = pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
             onPageChange(pages[page])
